@@ -1,121 +1,125 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档。`01_DocReviewRefine` = **文档级** review 与 refine，
-       与 `03_CodeReviewRefine` 的**代码级** review 相区分。
+[Document Level] AI development process document. `01_DocReviewRefine` = **document-level**
+       review and refine, distinct from the **code-level** review in `03_CodeReviewRefine`.
 
-【用途】单文档深度审查报告。聚焦**一份**设计文档（通常是 tech_design.md）的内部质量：
-       类定义、数据库定义、API 定义、后端实现逻辑是否完整、自洽、可直接编码。
-       与 _docs_review.md 的区别：那份查**跨文档一致性**，这份查**单文档纵深完备性**。
+[Purpose] Single-document deep review report. Focuses on the internal quality of **one**
+       design document (usually tech_design.md): whether the class definitions, database
+       definitions, API definitions, and backend implementation logic are complete,
+       self-consistent, and ready to code directly from.
+       Difference from _docs_review.md: that one checks **cross-document consistency**,
+       this one checks **single-document depth and completeness**.
 
-【本目录收什么】设计文档一致性审查、技术设计审查、前后端设计完备性审查、
-       UI/UX HTML 稿审查、UI/UX 通用模式提炼。
-       判定标准：审查对象是 **.md / .mmd / .html 设计稿** → 放本目录；
-                 审查对象是**源代码** → 放 `03_CodeReviewRefine/`。
+[What this directory holds] Design document consistency review, technical design review,
+       frontend/backend design completeness review, UI/UX HTML mockup review, UI/UX common
+       pattern extraction.
+       Rule of thumb: if the review target is a **.md / .mmd / .html design draft** → put it here;
+                       if the review target is **source code** → put it in `03_CodeReviewRefine/`.
 
-【落盘目录】
-  - 平台级：docs/ai_dev_history/01_DocReviewRefine/
-  - 组件级：docs/components/{component_code_name}/ai_dev_history/01_DocReviewRefine/
+[Output directory]
+  - Platform level: docs/ai_dev_history/01_DocReviewRefine/
+  - Component level: docs/components/{component_code_name}/ai_dev_history/01_DocReviewRefine/
 
-【文件命名】`{类型}_{YYYYMMDD}[-r{轮次}].md`，轮次跨日期**不重置**
-       （例：docs_review_20260310-r6.md → docs_review_20260314-r7.md）。
-  本目录各类型命名：
-    docs_review_{YYYYMMDD}-r{n}.md                — 跨文档一致性审查
-    tech_design_review_{YYYYMMDD}_r{n}.md         — 单文档深度审查  ← **本文件**
-    design_completeness_review_{YYYYMMDD}-r{n}.md — 前后端设计完备性审查
-    html_review_{YYYYMMDD}-r{n}.md                — HTML 稿对照 uiux 文档审查
-    uiux_pattern_summary_{YYYYMMDD}-v{n}.md       — 通用 UI/UX 模式提炼提案
-  审查 business_desc 时用：business_desc_review_{YYYYMMDD}_r{轮次}.md
-  审查 uiux 时用：uiux_review_{YYYYMMDD}_r{轮次}.md
+[File naming] `{type}_{YYYYMMDD}[-r{round}].md`, the round number does **not** reset across dates
+       (e.g. docs_review_20260310-r6.md → docs_review_20260314-r7.md).
+  Naming per type in this directory:
+    docs_review_{YYYYMMDD}-r{n}.md                — cross-document consistency review
+    tech_design_review_{YYYYMMDD}_r{n}.md         — single-document deep review  ← **this file**
+    design_completeness_review_{YYYYMMDD}-r{n}.md — frontend/backend design completeness review
+    html_review_{YYYYMMDD}-r{n}.md                — HTML mockup vs. uiux document review
+    uiux_pattern_summary_{YYYYMMDD}-v{n}.md       — common UI/UX pattern extraction proposal
+  For reviewing business_desc, use: business_desc_review_{YYYYMMDD}_r{round}.md
+  For reviewing uiux, use: uiux_review_{YYYYMMDD}_r{round}.md
 
-【问题 ID】使用 TD-{序号} 连续编号，**跨轮次递增不重置**：
-  r2 结束于 TD-18，则 r3 从 TD-19 开始。ID 永不复用。
+[Issue IDs] Use continuous TD-{number} numbering, **incrementing across rounds without reset**:
+  if r2 ends at TD-18, r3 starts at TD-19. IDs are never reused.
 
-【模板文件名】前导 `_` 只是模板标记。复制到 ai_dev_history/ 时按上面的规则重新命名，
-       不保留下划线。
+[Template file name] The leading `_` is only a template marker. When copying into ai_dev_history/,
+       rename it per the rules above and drop the underscore.
 
-【Review 迭代协议】见 templates/ai_dev/readme.md：
-  - 「工程师回复」列 AI 生成时一律留空
-  - 第 N 轮报告首章为上轮落实确认表，不是新问题
-  - 已修复问题不再复述，且不区分新老问题
-  - 问题 ID 全局唯一、永不复用
-  - 架构分歧必须给出方案 A/B 并标注推荐项
+[Review Iteration Protocol] See templates/ai_dev/readme.md:
+  - The "Engineer's Response" column is always left empty when AI generates the report
+  - Round N's report opens with the previous-round remediation confirmation table, not new issues
+  - Fixed issues are not restated, and no distinction is drawn between old and new issues
+  - Issue IDs are globally unique and never reused
+  - Architectural disagreements must present Option A/B with the recommended one marked
 -->
 
 # {component}_tech_design.md — Review Report
 
 **Review Date**: {YYYY-MM-DD}
-**Document Reviewed**: `{component}_tech_design.md` v{x.y.z}（{r{N-1} 修订后}）
+**Document Reviewed**: `{component}_tech_design.md` v{x.y.z} (after r{N-1} revision)
 **Review Round**: r{N}
-**Review Objective**: {本轮审查目标，例如：聚焦类定义、数据库定义、Service API 及后端实现逻辑的审查。}
-**审查范围**: {明确包含什么，例如：§2 类定义、§4 数据库定义、§5 API 定义}
-**不涉及的内容**: {明确排除什么，例如：不涉及任何 daemon 程序逻辑（已拆分至 sub_* 子目录独立设计文件）；不涉及前端页面规格。}
+**Review Objective**: {This round's review objective, e.g.: focused on the review of class definitions, database definitions, Service APIs, and backend implementation logic.}
+**Scope**: {State clearly what is included, e.g.: §2 Class Definitions, §4 Database Definitions, §5 API Definitions}
+**Out of Scope**: {State clearly what is explicitly excluded, e.g.: does not cover any daemon program logic (split out into independent design files under sub_* subdirectories); does not cover frontend page specs.}
 
-> **说明**：
-> 1. {本报告仅列出本轮新发现问题，r{N-1} 已修复项见「r{N-1} 修订落实确认」表。}
-> 2. {忽略 🔵 低级别问题。}
+> **Notes**:
+> 1. {This report only lists newly found issues from this round; see the "r{N-1} Remediation Confirmation" table for items already fixed in r{N-1}.}
+> 2. {🔵 Low severity issues are ignored.}
 
 ---
 
-## r{N-1} 修订落实确认
+## r{N-1} Remediation Confirmation
 
-| r{N-1} 问题 | 落实结果 |
+| r{N-1} Issue | Remediation Result |
 |-------------|---------|
-| TD-{nn} {问题简称} | ✅ {具体落实位置与内容，例如：§3 引言增加约束说明} |
-| TD-{nn} {问题简称} | ✅ {§5.4.1 增加已知局限说明，明确 {n} 分钟固定阈值} |
-| TD-{nn} {问题简称} | ✅ {§4.1 和 §4.2 的 `updated_at` 均已标注 `auto-update via DB trigger`} |
-| TD-{nn} {问题简称} | 🟡 {部分完成：{尚存差距}} |
-| TD-{nn} {问题简称} | 🔴 {未落实：{原因}} |
+| TD-{nn} {short issue name} | ✅ {Specific location and content of the fix, e.g.: added constraint description to §3 Introduction} |
+| TD-{nn} {short issue name} | ✅ {§5.4.1 added a known-limitations note, clarifying the {n}-minute fixed threshold} |
+| TD-{nn} {short issue name} | ✅ {Both §4.1 and §4.2 `updated_at` are now annotated with "auto-update via DB trigger"} |
+| TD-{nn} {short issue name} | 🟡 {Partially complete: {remaining gap}} |
+| TD-{nn} {short issue name} | 🔴 {Not addressed: {reason}} |
 
-> 🟡 / 🔴 的条目必须在下方「新发现问题列表」中重新列出并保留原 ID。
+> 🟡 / 🔴 items must be re-listed in the "New Issues List" below, keeping their original ID.
 
 ---
 
-## 新发现问题列表
+## New Issues List
 
-| # | 严重度 | 问题描述 | 修改建议 | 工程师回复 |
+| # | Severity | Issue Description | Suggested Fix | Engineer's Response |
 |---|--------|----------|----------|-----------|
-| TD-{n} | 🔴 高 | **{问题标题，加粗}**<br>{现状描述：文档 A 处怎么写的，B 处怎么写的}<br>**冲突点**：(1) {冲突点1}；(2) {冲突点2}；(3) {冲突点3}<br>**影响**：{工程师在实现时无法确定应以哪份文档为准 / 会导致 {后果}} | **方案 A**（推荐）：{做法}。<br>**方案 B**：{做法}。 | |
-| TD-{n} | 🔴 高 | **{问题标题}**<br>{描述}<br>**影响**：{查询性能随数据量线性恶化 / SQL 注入风险 / 前后端字段对不上} | {具体到"在 §x.y 的 {字段} 列增加 {索引类型} 索引"这类可执行建议} | |
-| TD-{n} | 🟠 中 | **{问题标题}**<br>{描述}<br>**遗漏场景**：{未定义的边界条件} | {在 §x.y 补充："{建议补充的原文}"} | |
-| TD-{n} | 🟠 中 | **{问题标题}**<br>{§x.y 第 {n} 行：`{字段}` 的 Description 写的是"{错误内容}"，应为"{正确内容}"。对比 §{另一处}，两处描述不一致。} | {将 §x.y `{字段}` 行的 Description 从"{错误}"修正为"{正确}"。} | |
-| TD-{n} | 🟡 低 | **{问题标题}**<br>{描述，例如：§x.y 的 `sort_by` 可选值使用"等"字，未完整列举，工程师无法确定完整的合法字段列表。} | {去掉"等"字，完整列举所有可选值：`{a}`、`{b}`、`{c}`。} | |
+| TD-{n} | 🔴 High | **{Issue title, bold}**<br>{Current state: how document location A reads, how location B reads}<br>**Conflict points**: (1) {conflict point 1}; (2) {conflict point 2}; (3) {conflict point 3}<br>**Impact**: {The engineer cannot determine which document to follow when implementing / will lead to {consequence}} | **Option A** (recommended): {approach}.<br>**Option B**: {approach}. | |
+| TD-{n} | 🔴 High | **{Issue title}**<br>{Description}<br>**Impact**: {Query performance degrades linearly with data volume / SQL injection risk / frontend-backend field mismatch} | {Actionable suggestion specific to "add a {index type} index on the {field} column in §x.y"} | |
+| TD-{n} | 🟠 Medium | **{Issue title}**<br>{Description}<br>**Missed scenario**: {undefined boundary condition} | {In §x.y, add: "{suggested wording to add}"} | |
+| TD-{n} | 🟠 Medium | **{Issue title}**<br>{§x.y line {n}: the Description of `{field}` reads "{incorrect content}", should be "{correct content}". Compared with §{other location}, the two descriptions are inconsistent.} | {Correct the Description of the `{field}` row in §x.y from "{incorrect}" to "{correct}".} | |
+| TD-{n} | 🟡 Low | **{Issue title}**<br>{Description, e.g.: the allowed values of `sort_by` in §x.y use "etc.", not fully enumerated, so the engineer cannot determine the complete list of valid fields.} | {Remove "etc." and fully enumerate all allowed values: `{a}`, `{b}`, `{c}`.} | |
 
-> 「工程师回复」列由工程师人工填写，AI 生成时一律留空。
-> 问题描述中使用 `<br>` 分行，保持表格单元格内的层次：现状 → 冲突点 → 影响。
+> The "Engineer's Response" column is filled in by the engineer manually. AI must always leave it empty, never guess, and never write a placeholder like "TBD".
+> Use `<br>` to break lines within the Issue Description column, preserving the layering inside each table cell: current state → conflict points → impact.
 
 ---
 
-## 审查覆盖清单
+## Review Coverage Checklist
 
-| 章节 | 审查项 | 结论 |
+| Section | Review Item | Conclusion |
 |------|--------|------|
-| §2 类定义 | {每个类都标注了映射的业务对象} | ✅ |
-| §2 类定义 | {每个成员都有类型、UI/DB 展示或存储要求、描述} | ✅ |
-| §2 类定义 | {枚举有唯一权威定义位置，引用类型标注了来源模块} | ✅ |
-| §{n} 程序描述 | {每个 daemon/程序都说明了触发方式、输入、输出、失败重试} | ✅ |
-| §4 数据库 | {每张表都有主键、索引标注、软删除与时间戳字段} | ✅ |
-| §4 数据库 | {所有出现在 WHERE / ORDER BY 的字段都有索引} | ✅ |
-| §4 数据库 | {动态表/分表的创建时机与命名规则明确} | ✅ |
-| §5 API | {每个端点都有 Endpoint / Description / Authentication} | ✅ |
-| §5 API | {请求参数表完整，含 Location / Type / Required} | ✅ |
-| §5 API | {请求与响应示例的字段与参数表一致} | ✅ |
-| §5 API | {错误响应与错误码已定义，含 404 / 400 / 500 场景} | ✅ |
-| §5 API | {分页、排序参数的可选值完整列举，无"等"字} | ✅ |
-| §5 API | {跨表聚合、表不存在等边界场景已定义处理方式} | ✅ |
-| §{n} 开发技术 | {语言、框架、依赖版本已锁定} | ✅ |
-| §{n} 源码目录 | {目录树与实际规划一致，含版本范围说明} | ✅ |
-| 附录 | {输入验证规则、日志规范、测试策略已定义} | ✅ |
+| §2 Class Definitions | {Every class is annotated with the business object it maps to} | ✅ |
+| §2 Class Definitions | {Every member has a type, UI/DB display or storage requirement, and description} | ✅ |
+| §2 Class Definitions | {Enums have a single authoritative definition location; referenced types are annotated with their source module} | ✅ |
+| §{n} Program Descriptions | {Every daemon/program describes its trigger method, inputs, outputs, and failure/retry behavior} | ✅ |
+| §4 Database | {Every table has a primary key, index annotations, soft-delete and timestamp fields} | ✅ |
+| §4 Database | {All fields appearing in WHERE / ORDER BY have indexes} | ✅ |
+| §4 Database | {The creation timing and naming rules for dynamic tables/sharded tables are clear} | ✅ |
+| §5 API | {Every endpoint has Endpoint / Description / Authentication} | ✅ |
+| §5 API | {Request parameter tables are complete, including Location / Type / Required} | ✅ |
+| §5 API | {Request and response example fields are consistent with the parameter tables} | ✅ |
+| §5 API | {Error responses and error codes are defined, covering 404 / 400 / 500 scenarios} | ✅ |
+| §5 API | {Pagination and sorting parameter values are fully enumerated, no "etc."} | ✅ |
+| §5 API | {Boundary scenarios such as cross-table aggregation and non-existent tables have defined handling} | ✅ |
+| §{n} Development Technology | {Language, framework, and dependency versions are locked} | ✅ |
+| §{n} Source Directory | {Directory tree matches the actual plan, including version-range notes} | ✅ |
+| Appendix | {Input validation rules, logging conventions, and test strategy are defined} | ✅ |
 
 ---
 
-## 本轮结论
+## This Round's Conclusion
 
-| 维度 | 数量 |
+| Dimension | Count |
 |------|------|
-| 🔴 高 | {n} |
-| 🟠 中 | {n} |
-| 🟡 低 | {n} |
-| **合计** | **{N}** |
+| 🔴 High | {n} |
+| 🟠 Medium | {n} |
+| 🟡 Low | {n} |
+| **Total** | **{N}** |
 
-**是否可据此独立开发**：{是 / 否}。{若否，列出阻塞项 ID。}
+**Can independent development proceed based on this**: {Yes / No}. {If no, list the blocking item IDs.}

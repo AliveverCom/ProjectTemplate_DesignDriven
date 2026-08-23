@@ -1,217 +1,219 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档。`01_DocReviewRefine` = **文档级** review 与 refine，
-       与 `03_CodeReviewRefine` 的**代码级** review 相区分。
+[Document Level] AI development process document. `01_DocReviewRefine` = **document-level**
+       review and refine, distinct from the **code-level** review in `03_CodeReviewRefine`.
 
-【用途】跨文档一致性审查报告。审查一个组件（或整个平台）名下**全部**设计文档
-       （business_desc / tech_design / uiux / version_plan / *.mmd）之间，
-       以及它们与平台级规范（technical_overview / naming_convention /
-       uiux_design_specification）之间是否存在互斥定义、字段名分歧、章节引用失效。
+[Purpose] Cross-document consistency review report. Reviews whether mutually exclusive
+       definitions, field-name disagreements, or broken section references exist among
+       **all** the design documents (business_desc / tech_design / uiux / version_plan / *.mmd)
+       under one component (or the whole platform), and between those documents and the
+       platform-level specs (technical_overview / naming_convention / uiux_design_specification).
 
-【本目录收什么】设计文档一致性审查、技术设计审查、前后端设计完备性审查、
-       UI/UX HTML 稿审查、UI/UX 通用模式提炼。
-       判定标准：审查对象是 **.md / .mmd / .html 设计稿** → 放本目录；
-                 审查对象是**源代码** → 放 `03_CodeReviewRefine/`。
+[What this directory holds] Design document consistency review, technical design review,
+       frontend/backend design completeness review, UI/UX HTML mockup review, UI/UX common
+       pattern extraction.
+       Rule of thumb: if the review target is a **.md / .mmd / .html design draft** → put it here;
+                       if the review target is **source code** → put it in `03_CodeReviewRefine/`.
 
-【落盘目录】
-  - 平台级：docs/ai_dev_history/01_DocReviewRefine/
-  - 组件级：docs/components/{component_code_name}/ai_dev_history/01_DocReviewRefine/
+[Output directory]
+  - Platform level: docs/ai_dev_history/01_DocReviewRefine/
+  - Component level: docs/components/{component_code_name}/ai_dev_history/01_DocReviewRefine/
 
-【文件命名】`{类型}_{YYYYMMDD}[-r{轮次}].md`，轮次跨日期**不重置**
-       （例：docs_review_20260310-r6.md → docs_review_20260314-r7.md）。
-  本目录各类型命名：
-    docs_review_{YYYYMMDD}-r{n}.md                — 跨文档一致性审查  ← **本文件**
-    tech_design_review_{YYYYMMDD}_r{n}.md         — 单文档深度审查
-    design_completeness_review_{YYYYMMDD}-r{n}.md — 前后端设计完备性审查
-    html_review_{YYYYMMDD}-r{n}.md                — HTML 稿对照 uiux 文档审查
-    uiux_pattern_summary_{YYYYMMDD}-v{n}.md       — 通用 UI/UX 模式提炼提案
-  平台级的数据库/架构专项审查用：db_review_report_{YYYYMMDD}-r{轮次}.md
+[File naming] `{type}_{YYYYMMDD}[-r{round}].md`, the round number does **not** reset across dates
+       (e.g. docs_review_20260310-r6.md → docs_review_20260314-r7.md).
+  Naming per type in this directory:
+    docs_review_{YYYYMMDD}-r{n}.md                — cross-document consistency review  ← **this file**
+    tech_design_review_{YYYYMMDD}_r{n}.md         — single-document deep review
+    design_completeness_review_{YYYYMMDD}-r{n}.md — frontend/backend design completeness review
+    html_review_{YYYYMMDD}-r{n}.md                — HTML mockup vs. uiux document review
+    uiux_pattern_summary_{YYYYMMDD}-v{n}.md       — common UI/UX pattern extraction proposal
+  For platform-level database/architecture-specific reviews, use: db_review_report_{YYYYMMDD}-r{round}.md
 
-【模板文件名】前导 `_` 只是模板标记。复制到 ai_dev_history/ 时按上面的规则重新命名，
-       不保留下划线。
+[Template file name] The leading `_` is only a template marker. When copying into ai_dev_history/,
+       rename it per the rules above and drop the underscore.
 
-【Review 迭代协议】见 templates/ai_dev/readme.md：
-  - 「工程师的答复 / 工程师的回复」列 AI 生成时一律留空
-  - 第 N 轮报告首章为上轮落实确认表，不是新问题
-  - 已修复问题不再复述，且不区分新老问题
-  - 问题 ID 全局唯一、永不复用
-  - 架构分歧必须给出方案 A/B 并标注推荐项
+[Review Iteration Protocol] See templates/ai_dev/readme.md:
+  - The "Engineer's Response" column is always left empty when AI generates the report
+  - Round N's report opens with the previous-round remediation confirmation table, not new issues
+  - Fixed issues are not restated, and no distinction is drawn between old and new issues
+  - Issue IDs are globally unique and never reused
+  - Architectural disagreements must present Option A/B with the recommended one marked
 -->
 
-# {ComponentName} 文档 Review 报告 R{轮次}
+# {ComponentName} Document Review Report R{Round}
 
 **Date**: {YYYY-MM-DD}
-**Scope**: {审查范围，例如：material_collector 目录下所有 md 和 mmd 文件，并与 technical_overview.md 交叉校验}
-**Based on**: {基准状态，例如：R{N-1} 报告所有 {n} 项问题修复后的最新文档状态}
+**Scope**: {Review scope, e.g.: all md and mmd files under the material_collector directory, cross-checked against technical_overview.md}
+**Based on**: {Baseline state, e.g.: the latest document state after all {n} issues from the R{N-1} report were fixed}
 
-> **说明**：
-> 1. {上一轮问题的处理结果已验证，详见下方验证表。}
-> 2. {本报告仅报告 🔴 高 和 🟡 中 级别的问题，忽略所有 🔵 低级别问题。}
-> 3. {本报告仅列出 R{N-2}/R{N-1} 未覆盖的**新发现**问题，已修复项不再重复。}
-> 4. {本轮额外完成的统一改进见「额外完成的统一改进」章节。}
+> **Notes**:
+> 1. {The resolution of previous-round issues has been verified; see the verification table below.}
+> 2. {This report only reports 🔴 High and 🟡 Medium severity issues, ignoring all 🔵 Low severity issues.}
+> 3. {This report only lists **newly found** issues not covered by R{N-2}/R{N-1}; fixed items are not repeated.}
+> 4. {Additional unified improvements completed this round are covered in the "Additional Unified Improvements" section.}
 
 ---
 
-## R{N-1} 变更验证结果
+## R{N-1} Change Verification Results
 
-| R{N-1} Item | 处理方式 | 验证结果 |
+| R{N-1} Item | Handling | Verification Result |
 |-------------|---------|---------|
-| R{N-1}-01 | {工程师决定 + AI 实际改动内容} | ✅ {已正确修改，与 {文档} §{章节} 定义一致} |
-| R{N-1}-02 | {工程师决定不予修改，理由：{理由}} | ✅ {符合工程师决定，文档未修改} |
-| R{N-1}-03 | {改动内容} | 🟡 {部分完成：{尚存差距}} |
-| R{N-1}-04 | {改动内容} | 🔴 {未落实：{原因}} |
+| R{N-1}-01 | {Engineer's decision + actual AI change} | ✅ {Correctly modified, consistent with the definition in {document} §{section}} |
+| R{N-1}-02 | {Engineer decided not to fix, reason: {reason}} | ✅ {Consistent with engineer's decision, document not modified} |
+| R{N-1}-03 | {Change made} | 🟡 {Partially complete: {remaining gap}} |
+| R{N-1}-04 | {Change made} | 🔴 {Not addressed: {reason}} |
 
-> 验证结果只有三种：✅ 已完成 / 🟡 部分完成 / 🔴 未落实。
-> 🟡 和 🔴 的条目必须在下方「问题汇总」中重新列为待处理问题。
+> Verification results only take three values: ✅ Done / 🟡 Partial / 🔴 Not Addressed.
+> 🟡 and 🔴 items must be re-listed as pending issues in the "Issue Summary" section below.
 
 ---
 
-## 额外完成的统一改进
+## Additional Unified Improvements
 
-> 本章仅在工程师要求做全模块统一改造（如"所有 API 逻辑名称统一替换为 REST 端点"）时保留，否则整章删除。
+> This section is kept only when the engineer requested a module-wide unified change (e.g. "rename all API logic names to REST endpoints" across the board); otherwise delete the whole section.
 
-工程师要求"{要求原文}"，因此在 R{N-1} 修复基础上完成以下变更：
+The engineer requested "{verbatim request}", so the following changes were made on top of the R{N-1} fixes:
 
-### A. {改进项 A 标题}
+### A. {Improvement Item A Title}
 
-| 章节 | 变更前 | 变更后 |
+| Section | Before | After |
 |------|--------|--------|
-| §{x.y} {位置} | {原内容} | {新内容} |
-| §{x.y} {位置} | {原内容} | {新内容} |
+| §{x.y} {location} | {original content} | {new content} |
+| §{x.y} {location} | {original content} | {new content} |
 
-### B. {改进项 B 标题}
+### B. {Improvement Item B Title}
 
-| 分组 | 变更 |
+| Group | Change |
 |------|------|
-| {分组} | {变更说明} |
+| {group} | {change description} |
 
-### C. {改进项 C 标题}
+### C. {Improvement Item C Title}
 
-{说明}
+{Description}
 
-### D. Change Log 更新
+### D. Change Log Update
 
-{在 {文档} 的 Change Log 中新增 v{x.y.z}，记录 R{N-1} 修复及本次统一改进。}
+{Add v{x.y.z} to the Change Log of {document}, recording the R{N-1} fixes and this round's unified improvements.}
 
 ---
 
-## 问题汇总
+## Issue Summary
 
-| # | 严重程度 | 涉及文件 | 问题简述 | 工程师的回复 |
+| # | Severity | Affected Files | Issue Summary | Engineer's Response |
 |---|---------|----------|----------|-------------|
-| R{N}-01 | 🔴 高 | {fileA.md §x.y vs fileB.mmd} | {一句话说明冲突点} | |
-| R{N}-02 | 🟡 中 | {file.md §x.y} | {一句话说明} | |
-| R{N}-03 | 🟡 中 | {fileA.md §x vs fileB.md §y} | {一句话说明} | |
+| R{N}-01 | 🔴 High | {fileA.md §x.y vs fileB.mmd} | {One-sentence description of the conflict} | |
+| R{N}-02 | 🟡 Medium | {file.md §x.y} | {One-sentence description} | |
+| R{N}-03 | 🟡 Medium | {fileA.md §x vs fileB.md §y} | {One-sentence description} | |
 
-> 「工程师的回复」列由工程师人工填写，AI 生成时一律留空。
+> The "Engineer's Response" column is filled in by the engineer manually. AI must always leave it empty, never guess, and never write a placeholder like "TBD".
 
 ---
 
-## R{N}-01 {问题标题}
+## R{N}-01 {Issue Title}
 
-**严重程度**：🔴 高
+**Severity**: 🔴 High
 
-**涉及文件**：
-- `{文件路径 A}`（{该文件中的角色，如"权威定义"/"引用展示"}）
-- `{文件路径 B}`（{角色}）
-- `{文件路径 C}` §{章节}
+**Affected Files**:
+- `{file path A}` ({the file's role, e.g. "authoritative definition"/"reference display"})
+- `{file path B}` ({role})
+- `{file path C}` §{section}
 
-**问题描述**：
+**Problem Description**:
 
-{详细描述问题。说明两处定义分别是什么、为什么互斥、工程师按哪一份实现都会出错。}
+{Detailed description of the problem. Explain what the two definitions are, why they are mutually exclusive, and why the engineer will run into errors regardless of which one is implemented.}
 
-{若涉及多文档比对，用表格罗列各文档当前的取值：}
+{If comparing across multiple documents, list each document's current value in a table:}
 
-| 文档 | {字段/定义名} |
+| Document | {Field/Definition Name} |
 |------|--------------|
-| {fileA}（权威） | `{取值}` |
-| {fileB}（引用） | `{取值}` |
-| {fileC} DDL | `{取值}` |
+| {fileA} (authoritative) | `{value}` |
+| {fileB} (referencing) | `{value}` |
+| {fileC} DDL | `{value}` |
 
-**影响**：{说明会导致什么后果 —— 编译失败 / 数据不一致 / 前后端字段对不上 / 安全风险。}
+**Impact**: {Explain the consequences — compilation failure / data inconsistency / frontend-backend field mismatch / security risk.}
 
-**需要工程师决定**：
+**Engineer Decision Needed**:
 
-**方案 A**（推荐）：{做法}。
-代价：{需要同步修改哪些文件}。
+**Option A** (recommended): {approach}.
+Cost: {which files need to be changed accordingly}.
 
-**方案 B**：{做法}。
-代价：{代价}。
+**Option B**: {approach}.
+Cost: {cost}.
 
-**工程师的回复**：
-
----
-
-## R{N}-02 {问题标题}
-
-**严重程度**：🟡 中
-
-**涉及文件**：
-- `{文件路径}` §{章节}
-
-**问题描述**：
-
-{描述}
-
-**修改建议**：
-
-{具体到"把 X 改成 Y"的可执行建议，避免"建议完善"这类空话。}
-
-**工程师的回复**：
+**Engineer's Response**:
 
 ---
 
-## R{N}-03 {问题标题}
+## R{N}-02 {Issue Title}
 
-**严重程度**：🟡 中
+**Severity**: 🟡 Medium
 
-**涉及文件**：
-- `{文件路径}` §{章节}
+**Affected Files**:
+- `{file path}` §{section}
 
-**问题描述**：
+**Problem Description**:
 
-{描述}
+{Description}
 
-**修改建议**：
+**Suggested Fix**:
 
-{建议}
+{Actionable suggestion specific to "change X to Y", avoiding empty phrases like "suggest improving".}
 
-**工程师的回复**：
-
-> 按问题数量重复上述 `## R{N}-{序号}` 小节。每个问题一节，顺序与「问题汇总」表一致。
+**Engineer's Response**:
 
 ---
 
-## 跨文档一致性最终验证
+## R{N}-03 {Issue Title}
 
-| # | 检查项 | 结果 |
+**Severity**: 🟡 Medium
+
+**Affected Files**:
+- `{file path}` §{section}
+
+**Problem Description**:
+
+{Description}
+
+**Suggested Fix**:
+
+{Suggestion}
+
+**Engineer's Response**:
+
+> Repeat the `## R{N}-{number}` subsection above for as many issues as there are. One section per issue, in the same order as the "Issue Summary" table.
+
+---
+
+## Cross-Document Consistency Final Verification
+
+| # | Check Item | Result |
 |---|--------|------|
-| 1 | {端点总数一致性（tech_design §5 = uiux P{nn} §x.y = api.mmd = {n} 个端点）} | ✅ |
-| 2 | {端点路径一致性（tech_design ↔ uiux ↔ api.mmd 各端点路径完全一致）} | ✅ |
-| 3 | {Page Behaviors 中的 API 引用全部使用 REST 端点路径，无残留逻辑名称} | ✅ |
-| 4 | {uiux §2.3 Dependent APIs 每个 API 均有 tech_design §5 对应定义} | ✅ |
-| 5 | {class_diagram.mmd 字段名与 tech_design §2 类定义一致} | ✅ |
-| 6 | {db_schema.mmd 列名与 tech_design §4 表定义一致} | ✅ |
-| 7 | {business_desc 业务对象属性与 tech_design 类成员可一一映射} | ✅ |
-| 8 | {枚举定义唯一权威来源，各处引用指向同一位置} | ✅ |
-| 9 | {软删除 / is_active 等平台级字段约定全模块统一} | ✅ |
-| 10 | {命名规范符合 naming_convention.md §2/§3/§4} | ✅ |
-| 11 | {文档内 §章节交叉引用全部有效，无指向已删除章节} | ✅ |
-| 12 | {无残留 *(待补充)* / TODO 标记（Change Log 描述除外）} | ✅ |
-| 13 | {common_lib 共享类型的字段名与本模块引用一致} | ✅ |
+| 1 | {Total endpoint count consistency (tech_design §5 = uiux P{nn} §x.y = api.mmd = {n} endpoints)} | ✅ |
+| 2 | {Endpoint path consistency (tech_design ↔ uiux ↔ api.mmd all endpoint paths fully consistent)} | ✅ |
+| 3 | {API references in Page Behaviors all use REST endpoint paths, no leftover logic names} | ✅ |
+| 4 | {Every API in uiux §2.3 Dependent APIs has a corresponding definition in tech_design §5} | ✅ |
+| 5 | {class_diagram.mmd field names consistent with tech_design §2 class definitions} | ✅ |
+| 6 | {db_schema.mmd column names consistent with tech_design §4 table definitions} | ✅ |
+| 7 | {business_desc business object attributes map one-to-one to tech_design class members} | ✅ |
+| 8 | {Enum definitions have a single authoritative source, all references point to the same place} | ✅ |
+| 9 | {Platform-level field conventions such as soft delete / is_active are consistent across the whole module} | ✅ |
+| 10 | {Naming conforms to naming_convention.md §2/§3/§4} | ✅ |
+| 11 | {All §-section cross-references within the document are valid, none point to deleted sections} | ✅ |
+| 12 | {No leftover *(to be filled in)* / TODO markers (except in Change Log descriptions)} | ✅ |
+| 13 | {common_lib shared type field names consistent with references in this module} | ✅ |
 
-> 结果取值：✅ 通过 / ❌ 不通过（不通过项必须在「问题汇总」中有对应问题 ID）。
+> Result values: ✅ Pass / ❌ Fail (a failing item must have a corresponding issue ID in "Issue Summary").
 
 ---
 
-## 本轮结论
+## This Round's Conclusion
 
-| 维度 | 结论 |
+| Dimension | Conclusion |
 |------|------|
-| 新发现 🔴 问题 | {n} 项 |
-| 新发现 🟡 问题 | {n} 项 |
-| 上轮遗留未落实 | {n} 项 |
-| 是否可进入开发 | {是 / 否，说明阻塞项} |
+| Newly found 🔴 issues | {n} |
+| Newly found 🟡 issues | {n} |
+| Unresolved from previous round | {n} |
+| Ready to enter development | {Yes / No, explain blocking items} |
 
-{若本轮未发现严重新问题，写明："经全面核查，**本轮未发现严重的新问题**。"并列出关键核查点的结论。}
+{If no serious new issues were found this round, state: "After a comprehensive review, **no serious new issues were found this round**." and list the conclusions of the key check points.}

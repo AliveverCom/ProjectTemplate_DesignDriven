@@ -1,259 +1,262 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档 —— `02_DevPlanAndReport`
+[Document Tier] AI Development Process Docs —— `02_DevPlanAndReport`
 
-【本目录收什么】开发计划、开发报告、保存现场、AI handover、改进计划、
-       命名规范化与目录整理计划。即"计划做什么"和"实际做成什么"这两类文档。
+[What this directory holds] Dev plans, dev reports, saved-state snapshots, AI handovers, improvement plans,
+       naming normalization and directory reorganization plans. In short: "what is planned" and "what was actually built."
 
-【落盘目录】
-  - 平台级：docs/ai_dev_history/02_DevPlanAndReport/
-  - 组件级：docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
+[Landing Directory]
+  - Platform level: docs/ai_dev_history/02_DevPlanAndReport/
+  - Component level: docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
 
-【文件命名 —— 本目录的硬规则】所有文档一律以**所在版本号开头**：
-       `v{版本号}_{DocType}[_{YYYYMMDD}].md`
+[File Naming —— hard rule for this directory] All documents must start with **the version number they belong to**:
+       `v{version}_{DocType}[_{YYYYMMDD}].md`
   - v0.3_DevPlan.md / v0.3_BE_DevPlan.md / v0.3_FE_DevPlan.md / v0.3_DevReport.md
   - v0.3_Snapshot.md / v0.3_Handover.md / v0.3_ImprovePlan.md
   - v0.3_RenamePlan.md / v0.3_ReorganizePlan.md
-  - 同一版本内同类型有多份时追加日期后缀：v0.3_Handover_20260320.md
-    并行拆分给多个 AI 时，追加接手方标识：v0.3_Handover_BE.md / v0.3_Handover_FE.md
-  - 版本号取自 {component}_version_plan.md
+  - When multiple documents of the same type exist within one version, append a date suffix: v0.3_Handover_20260320.md
+    when splitting work across multiple AIs in parallel, append a recipient identifier: v0.3_Handover_BE.md / v0.3_Handover_FE.md
+  - The version number is taken from {component}_version_plan.md
 
-【本文件的定位】**AI 之间的交接文档**。一个 AI 把工作主动移交给另一个 AI
-       （换模型、换角色、把大任务拆成并行子任务）时写的任务说明书。
+[Positioning of this file] The **handover document between AIs**. Written when one AI actively hands work off to
+       another AI (model change, role change, splitting a large task into parallel sub-tasks) — a task brief.
 
-【与同目录其它文档的区别 —— 尤其 Handover vs Snapshot】
-  | 维度 | v{x}_Handover.md（本文件） | v{x}_Snapshot.md |
+[Distinction from other documents in this directory —— especially Handover vs. Snapshot]
+  | Dimension | v{x}_Handover.md (this file) | v{x}_Snapshot.md |
   |------|--------------------------|------------------|
-  | 触发 | **主动移交**：换模型、拆并行任务、换角色 | **被动中断**：上下文耗尽、崩溃、被叫停 |
-  | 视角 | 你要接着干什么（第二人称任务说明书） | 我干到哪了（第一人称现场记录） |
-  | 接手方 | 明确是**另一个** AI | 可能是同一个"我"的下一个 session |
-  | 重点 | 范围边界、验收标准、红线约束、隐性上下文 | 环境状态、改到一半的文件、踩过的坑 |
-  | 完备性 | 力求清晰：只给接手方需要的信息，避免噪音 | 力求无损：宁可冗余也不能丢状态 |
-  移交时若现场同样需要保留，两份都写：Snapshot 记现场，Handover 派任务，
-  并在本文 §2 中把 Snapshot 列为必读。
+  | Trigger | **Active handover**: model change, splitting parallel work, role change | **Passive interruption**: context exhausted, crash, told to stop |
+  | Voice | Second person — "here is what you take over" | First person — "here is how far I got" |
+  | Recipient | Explicitly another AI | Possibly the next session of the same "me" |
+  | Focus | Scope boundary, acceptance criteria, hard constraints, implicit knowledge | Environment state, half-edited file positions, traps already hit |
+  | Completeness bias | Clarity first — only what is needed | Lossless first — redundancy is fine |
+  If the interrupted work also needs to preserve the current state, **write both**: the Snapshot records the site,
+  the Handover assigns the task, and this document's §2 should list the Snapshot as required reading.
 
-  - v{x}_DevPlan.md —— 面向**整个版本**的完整计划；本文只切出移交给某一方的那一片。
-  - v{x}_DevReport.md —— 版本收尾的交付验收；本文是过程中的分工文书。
+  - v{x}_DevPlan.md —— the complete plan for **the whole version**; this file only carves out the slice handed to one party.
+  - v{x}_DevReport.md —— delivery acceptance at version close-out; this file is a division-of-labor document mid-process.
 
-【写作要求】
-  - **边界先于内容**：§1 必须同时写清"属于本次移交"和"明确不属于"，
-    这是防止接手方越界最有效的一栏。
-  - §5 上下文要点是本模板的核心价值：写接手方**读代码和文档也看不出来**的东西
-    （为什么这么设计、哪些方案已被否决、工程师口头定过什么）。
-  - 每个待办任务必须带**可判定的验收标准**，不能只写"实现 XX 功能"。
+[Writing Requirements]
+  - **Boundary before content**: §1 must state both "what is part of this handover" and "what is explicitly not,"
+    which is the single most effective column for keeping the recipient from overstepping.
+  - §5 Context Notes is the core value of this template — write what the recipient **cannot tell from reading the
+    code and docs alone** (why it was designed this way, which options were already rejected, what the engineer settled verbally).
+  - Every outstanding task must carry a **decidable acceptance criterion** — not just "implement feature XX."
 
-【人工填写列】§7 交接确认表由移交方与接手方双方填写，AI 生成时留空。
+[Human-filled columns] §7's handover confirmation table is filled in by both the handing-over party and the
+       taking-over party; left empty when AI-generated.
 
-【模板文件名】前导 `_` 只是模板标记，复制时按上面的命名规则重命名。
+[Template File Name] The leading `_` is only a template marker; rename per the convention above when copying.
 -->
 
-# {ComponentDisplayName} v{版本号} 开发交接说明
+# {ComponentDisplayName} v{version} Dev Handover
 
-**Document**: v{版本号}_Handover[_{YYYYMMDD}][_{接手方标识}].md
-**版本**: v{版本号}
+**Document**: v{version}_Handover[_{YYYYMMDD}][_{recipient identifier}].md
+**Version**: v{version}
 **Component**: {component_code_name}
-**移交方**: {AI 模型名与角色，例：Claude Opus 5 / 后端主开发}
-**接手方**: {AI 模型名与角色，例：Claude Sonnet 5 / 前端对接}
-**移交时间**: {YYYY-MM-DD HH:MM}
-**移交范围**: {一句话，例：v0.2 前端 API 对接层（services/ + hooks/ + 页面改造）}
-**对应开发计划**: `v{版本号}_DevPlan.md`{、`v{版本号}_FE_DevPlan.md`}
-**配套现场文档**: {`v{版本号}_Snapshot_{YYYYMMDD}.md` / 无}
+**Handing Over**: {AI model name and role, e.g.: Claude Opus 5 / Backend Lead}
+**Taking Over**: {AI model name and role, e.g.: Claude Sonnet 5 / Frontend Integration}
+**Handover Time**: {YYYY-MM-DD HH:MM}
+**Handover Scope**: {One sentence, e.g.: v0.2 frontend API integration layer (services/ + hooks/ + page changes)}
+**Corresponding Dev Plan**: `v{version}_DevPlan.md`{, `v{version}_FE_DevPlan.md`}
+**Accompanying Snapshot Document**: {`v{version}_Snapshot_{YYYYMMDD}.md` / None}
 
 ---
 
-## 1 移交范围与边界
+## 1 Handover Scope and Boundary
 
-> 本节是接手方的行动边界。**「明确不属于」列同等重要**——不写清楚，
-> 接手方会顺手改到不该改的地方，造成与其它并行任务的冲突。
+> This section is the recipient's action boundary. **The "explicitly NOT part of this handover" column is equally
+> important** — without it, the recipient will end up touching things they shouldn't, causing conflicts with other parallel work.
 
-| # | 移交项 | 属于本次移交 | 明确**不**属于本次移交 |
+| # | Handover Item | Part of This Handover | Explicitly **NOT** Part of This Handover |
 |---|--------|-------------|---------------------|
-| 1 | {模块/目录} | {具体做什么} | {同目录下不许动的部分及原因} |
-| 2 | {模块/目录} | {具体做什么} | {不属于的部分} |
-| 3 | {模块/目录} | {具体做什么} | {不属于的部分} |
+| 1 | {Module/Directory} | {Specifically what to do} | {The part of the same directory not to be touched, and why} |
+| 2 | {Module/Directory} | {Specifically what to do} | {What's not included} |
+| 3 | {Module/Directory} | {Specifically what to do} | {What's not included} |
 
-**范围一句话总结**：{接手方只做 {X}，不做 {Y}。{Y} 由 {谁} 负责/已完成/属于下个版本。}
+**Scope Summary in One Sentence**: {The recipient only does {X}, not {Y}. {Y} is owned by {whom} / already done / belongs to the next version.}
 
-### 1.1 与其它并行任务的分界
+### 1.1 Boundary With Other Parallel Tasks
 
-> 若本次移交是把大任务拆成多路并行，必须写清各路的分界，避免改同一批文件。
+> If this handover is one branch of splitting a large task into multiple parallel tracks, the boundary of each
+> track must be spelled out to avoid different tracks editing the same files.
 
-| 接手方 | 负责范围 | 独占文件/目录 | 共享文件（需协调） |
+| Recipient | Scope Owned | Exclusive Files/Directories | Shared Files (need coordination) |
 |--------|---------|--------------|------------------|
-| {接手方 A} | {范围} | `{路径}` | `{路径}`（{协调方式}） |
-| {接手方 B} | {范围} | `{路径}` | 同上 |
+| {Recipient A} | {Scope} | `{path}` | `{path}` ({coordination method}) |
+| {Recipient B} | {Scope} | `{path}` | Same as above |
 
 ---
 
-## 2 接手方必读文档
+## 2 Required Reading for the Recipient
 
-> 按优先级与顺序读。🔴 必读的不读完不要开始动手。
+> Read in priority order. Do not start work before finishing everything marked 🔴 Required.
 
-| # | 文件路径 | 必读章节 | 优先级 | 为什么要读 |
+| # | File Path | Required Section | Priority | Why It Matters |
 |---|---------|---------|--------|-----------|
-| 1 | `{component}_version_plan.md` | §{n}（v{版本号} 功能范围 + **不包含的内容**） | 🔴 必读 | {确定版本边界，防止越界实现下个版本} |
-| 2 | `v{版本号}_DevPlan.md` | §{n} Phase {n}–{n} | 🔴 必读 | {本次移交任务的完整上下文} |
-| 3 | `{component}_tech_design.md` | §{n}（{类定义}）、§{n}（{API 定义}） | 🔴 必读 | {实现依据} |
-| 4 | `{component}_uiux.md` | §{n}（{页面}） | 🔴 必读 | {前端实现依据} |
-| 5 | `technical_overview.md` | §{n}（{全局规范}） | 🟠 重要 | {平台级规范，不得违反} |
-| 6 | `uiux_design_specification.md` | §{n} | 🟠 重要 | {UI 模式与控件规范} |
-| 7 | `naming_convention.md` | §{n} | 🟡 参考 | {命名规范} |
-| 8 | `v{版本号}_Snapshot_{YYYYMMDD}.md` | 全文 | {🔴/🟡} | {若有配套现场文档} |
+| 1 | `{component}_version_plan.md` | §{n} (v{version} feature scope + **what's not included**) | 🔴 Required | {Pins down version boundaries, prevents overstepping into the next version} |
+| 2 | `v{version}_DevPlan.md` | §{n} Phase {n}–{n} | 🔴 Required | {Full context for the handed-over task} |
+| 3 | `{component}_tech_design.md` | §{n} ({class definitions}), §{n} ({API definitions}) | 🔴 Required | {Implementation basis} |
+| 4 | `{component}_uiux.md` | §{n} ({page}) | 🔴 Required | {Frontend implementation basis} |
+| 5 | `technical_overview.md` | §{n} ({global conventions}) | 🟠 Important | {Platform-level conventions, must not be violated} |
+| 6 | `uiux_design_specification.md` | §{n} | 🟠 Important | {UI patterns and control conventions} |
+| 7 | `naming_convention.md` | §{n} | 🟡 Reference | {Naming conventions} |
+| 8 | `v{version}_Snapshot_{YYYYMMDD}.md` | Entire document | {🔴/🟡} | {If there is an accompanying Snapshot document} |
 
-### 2.1 参考代码（照着这个模式写）
+### 2.1 Reference Code (model your code on these)
 
-| # | 文件路径 | 参考什么 |
+| # | File Path | What to Reference |
 |---|---------|---------|
-| 1 | `{已有组件的同类文件路径}` | {例：API 客户端封装模式、错误处理方式} |
-| 2 | `{路径}` | {参考点} |
+| 1 | `{path to a comparable existing component file}` | {e.g.: API client wrapper pattern, error handling approach} |
+| 2 | `{path}` | {Reference point} |
 
 ---
 
-## 3 已完成部分
+## 3 Already Completed
 
-> 接手方可以直接依赖的既有成果。**不要重写这些**。
+> Existing results the recipient can rely on directly. **Do not rewrite these.**
 
-| # | 已完成内容 | 产出文件 | 验证状态 | 接手方如何使用 |
+| # | Completed Item | Output File | Verification Status | How the Recipient Should Use It |
 |---|-----------|---------|---------|---------------|
-| 1 | {内容} | `{完整路径}` | {🟢 已验证：{方式}} | {直接调用 `{函数/接口}`} |
-| 2 | {内容} | `{完整路径}` | {🟢 已验证} | {使用方式} |
-| 3 | {内容} | `{完整路径}` | {🟡 已写完未验证} | {使用前先自行验证 {什么}} |
+| 1 | {Content} | `{full path}` | {🟢 Verified: {method}} | {Call `{function/interface}` directly} |
+| 2 | {Content} | `{full path}` | {🟢 Verified} | {Usage} |
+| 3 | {Content} | `{full path}` | {🟡 Written but not verified} | {Verify {what} yourself before use} |
 
-### 3.1 可直接使用的接口 / 契约
+### 3.1 Interfaces / Contracts Ready to Use Directly
 
-| # | 名称 | 位置 | 签名 / 形态 | 说明 |
+| # | Name | Location | Signature / Shape | Notes |
 |---|------|------|------------|------|
-| 1 | `{接口名}` | `{文件}` | `{签名}` | {语义、错误情况} |
-| 2 | `{统一响应结构}` | `{文件}` | `{结构}` | {说明} |
+| 1 | `{interface name}` | `{file}` | `{signature}` | {Semantics, error cases} |
+| 2 | `{unified response structure}` | `{file}` | `{structure}` | {Notes} |
 
-### 3.2 联调契约（前后端约定的样例数据关联键）
+### 3.2 Integration Contract (frontend-backend agreed sample-data cross-reference keys)
 
-| 对象 | 关键字段 | 样例值 | 来源 |
+| Object | Key Field | Sample Value | Source |
 |------|---------|--------|------|
-| {对象} | `{字段}` | `{值}` | `{sql / mock 文件}` |
+| {Object} | `{field}` | `{value}` | `{sql / mock file}` |
 
 ---
 
-## 4 待办任务
+## 4 Outstanding Tasks
 
-> 每项都必须有**可判定**的验收标准。避免"实现 XX 功能"这类无法验收的描述。
+> Every item must have a **decidable** acceptance criterion. Avoid non-verifiable descriptions like "implement feature XX."
 
-| # | 任务 | 验收标准 | 依赖 | 预估 |
+| # | Task | Acceptance Criteria | Dependency | Estimate |
 |---|------|---------|------|------|
-| 1 | {任务描述} | {例：`GET /api/v1/{resource}` 在页面 P01 加载时被调用，列表渲染出 {n} 行，Network 面板无 4xx/5xx} | 无 | {小/中/大} |
-| 2 | {任务描述} | {可判定的验收标准} | 任务 1 | {预估} |
-| 3 | {任务描述} | {可判定的验收标准} | 任务 1 | {预估} |
-| 4 | {任务描述} | {可判定的验收标准} | 任务 2、3 | {预估} |
+| 1 | {Task description} | {e.g.: `GET /api/v1/{resource}` is called when page P01 loads, the list renders {n} rows, and the Network panel shows no 4xx/5xx} | None | {Small/Medium/Large} |
+| 2 | {Task description} | {Decidable acceptance criteria} | Task 1 | {Estimate} |
+| 3 | {Task description} | {Decidable acceptance criteria} | Task 1 | {Estimate} |
+| 4 | {Task description} | {Decidable acceptance criteria} | Tasks 2, 3 | {Estimate} |
 
-**建议执行顺序**：{任务 1 → 任务 2/3（可并行）→ 任务 4}
+**Suggested Execution Order**: {Task 1 → Task 2/3 (can be parallel) → Task 4}
 
-### 4.1 整体完成的判定
+### 4.1 Overall Completion Criteria
 
-| # | 判定项 | 验证方式 |
+| # | Criterion | Verification Method |
 |---|--------|---------|
-| 1 | {全部页面可正常加载} | {逐页打开，无 console error} |
-| 2 | {全部端点已对接} | {对照 tech_design §5 端点清单逐项确认} |
-| 3 | {构建通过} | `{build 命令}` |
-| 4 | {产出 DevReport} | {完成后写 `v{版本号}_DevReport.md`} |
+| 1 | {All pages load correctly} | {Open each page in turn, no console errors} |
+| 2 | {All endpoints integrated} | {Check off each item against the endpoint list in tech_design §5} |
+| 3 | {Build passes} | `{build command}` |
+| 4 | {DevReport produced} | {Write `v{version}_DevReport.md` after completion} |
 
 ---
 
-## 5 上下文要点
+## 5 Context Notes
 
-> **本节是本文档的核心价值**。写接手方读代码和文档也看不出来的隐性知识。
-> 缺了这节，接手方会重新走一遍已经走过的弯路，或推翻已经定好的方案。
+> **This section is the core value of this document.** Write the implicit knowledge the recipient cannot get
+> from reading the code and docs alone. Without this section, the recipient will re-walk paths already walked,
+> or overturn decisions that have already been settled.
 
-### 5.1 为什么这么设计
+### 5.1 Why It Was Designed This Way
 
-| # | 设计点 | 为什么这么做 |
+| # | Design Point | Why It Was Done This Way |
 |---|--------|-------------|
-| 1 | {设计点} | {背景与理由} |
-| 2 | {设计点} | {背景与理由} |
+| 1 | {Design point} | {Background and rationale} |
+| 2 | {Design point} | {Background and rationale} |
 
-### 5.2 已被否决的方案（不要再提议）
+### 5.2 Rejected Alternatives (do not propose them again)
 
-| # | 曾考虑的方案 | 否决原因 | 否决人 |
+| # | Alternative Considered | Reason for Rejection | Rejected By |
 |---|-------------|---------|--------|
-| 1 | {方案} | {原因} | {工程师 / 移交方 AI} |
-| 2 | {方案} | {原因} | {否决人} |
+| 1 | {Alternative} | {Reason} | {Engineer / Handing-over AI} |
+| 2 | {Alternative} | {Reason} | {Who rejected it} |
 
-### 5.3 工程师口头定过、但文档里没有的约定
+### 5.3 Conventions the Engineer Settled Verbally, Not Yet in Any Document
 
-> 这类约定最容易丢失。若某条重要且长期有效，应同时提出回写到正式设计文档。
+> These are the conventions most easily lost. If one is important and long-lived, it should also be flagged for writing back into a formal design document.
 
-| # | 约定 | 出处 | 是否需回写文档 |
+| # | Convention | Source | Needs to Be Written Back to a Document |
 |---|------|------|---------------|
-| 1 | {约定内容} | {`prompt_history.md` #{n} / 某次 review 的工程师答复} | {是：应写入 `{文档}` §{n} / 否} |
-| 2 | {约定内容} | {出处} | {是/否} |
+| 1 | {Convention content} | {`prompt_history.md` #{n} / engineer's reply during some review} | {Yes: should be written into `{document}` §{n} / No} |
+| 2 | {Convention content} | {Source} | {Yes/No} |
 
-### 5.4 容易踩的坑
+### 5.4 Easy Traps
 
-| # | 坑 | 表现 | 正确做法 |
+| # | Trap | Symptom | Correct Approach |
 |---|----|------|---------|
-| 1 | {坑} | {会看到什么现象} | {正确做法} |
-| 2 | {坑} | {现象} | {正确做法} |
+| 1 | {Trap} | {What you'll see} | {Correct approach} |
+| 2 | {Trap} | {Symptom} | {Correct approach} |
 
 ---
 
-## 6 约束与红线
+## 6 Constraints and Hard Limits
 
-> 违反这些约束的改动会被 review 直接打回。
+> Changes that violate these constraints will be rejected outright in review.
 
-### 6.1 不许改什么
+### 6.1 What Not to Change
 
-| # | 不许改 | 原因 | 若确需改动怎么办 |
+| # | Do Not Change | Reason | If a Change Is Truly Needed |
 |---|--------|------|----------------|
-| 1 | `{文件/目录}` | {由 {谁} 负责 / 是权威定义所在} | {先与移交方或工程师确认} |
-| 2 | {某个接口签名} | {已被 {n} 处调用} | {提 ImprovePlan 走决策流程} |
-| 3 | {数据库表结构} | {迁移脚本已执行} | {新增迁移，不改历史迁移} |
+| 1 | `{file/directory}` | {Owned by {whom} / is the authoritative definition} | {Confirm with the handing-over party or the engineer first} |
+| 2 | {An interface signature} | {Already called in {n} places} | {File an ImprovePlan and go through the decision process} |
+| 3 | {Database table structure} | {Migration scripts already applied} | {Add a new migration, do not edit historical migrations} |
 
-### 6.2 不许扩什么范围
+### 6.2 What Not to Expand Into
 
-| # | 不许做 | 原因 |
+| # | Do Not Do | Reason |
 |---|--------|------|
-| 1 | {实现 v{下一版本} 的功能} | {超出本版本边界，见 version_plan §{n}「不包含的内容」} |
-| 2 | {顺手重构 {模块}} | {与并行任务冲突 / 不在本次范围} |
-| 3 | {引入新依赖} | {依赖版本锁定在 technical_overview §5，新增须先修订该表} |
+| 1 | {Implement v{next version}'s features} | {Beyond this version's boundary, see version_plan §{n} "Not Included"} |
+| 2 | {Take the opportunity to refactor {module}} | {Conflicts with parallel tasks / not in this scope} |
+| 3 | {Introduce a new dependency} | {Dependency versions are locked in technical_overview §5; additions require revising that table first} |
 
-### 6.3 必须遵守的规范
+### 6.3 Conventions That Must Be Followed
 
-| # | 规范 | 出处 |
+| # | Convention | Source |
 |---|------|------|
-| 1 | {统一响应格式} | `technical_overview.md` §4.1 |
-| 2 | {命名规范} | `naming_convention.md` §{n} |
-| 3 | {UI 设计模式} | `uiux_design_specification.md` §{n} |
-| 4 | {日志与脱敏} | `technical_overview.md` §4.5 |
+| 1 | {Unified response format} | `technical_overview.md` §4.1 |
+| 2 | {Naming convention} | `naming_convention.md` §{n} |
+| 3 | {UI design pattern} | `uiux_design_specification.md` §{n} |
+| 4 | {Logging and data masking} | `technical_overview.md` §4.5 |
 
 ---
 
-## 7 交接确认
+## 7 Handover Confirmation
 
-> 由移交方与接手方双方逐条填写。AI 生成本文档时一律留空。
-> 接手方在开始动手前应完成本表，未确认的条目应先提问而非猜测。
+> Filled in item by item by both the handing-over party and the taking-over party. Always left empty when AI-generated.
+> The recipient should complete this table before starting work; unconfirmed items should be raised as questions, not guessed at.
 
-| # | 确认项 | 移交方 | 接手方 |
+| # | Confirmation Item | Handing Over | Taking Over |
 |---|--------|--------|--------|
-| 1 | 移交范围与边界（§1）已理解，无歧义 | | |
-| 2 | 必读文档（§2）已全部读完 | | |
-| 3 | 已完成部分（§3）已验证可用，不重写 | | |
-| 4 | 待办任务（§4）的验收标准可判定 | | |
-| 5 | 上下文要点（§5）已知悉，不推翻已否决方案 | | |
-| 6 | 约束与红线（§6）已知悉 | | |
-| 7 | 环境可正常启动，能复现当前状态 | | |
-| 8 | 遗留疑问已提出并得到答复 | | |
+| 1 | Handover scope and boundary (§1) understood, no ambiguity | | |
+| 2 | Required reading (§2) fully read | | |
+| 3 | Completed work (§3) verified usable, will not be rewritten | | |
+| 4 | Acceptance criteria for outstanding tasks (§4) are decidable | | |
+| 5 | Context notes (§5) acknowledged, will not overturn rejected alternatives | | |
+| 6 | Constraints and hard limits (§6) acknowledged | | |
+| 7 | Environment starts correctly, current state reproducible | | |
+| 8 | Outstanding questions raised and answered | | |
 
-### 7.1 接手方的疑问
+### 7.1 Recipient's Questions
 
-> 接手方填写；移交方或工程师逐条答复后再开工。
+> Filled in by the recipient; answered item by item by the handing-over party or the engineer before work begins.
 
-| # | 疑问 | 答复 |
+| # | Question | Answer |
 |---|------|------|
 | 1 | | |
 | 2 | | |
 
 ---
 
-## 8 备注
+## 8 Notes
 
-{任何不属于以上分类、但接手方应该知道的信息。没有则删除本节。}
+{Any information that doesn't fit the categories above but that the recipient should know. Delete this section if there is none.}

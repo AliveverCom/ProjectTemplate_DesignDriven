@@ -1,271 +1,271 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档 —— `02_DevPlanAndReport`
+[Document Tier] AI Development Process Docs —— `02_DevPlanAndReport`
 
-【本目录收什么】开发计划、开发报告、保存现场、AI handover、改进计划、
-       命名规范化与目录整理计划。即"计划做什么"和"实际做成什么"这两类文档。
+[What this directory holds] Dev plans, dev reports, saved-state snapshots, AI handovers, improvement plans,
+       naming normalization and directory reorganization plans. In short: "what is planned" and "what was actually built."
 
-【落盘目录】
-  - 平台级：docs/ai_dev_history/02_DevPlanAndReport/
-  - 组件级：docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
+[Landing Directory]
+  - Platform level: docs/ai_dev_history/02_DevPlanAndReport/
+  - Component level: docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
 
-【文件命名 —— 本目录的硬规则】所有文档一律以**所在版本号开头**：
-       `v{版本号}_{DocType}[_{YYYYMMDD}].md`
+[File Naming —— hard rule for this directory] All documents must start with **the version number they belong to**:
+       `v{version}_{DocType}[_{YYYYMMDD}].md`
   - v0.3_DevPlan.md / v0.3_BE_DevPlan.md / v0.3_FE_DevPlan.md / v0.3_DevReport.md
   - v0.3_Snapshot.md / v0.3_Handover.md / v0.3_ImprovePlan.md
   - v0.3_RenamePlan.md / v0.3_ReorganizePlan.md
-  - 同一版本内同类型有多份时追加日期后缀：v0.3_Snapshot_20260320.md
-    （保存现场往往一个版本内会发生多次，务必带日期后缀，必要时再带时分：
-     v0.3_Snapshot_20260320_1430.md）
-  - 版本号取自 {component}_version_plan.md
+  - When multiple documents of the same type exist within one version, append a date suffix: v0.3_Snapshot_20260320.md
+    (saved-state snapshots often happen more than once within a version, so a date suffix is required, and a time
+     suffix when needed: v0.3_Snapshot_20260320_1430.md)
+  - The version number is taken from {component}_version_plan.md
 
-【本文件的定位】**保存现场**文档。AI 开发 session 被中断（上下文耗尽 / 用户暂停 /
-       环境故障 / 主动分段）时，把"当前干到哪了"完整落盘，使任何一个新 session
-       能无损接续，不必重新摸索。
+[Positioning of this file] A **saved-state snapshot** document. When an AI dev session is interrupted (context
+       exhausted / user paused / environment failure / deliberate segmentation), it records "exactly how far things
+       got" in full, so that any new session can resume without loss and without having to re-explore.
 
-【与同目录其它文档的区别 —— 尤其 Snapshot vs Handover】
-  | 维度 | v{x}_Snapshot.md（本文件） | v{x}_Handover.md |
+[Distinction from other documents in this directory —— especially Snapshot vs. Handover]
+  | Dimension | v{x}_Snapshot.md (this file) | v{x}_Handover.md |
   |------|---------------------------|------------------|
-  | 触发 | **被动中断**：上下文耗尽、崩溃、被叫停 | **主动移交**：换模型、拆并行任务、换角色 |
-  | 视角 | 我干到哪了（第一人称现场记录） | 你要接着干什么（第二人称任务说明书） |
-  | 接手方 | 可能是同一个"我"（下一个 session） | 明确是**另一个** AI |
-  | 重点 | 环境状态、改到一半的文件、踩过的坑 | 范围边界、验收标准、红线约束 |
-  | 完备性 | 力求无损：宁可冗余也不能丢状态 | 力求清晰：只给接手方需要的信息 |
-  一次中断如果同时要交给别的 AI，两份都写：Snapshot 记现场，Handover 派任务。
+  | Trigger | **Passive interruption**: context exhausted, crash, told to stop | **Active handover**: model change, splitting parallel work, role change |
+  | Voice | First person — "here is how far I got" | Second person — "here is what you take over" |
+  | Recipient | Possibly the next session of the same "me" | Explicitly another AI |
+  | Focus | Environment state, half-edited file positions, traps already hit | Scope boundary, acceptance criteria, hard constraints |
+  | Completeness bias | Lossless first — redundancy is fine | Clarity first — only what is needed |
+  If one interruption also hands work to another AI, **write both**: the Snapshot records the site, the Handover assigns the task.
 
-  - v{x}_DevPlan.md   —— 开发前的完整计划；本文只记录**执行到计划的哪一步**。
-  - v{x}_DevReport.md —— 版本收尾时的交付验收；本文是**过程中**的临时状态，
-    版本完成后可归档，不作为交付依据。
+  - v{x}_DevPlan.md   —— the full plan written before development; this file only records **which step of the plan execution has reached**.
+  - v{x}_DevReport.md —— the delivery acceptance written at version close-out; this file is a temporary state **mid-process**,
+    which can be archived once the version is complete and is not used as a delivery basis.
 
-【写作要求】
-  - **只写事实，不写推测**。没验证过的一律写进 §7 已知问题，不要写成已完成。
-  - 所有文件路径写全（从仓库根开始），所有命令写成可直接复制执行的形式。
-  - §3「进行中的工作」必须精确到文件与位置，这是最容易丢失、也最值钱的信息。
+[Writing Requirements]
+  - **Write only facts, not speculation**. Anything unverified belongs in §7 Known Problems, not written up as already done.
+  - Write every file path in full (from the repo root), and write every command in a form that can be copied and run directly.
+  - §3 "Work In Progress" must be precise to file and location — this is the information most easily lost, and the most valuable.
 
-【人工填写列】「工程师是否确认」列 AI 一律留空。
+[Human-filled columns] The "Confirmed by Engineer" column is always left empty by the AI.
 
-【模板文件名】前导 `_` 只是模板标记，复制时按上面的命名规则重命名。
+[Template File Name] The leading `_` is only a template marker; rename per the convention above when copying.
 -->
 
-# {ComponentDisplayName} v{版本号} 保存现场
+# {ComponentDisplayName} v{version} Snapshot
 
-**Document**: v{版本号}_Snapshot[_{YYYYMMDD}].md
-**版本**: v{版本号}
+**Document**: v{version}_Snapshot[_{YYYYMMDD}].md
+**Version**: v{version}
 **Component**: {component_code_name}
-**保存时间**: {YYYY-MM-DD HH:MM}
-**触发原因**: {上下文耗尽 / 用户暂停 / 环境故障 / 主动分段 / 其它：{说明}}
-**对应开发计划**: `v{版本号}_DevPlan.md`{、`v{版本号}_BE_DevPlan.md`}
-**执行方**: {AI 模型名与角色}
-**代码分支 / Commit**: `{branch}` @ `{commit hash}`{（未提交则写"工作区未提交，见 §5.4"）}
+**Saved At**: {YYYY-MM-DD HH:MM}
+**Trigger Reason**: {Context exhausted / User paused / Environment failure / Deliberate segmentation / Other: {explanation}}
+**Corresponding Dev Plan**: `v{version}_DevPlan.md`{, `v{version}_BE_DevPlan.md`}
+**Executed By**: {AI model name and role}
+**Code Branch / Commit**: `{branch}` @ `{commit hash}`{(if uncommitted, write "working tree uncommitted, see §5.4")}
 
 ---
 
-## 1 当前任务与目标
+## 1 Current Task and Objective
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| **本次 session 目标** | {一句话：本次要完成 DevPlan 的哪一段} |
-| **正在执行** | `v{版本号}_DevPlan.md` §{n} **Phase {n}：{Phase 名}** 的第 {n} 步 |
-| **已完成到** | Phase {n} 第 {n} 步（{步骤名}）|
-| **中断在** | Phase {n} 第 {n} 步（{步骤名}）执行过程中 |
-| **整体完成度** | 约 {n}%（{n}/{n} 个 Phase） |
+| **This Session's Goal** | {One sentence: which segment of the DevPlan this session is meant to complete} |
+| **Currently Executing** | `v{version}_DevPlan.md` §{n} **Phase {n}: {Phase Name}**, step {n} |
+| **Completed Through** | Phase {n}, step {n} ({step name}) |
+| **Interrupted At** | Phase {n}, step {n} ({step name}), mid-execution |
+| **Overall Completion** | About {n}% ({n}/{n} Phases) |
 
-**目标回顾**：{用 3–5 句话复述本版本要达成什么，使接手方不必回头通读 DevPlan
-也能理解当前动作的意义。}
+**Objective Recap**: {In 3–5 sentences, restate what this version is meant to achieve, so the recipient does not
+have to re-read the whole DevPlan to understand the meaning of the current action.}
 
 ---
 
-## 2 已完成工作
+## 2 Completed Work
 
-> 只列**已验证**的产出。未验证的放 §3 或 §7。
+> List only **verified** output. Anything unverified belongs in §3 or §7.
 
-| # | 工作项 | 对应 DevPlan | 产出文件 | 验证状态 |
+| # | Work Item | Corresponding DevPlan | Output File | Verification Status |
 |---|--------|-------------|---------|---------|
-| 1 | {Phase {n} — {工作项}} | §{n} | `{完整文件路径}` | {🟢 已验证：{验证方式与结果}} |
-| 2 | {Phase {n} — {工作项}} | §{n} | `{完整文件路径}` | {🟢 已验证：{验证方式}} |
-| 3 | {Phase {n} — {工作项}} | §{n} | `{完整文件路径}` | {🟡 已写完但未验证} |
+| 1 | {Phase {n} — {work item}} | §{n} | `{full file path}` | {🟢 Verified: {verification method and result}} |
+| 2 | {Phase {n} — {work item}} | §{n} | `{full file path}` | {🟢 Verified: {verification method}} |
+| 3 | {Phase {n} — {work item}} | §{n} | `{full file path}` | {🟡 Written but not verified} |
 
-**产出文件清单**（新建）：
+**Output File List** (new):
 
 ```
-{完整路径}
-{完整路径}
+{full path}
+{full path}
 ```
 
-**产出文件清单**（修改）：
+**Output File List** (modified):
 
-| 文件 | 改了什么 |
+| File | What Changed |
 |------|---------|
-| `{完整路径}` | {改动摘要} |
-| `{完整路径}` | {改动摘要} |
+| `{full path}` | {Summary of change} |
+| `{full path}` | {Summary of change} |
 
 ---
 
-## 3 进行中的工作
+## 3 Work In Progress
 
-> **本节最关键**。接手方靠它避免重复劳动和半成品覆盖。
-> 每一项都要写清：改哪个文件、改到哪一行/哪个函数、原来打算怎么改。
+> **This is the most critical section.** It is what lets the recipient avoid duplicate work and overwriting a half-finished state.
+> Every item must state clearly: which file was changed, up to which line/function, and how it was originally meant to be finished.
 
-### 3.1 正在修改的文件
+### 3.1 Files Currently Being Modified
 
-| # | 文件 | 改到哪了 | 预期改法 | 是否可编译/运行 |
+| # | File | Where It Was Left Off | Expected Approach | Compiles/Runs? |
 |---|------|---------|---------|---------------|
-| 1 | `{完整文件路径}` | {例：`{FuncName}()` 函数已写完签名和前半段，缺 {xxx} 分支处理，第 {n} 行起} | {预期实现方式，包括要调用哪些已有函数、返回什么} | {🔴 否，语法不完整 / 🟢 是} |
-| 2 | `{完整文件路径}` | {位置描述} | {预期改法} | {状态} |
+| 1 | `{full file path}` | {e.g.: `{FuncName}()` has its signature and first half written, missing the {xxx} branch handling, starting at line {n}} | {Expected implementation approach, including which existing functions to call, what to return} | {🔴 No, syntax incomplete / 🟢 Yes} |
+| 2 | `{full file path}` | {Location description} | {Expected approach} | {Status} |
 
-### 3.2 半成品说明
+### 3.2 Half-Finished Work Notes
 
-{对每个半成品展开说明：为什么这样改、已经确定的部分是什么、还没想清楚的是什么。
-若代码里留了 `TODO` / `FIXME` 标记，在此列出并说明每个标记的含义。}
+{For each half-finished piece, explain: why it was changed this way, what part is already settled, and what is
+not yet figured out. If the code has `TODO` / `FIXME` markers, list them here with what each marker means.}
 
-| 标记 | 位置 | 含义 |
+| Marker | Location | Meaning |
 |------|------|------|
-| `TODO({tag})` | `{文件}:{行}` | {要做什么} |
-| `FIXME({tag})` | `{文件}:{行}` | {什么坏了} |
+| `TODO({tag})` | `{file}:{line}` | {What needs to be done} |
+| `FIXME({tag})` | `{file}:{line}` | {What is broken} |
 
-### 3.3 需要立刻回滚或清理的改动
+### 3.3 Changes That Need Immediate Revert or Cleanup
 
-> 如果有为了调试而临时加的代码、注释掉的逻辑、改小的超时值等，必须在此列出，
-> 否则会被当成正式实现留在代码里。
+> If any code was temporarily added for debugging, logic was commented out, or a timeout value was temporarily
+> shortened, it must be listed here — otherwise it risks being mistaken for the real implementation and left in the code.
 
-| # | 文件 | 临时改动 | 处理方式 |
+| # | File | Temporary Change | How to Handle |
 |---|------|---------|---------|
-| 1 | `{文件}:{行}` | {例：为调试把轮询间隔从 300s 改成 5s} | {恢复为 300s} |
+| 1 | `{file}:{line}` | {e.g.: polling interval temporarily changed from 300s to 5s for debugging} | {Restore to 300s} |
 
 ---
 
-## 4 未开始的剩余任务
+## 4 Remaining Tasks Not Yet Started
 
-| # | 任务 | 对应 DevPlan | 依赖 | 预估工作量 |
+| # | Task | Corresponding DevPlan | Dependency | Estimated Effort |
 |---|------|-------------|------|-----------|
-| 1 | {Phase {n} — {任务}} | §{n} | {依赖 §3.1 第 1 项完成} | {小/中/大} |
-| 2 | {Phase {n} — {任务}} | §{n} | {依赖任务 1} | {小/中/大} |
-| 3 | {Phase {n} — {任务}} | §{n} | 无 | {小/中/大} |
+| 1 | {Phase {n} — {task}} | §{n} | {Depends on §3.1 item 1 being completed} | {Small/Medium/Large} |
+| 2 | {Phase {n} — {task}} | §{n} | {Depends on task 1} | {Small/Medium/Large} |
+| 3 | {Phase {n} — {task}} | §{n} | None | {Small/Medium/Large} |
 
-**依赖关系**：
+**Dependency Graph**:
 
 ```
-{任务1} → {任务2} → {任务4}
-              ↘ {任务3}
+{task 1} → {task 2} → {task 4}
+              ↘ {task 3}
 ```
 
-{说明哪些任务可以并行、哪些必须串行。}
+{State which tasks can run in parallel and which must be sequential.}
 
 ---
 
-## 5 环境与运行状态
+## 5 Environment State
 
-### 5.1 已启动的服务
+### 5.1 Running Services
 
-| # | 服务 | 启动命令 | 端口 | 状态 | 备注 |
+| # | Service | Startup Command | Port | Status | Notes |
 |---|------|---------|------|------|------|
-| 1 | {后端服务} | `{命令}` | {8081} | {🟢 运行中 / 🔴 已停止} | {备注} |
-| 2 | {前端 dev server} | `{命令}` | {5173} | {状态} | {备注} |
-| 3 | {数据库} | `{命令}` | {5432} | {状态} | {备注} |
+| 1 | {backend service} | `{command}` | {8081} | {🟢 Running / 🔴 Stopped} | {Notes} |
+| 2 | {frontend dev server} | `{command}` | {5173} | {Status} | {Notes} |
+| 3 | {database} | `{command}` | {5432} | {Status} | {Notes} |
 
-> 接手方若需重启，按 §8 恢复步骤执行，不要凭猜测启动。
+> If the recipient needs to restart, follow the recovery steps in §8 — do not start things by guesswork.
 
-### 5.2 数据库状态
+### 5.2 Database State
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| 数据库名 | `{db_name}` |
-| 已执行的迁移 | {到 `{migration 文件名}` 为止} |
-| 样例数据 | {已导入 / 未导入；来源 `{sql 文件}`} |
-| 手工改动 | {是否手工改过表结构或数据；有则逐条列出，这类改动不在迁移脚本里，极易丢失} |
+| Database Name | `{db_name}` |
+| Migrations Applied | {Through `{migration file name}`} |
+| Sample Data | {Imported / Not imported; source `{sql file}`} |
+| Manual Changes | {Whether the table structure or data was changed by hand; if so, list each one — this kind of change is not in the migration scripts and is very easily lost} |
 
-| # | 手工改动 | SQL | 是否已写入迁移脚本 |
+| # | Manual Change | SQL | Written Into a Migration Script? |
 |---|---------|-----|------------------|
-| 1 | {改动} | `{SQL}` | {🔴 未写入，需补} |
+| 1 | {Change} | `{SQL}` | {🔴 Not yet written, needs to be added} |
 
-### 5.3 依赖与工具链
+### 5.3 Dependencies and Toolchain
 
-| # | 依赖/工具 | 版本 | 本次新装 | 备注 |
+| # | Dependency/Tool | Version | Newly Installed This Session | Notes |
 |---|----------|------|---------|------|
-| 1 | {依赖名} | {版本} | {是/否} | {装在哪、怎么装的} |
+| 1 | {dependency name} | {version} | {Yes/No} | {Where it was installed, how} |
 
-### 5.4 未提交的工作区改动
+### 5.4 Uncommitted Working Tree Changes
 
 ```bash
-# 接手方先执行这条确认工作区状态
+# The recipient should run this first to confirm the working tree state
 git status
 git diff --stat
 ```
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| 是否已 commit | {是（hash `{hash}`）/ 否} |
-| 是否已 stash | {是（`{stash 名}`）/ 否} |
-| 未跟踪文件 | {列出，或写"无"} |
+| Committed | {Yes (hash `{hash}`) / No} |
+| Stashed | {Yes (`{stash name}`) / No} |
+| Untracked Files | {List them, or write "None"} |
 
-### 5.5 临时文件与产物
+### 5.5 Temporary Files and Artifacts
 
-| # | 路径 | 用途 | 是否可删 |
+| # | Path | Purpose | Deletable? |
 |---|------|------|---------|
-| 1 | `{路径}` | {用途} | {可删 / 不可删：{原因}} |
+| 1 | `{path}` | {Purpose} | {Deletable / Not deletable: {reason}} |
 
 ---
 
-## 6 关键决策记录
+## 6 Key Decision Record
 
-> 本次 session 中做出的、会影响后续实现的决定。
-> 接手方**不得**在不知情的情况下推翻这些决定。
+> Decisions made during this session that will affect subsequent implementation.
+> The recipient **must not** overturn these decisions without being aware of them.
 
-| # | 决策点 | 选择 | 理由 | 工程师是否确认 |
+| # | Decision Point | Choice | Rationale | Confirmed by Engineer |
 |---|--------|------|------|---------------|
-| 1 | {决策点描述} | {选了什么方案} | {为什么这么选，否决的方案及原因} | |
-| 2 | {决策点描述} | {选择} | {理由} | |
-| 3 | {决策点描述} | {选择} | {理由} | |
+| 1 | {Decision point description} | {Which approach was chosen} | {Why this was chosen, alternatives rejected and why} | |
+| 2 | {Decision point description} | {Choice} | {Rationale} | |
+| 3 | {Decision point description} | {Choice} | {Rationale} | |
 
-> 「工程师是否确认」列由工程师人工填写，AI 生成时一律留空。
-> 未经确认的决策若代价较大，接手方应先向工程师复核再继续。
+> The "Confirmed by Engineer" column is filled in manually by the engineer; always left empty when AI-generated.
+> For any unconfirmed decision with significant cost, the recipient should verify with the engineer before continuing.
 
 ---
 
-## 7 已知问题与坑
+## 7 Known Problems and Traps
 
-> 本次 session 踩过的坑，避免下一个 session 重复踩。这是本文档最省时间的一节。
+> Traps hit during this session, so the next session doesn't hit them again. This is the most time-saving section of this document.
 
-| # | 现象 | 原因 | 规避方式 | 是否已解决 |
+| # | Symptom | Root Cause | Workaround | Resolved? |
 |---|------|------|---------|-----------|
-| 1 | {现象描述} | {根因} | {怎么绕开 / 正确做法} | {🟢 已解决 / 🔴 未解决} |
-| 2 | {现象描述} | {根因} | {规避方式} | {状态} |
+| 1 | {Symptom description} | {Root cause} | {How to work around it / correct approach} | {🟢 Resolved / 🔴 Unresolved} |
+| 2 | {Symptom description} | {Root cause} | {Workaround} | {Status} |
 
-**未解决问题的详细说明**：
+**Detailed Notes on Unresolved Problems**:
 
-{对每个 🔴 未解决问题展开：已经试过什么、排除了哪些可能、下一步建议怎么查。
-若问题较大，应另起一份 `04_DebugFix/debug_{YYYYMMDD}.md` 并在此链接。}
+{For each 🔴 unresolved problem, explain: what has been tried, what possibilities have been ruled out, and the
+suggested next step for investigation. If the problem is significant, start a separate `04_DebugFix/debug_{YYYYMMDD}.md` and link it here.}
 
 ---
 
-## 8 恢复步骤
+## 8 Recovery Steps
 
-> 接手方按序执行即可回到中断前的状态。每一步都必须是可直接复制执行的命令
-> 或明确的动作，不要写"配置好环境"这类无法执行的描述。
+> The recipient can return to the pre-interruption state by executing these in order. Every step must be a
+> directly copy-pasteable command or an unambiguous action — do not write vague descriptions like "set up the environment."
 
-| # | 动作 | 命令 / 说明 | 预期结果 |
+| # | Action | Command / Description | Expected Result |
 |---|------|------------|---------|
-| 1 | {确认代码状态} | `git status && git log --oneline -5` | {工作区与 §5.4 描述一致} |
-| 2 | {恢复 stash（如有）} | `git stash list && git stash pop` | {改动回到工作区} |
-| 3 | {启动数据库} | `{命令}` | {端口 {n} 可连接} |
-| 4 | {确认迁移状态} | `{命令}` | {版本号为 {xxx}} |
-| 5 | {启动后端} | `{命令}` | {日志出现 `{关键行}`} |
-| 6 | {启动前端} | `{命令}` | {{url} 可访问} |
-| 7 | {冒烟验证} | `{curl / 页面操作}` | {返回 {预期}} |
-| 8 | {回到中断点} | {打开 `{文件}` 第 {n} 行，按 §3.1 继续} | — |
+| 1 | {Confirm code state} | `git status && git log --oneline -5` | {Working tree matches the description in §5.4} |
+| 2 | {Restore stash (if any)} | `git stash list && git stash pop` | {Changes back in the working tree} |
+| 3 | {Start database} | `{command}` | {Port {n} reachable} |
+| 4 | {Confirm migration state} | `{command}` | {Version is {xxx}} |
+| 5 | {Start backend} | `{command}` | {Log shows `{key line}`} |
+| 6 | {Start frontend} | `{command}` | {{url} accessible} |
+| 7 | {Smoke test} | `{curl / page action}` | {Returns {expected}} |
+| 8 | {Return to the interruption point} | {Open `{file}` at line {n}, continue per §3.1} | — |
 
-**必读文档**（接手前按序读完）：
+**Required Reading** (read in order before taking over):
 
-| # | 文件 | 必读章节 | 优先级 |
+| # | File | Required Section | Priority |
 |---|------|---------|--------|
-| 1 | 本文件 | 全文 | 🔴 必读 |
-| 2 | `v{版本号}_DevPlan.md` | §{n} Phase {n} 起 | 🔴 必读 |
-| 3 | `{component}_tech_design.md` | §{n} | 🟠 重要 |
-| 4 | `{component}_version_plan.md` | §{n}（v{版本号} 范围与"不包含的内容"） | 🟠 重要 |
+| 1 | This file | Entire document | 🔴 Required |
+| 2 | `v{version}_DevPlan.md` | §{n} starting at Phase {n} | 🔴 Required |
+| 3 | `{component}_tech_design.md` | §{n} | 🟠 Important |
+| 4 | `{component}_version_plan.md` | §{n} (v{version} scope and "not included") | 🟠 Important |
 
 ---
 
-## 9 备注
+## 9 Notes
 
-{任何不属于以上分类、但接手方应该知道的信息。没有则删除本节。}
+{Any information that doesn't fit the categories above but that the recipient should know. Delete this section if there is none.}

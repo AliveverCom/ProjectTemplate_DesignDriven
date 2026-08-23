@@ -1,110 +1,119 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档 —— `02_DevPlanAndReport`
+[Document Tier] AI Development Process Documents —— `02_DevPlanAndReport`
 
-【本目录收什么】开发计划、开发报告、保存现场、AI handover、改进计划、
-       命名规范化与目录整理计划。即"计划做什么"和"实际做成什么"这两类文档。
+[What This Directory Holds] Dev plans, dev reports, saved-state snapshots, AI handovers, improve plans,
+       naming normalization and directory reorganization plans. In short, the two document types
+       "what is planned" and "what was actually delivered."
 
-【落盘目录】
-  - 平台级：docs/ai_dev_history/02_DevPlanAndReport/
-  - 组件级：docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
-  改名往往横跨 docs/ 和 src/ 的多个组件，通常放**平台级**目录，一次性统一规划、
-  统一执行，不能各组件各改各的。
+[Storage Location]
+  - Platform level: docs/ai_dev_history/02_DevPlanAndReport/
+  - Component level: docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
+  Renaming often spans multiple components across both docs/ and src/, so it is usually placed at the
+  **platform level**, planned and executed as a single unified pass rather than each component
+  renaming on its own.
 
-【文件命名 —— 本目录的硬规则】所有文档一律以**所在版本号开头**：
-       `v{版本号}_{DocType}[_{YYYYMMDD}].md`
+[File Naming —— hard rule for this directory] Every document must start with its version number:
+       `v{version}_{DocType}[_{YYYYMMDD}].md`
   - v0.3_DevPlan.md / v0.3_BE_DevPlan.md / v0.3_FE_DevPlan.md / v0.3_DevReport.md
   - v0.3_Snapshot.md / v0.3_Handover.md / v0.3_ImprovePlan.md
   - v0.3_RenamePlan.md / v0.3_ReorganizePlan.md
-  - 同一版本内同类型有多份时追加日期后缀：v0.3_RenamePlan_20260308.md
-  - 版本号取自 {component}_version_plan.md；本文这类跨版本的整理计划取**发起时的
-    当前版本号**（平台级则取发起时进度最靠前的组件版本号，并在文首注明取值依据）
+  - When multiple documents of the same type exist within one version, append a date suffix: v0.3_RenamePlan_20260308.md
+  - The version number comes from {component}_version_plan.md; a cross-version reorganization plan like
+    this one uses the **current version at the time it was initiated** (at the platform level, use the
+    most-advanced component version at initiation time, and state the basis for that choice at the top
+    of the document)
 
-【本文件的定位】目录与文件**命名规范化执行计划**。当 naming_convention.md 确立或修订了
-       命名规则后，用本模板批量盘点现存的不合规路径，逐条列出「当前路径 → 目标路径」
-       并跟踪执行状态。
+[This File's Purpose] A **naming normalization execution plan** for directories and files. Once
+       naming_convention.md establishes or revises a naming rule, use this template to batch-survey the
+       existing non-compliant paths, listing each as "current path → target path" and tracking
+       execution status.
 
-【与同目录其它文档的区别】
-  - v{x}_DevPlan.md      —— 改的是**功能**（新增代码、实现端点）。
-  - 本文件（RenamePlan） —— 改的是**路径本身**，不动任何功能逻辑。
-  - v{x}_ReorganizePlan.md —— 只移动文件位置，不改文件名；本文只改名，不换目录层级。
-    两者常常配合使用，但应分成两份文档、分两步执行，便于回滚。
+[Difference From Other Documents in This Directory]
+  - v{x}_DevPlan.md      —— changes **functionality** (adds code, implements endpoints).
+  - This file (RenamePlan) —— changes **the path itself**, without touching any functional logic.
+  - v{x}_ReorganizePlan.md —— only moves files, without renaming them; this file only renames, without
+    changing directory levels. The two are often used together, but should be split into two documents
+    and executed in two steps to make rollback easier.
 
-【执行注意】
-  - Git 会自动识别为 rename，历史记录保留完整；
-  - 改名后必须扫描全仓库更新文档内引用（第四章），否则大量链接失效；
-  - 前端目录改名会影响 monorepo workspace 配置与 import 路径。
+[Execution Notes]
+  - Git automatically detects these as renames, preserving full history;
+  - After renaming, the entire repository must be scanned to update in-document references (Chapter 4),
+    otherwise many links will break;
+  - Renaming frontend directories affects the monorepo workspace configuration and import paths.
 
-【人工填写列】「执行状态」由执行方逐条回填；AI 生成计划时可留空或标 🔴 未开始。
+[Human-Filled Column] The "Execution Status" column is filled in incrementally by whoever executes the
+       plan; the AI may leave it empty or mark it 🔴 Not Started when generating the plan.
 
-【模板文件名】前导 `_` 只是模板标记，复制时按上面的命名规则重命名。
+[Template File Name] The leading `_` is only a template marker; rename the file per the naming rule above when copying it.
 -->
 
-# v{版本号} 目录和文件命名规范化计划
+# v{version} Directory and File Naming Normalization Plan
 
-> **文档标题**：目录和文件命名规范化执行计划
-> **版本**：v{版本号}
-> **创建日期**：{YYYY-MM-DD}
-> **规则**：{`docs/` 和 `src/backend/` 使用 **snake_case**；`src/frontend/` 使用 **kebab-case**；`ui_page_design/` 子目录自由格式}
-> **规则依据**：[naming_convention.md](../../naming_convention.md) §{n}、[technical_overview.md](../../technical_overview.md) §{n}
-> **状态**：{🟡 执行中 / 🟢 已完成}
+> **Document Title**: Directory and File Naming Normalization Execution Plan
+> **Version**: v{version}
+> **Created**: {YYYY-MM-DD}
+> **Rule**: {`docs/` and `src/backend/` use **snake_case**; `src/frontend/` uses **kebab-case**; the `ui_page_design/` subdirectory is free-form}
+> **Rule Basis**: [naming_convention.md](../../naming_convention.md) §{n}, [technical_overview.md](../../technical_overview.md) §{n}
+> **Status**: {🟡 In Progress / 🟢 Completed}
 
 ---
 
-## 一、前端目录改名（{snake_case → kebab-case}）
+## 1. Frontend Directory Renames ({snake_case → kebab-case})
 
-> 范围：`src/frontend/packages/` 下所有{含下划线的目录}
+> Scope: all {directories containing underscores} under `src/frontend/packages/`
 
-| # | 类型 | 当前路径 | 目标路径 | 执行状态 |
+| # | Type | Current Path | Target Path | Execution Status |
 |---|------|---------|---------|--------|
-| FD-01 | 目录 | `src/frontend/packages/{old_name}/` | `src/frontend/packages/{new-name}/` | |
-| FD-02 | 目录 | `src/frontend/packages/{old_name}/` | `src/frontend/packages/{new-name}/` | |
-| FD-03 | 目录 | `src/frontend/packages/{old_name}/` | `src/frontend/packages/{new-name}/` | |
+| FD-01 | Directory | `src/frontend/packages/{old_name}/` | `src/frontend/packages/{new-name}/` | |
+| FD-02 | Directory | `src/frontend/packages/{old_name}/` | `src/frontend/packages/{new-name}/` | |
+| FD-03 | Directory | `src/frontend/packages/{old_name}/` | `src/frontend/packages/{new-name}/` | |
 
-> 注：{`shared/` 和 `{single_word}/` 为单个单词，snake_case 和 kebab-case 相同，无需改名。}
-> 「执行状态」列取值：✅ 已完成 / 🟡 进行中 / 🔴 未开始 / ⚪ 放弃（附原因）。
+> Note: {`shared/` and `{single_word}/` are single words, so snake_case and kebab-case are identical and no rename is needed.}
+> "Execution Status" values: ✅ Completed / 🟡 In Progress / 🔴 Not Started / ⚪ Abandoned (with reason attached).
 
 ---
 
-## 二、文档文件改名（{kebab-case → snake_case}）
+## 2. Document File Renames ({kebab-case → snake_case})
 
-> 范围：{`docs/` 下所有含连字符的文件}
+> Scope: {all files under `docs/` containing a hyphen}
 
-| # | 类型 | 当前路径 | 目标路径 | 执行状态 |
+| # | Type | Current Path | Target Path | Execution Status |
 |---|------|---------|---------|--------|
-| DF-01 | 文件 | `docs/{old-name}.md` | `docs/{new_name}.md` | |
-| DF-02 | 文件 | `docs/components/{component}/{old-name}.md` | `docs/components/{component}/{new_name}.md` | |
+| DF-01 | File | `docs/{old-name}.md` | `docs/{new_name}.md` | |
+| DF-02 | File | `docs/components/{component}/{old-name}.md` | `docs/components/{component}/{new_name}.md` | |
 
 ---
 
-## 三、文档文件改名（{混合大小写 → snake_case}）
+## 3. Document File Renames ({mixed case → snake_case})
 
-> 范围：{`docs/` 下所有含大写字母的文件名}
+> Scope: {all file names under `docs/` containing uppercase letters}
 
-| # | 类型 | 当前路径 | 目标路径 | 执行状态 |
+| # | Type | Current Path | Target Path | Execution Status |
 |---|------|---------|---------|--------|
-| DC-01 | 文件 | `docs/components/{component}/{Component}_UiUx.md` | `docs/components/{component}/{component}_uiux.md` | |
-| DC-02 | 文件 | `docs/{OldName}.md` | `docs/{new_name}.md` | |
+| DC-01 | File | `docs/components/{component}/{Component}_UiUx.md` | `docs/components/{component}/{component}_uiux.md` | |
+| DC-02 | File | `docs/{OldName}.md` | `docs/{new_name}.md` | |
 
 ---
 
-## 四、文档内引用更新
+## 4. In-Document Reference Updates
 
-> 改名会破坏 Markdown 链接和文档正文中的路径引用。本章列出所有需要同步更新的引用点。
-> **必须在改名后立即执行**，否则大量链接失效。
+> Renaming breaks Markdown links and path references in document body text. This chapter lists every
+> reference point that must be updated in sync.
+> **Must be executed immediately after the rename**, otherwise a large number of links will break.
 
-| # | 引用所在文件 | 引用内容 | 更新为 | 执行状态 |
+| # | File Containing the Reference | Reference Content | Update To | Execution Status |
 |---|-------------|---------|--------|--------|
 | RF-01 | `docs/{file}.md` §{n} | `{old path}` | `{new path}` | |
 | RF-02 | `docs/components/{component}/{file}.md` §{n} | `{old path}` | `{new path}` | |
 | RF-03 | `README.md` | `{old path}` | `{new path}` | |
 | RF-04 | `project_directory_plan.md` §{n} | `{old path}` | `{new path}` | |
 
-**扫描方式**：
+**Scanning method**:
 
 ```bash
-# 扫描所有对旧路径的引用
+# Scan for all references to the old path
 grep -rn "{old_name}" --include="*.md" .
 grep -rn "{old_name}" --include="*.ts" --include="*.tsx" src/frontend/
 grep -rn "{old_name}" --include="*.go" src/backend/
@@ -112,60 +121,60 @@ grep -rn "{old_name}" --include="*.go" src/backend/
 
 ---
 
-## 五、配置与代码引用更新
+## 5. Configuration and Code Reference Updates
 
-> 目录改名会影响构建配置和代码 import 路径。
+> Directory renames affect build configuration and code import paths.
 
-| # | 文件 | 更新内容 | 执行状态 |
+| # | File | Update Content | Execution Status |
 |---|------|---------|--------|
-| CF-01 | `{monorepo workspace 配置}` | {包路径由 {old} 改为 {new}} | |
-| CF-02 | `{tsconfig paths / 别名配置}` | {路径映射更新} | |
-| CF-03 | `{CI/CD 配置}` | {构建路径更新} | |
-| CF-04 | `{Dockerfile / 部署脚本}` | {路径更新} | |
-| CF-05 | {源码 import 语句} | {全局替换 import 路径} | |
+| CF-01 | `{monorepo workspace configuration}` | {package path changed from {old} to {new}} | |
+| CF-02 | `{tsconfig paths / alias configuration}` | {path mapping updates} | |
+| CF-03 | `{CI/CD configuration}` | {build path updates} | |
+| CF-04 | `{Dockerfile / deployment scripts}` | {path updates} | |
+| CF-05 | {source code import statements} | {global replacement of import paths} | |
 
 ---
 
-## 汇总
+## Summary
 
-| 类别 | 条目数 | ✅ 已完成 | 🟡 进行中 | 🔴 未开始 |
+| Category | Item Count | ✅ Completed | 🟡 In Progress | 🔴 Not Started |
 |------|-------|----------|----------|----------|
-| 前端目录改名（FD） | {n} | {n} | {n} | {n} |
-| 文档文件改名（DF） | {n} | {n} | {n} | {n} |
-| 文档文件改名（DC） | {n} | {n} | {n} | {n} |
-| 文档内引用更新（RF） | {n} | {n} | {n} | {n} |
-| 配置与代码引用（CF） | {n} | {n} | {n} | {n} |
-| **总计** | **{N}** | **{N}** | **{N}** | **{N}** |
+| Frontend directory renames (FD) | {n} | {n} | {n} | {n} |
+| Document file renames (DF) | {n} | {n} | {n} | {n} |
+| Document file renames (DC) | {n} | {n} | {n} | {n} |
+| In-document reference updates (RF) | {n} | {n} | {n} | {n} |
+| Configuration and code references (CF) | {n} | {n} | {n} | {n} |
+| **Total** | **{N}** | **{N}** | **{N}** | **{N}** |
 
 ---
 
-## 验证
+## Verification
 
-| # | 验证项 | 方法 | 结果 |
+| # | Verification Item | Method | Result |
 |---|--------|------|------|
-| 1 | {无残留旧路径} | `grep -rn "{old_name}" .` | {🟢 无匹配} |
-| 2 | {前端构建通过} | `{build 命令}` | {🟢 通过} |
-| 3 | {后端构建通过} | `{build 命令}` | {🟢 通过} |
-| 4 | {文档链接有效} | {逐个点击 README 与 overview 中的链接} | {🟢 全部有效} |
-| 5 | {Git 识别为 rename} | `git status` | {🟢 显示 renamed 而非 delete+add} |
+| 1 | {No remaining old paths} | `grep -rn "{old_name}" .` | {🟢 No matches} |
+| 2 | {Frontend build passes} | `{build command}` | {🟢 Passed} |
+| 3 | {Backend build passes} | `{build command}` | {🟢 Passed} |
+| 4 | {Document links are valid} | {Click through every link in README and the overview one by one} | {🟢 All valid} |
+| 5 | {Git recognizes them as renames} | `git status` | {🟢 Shows renamed rather than delete+add} |
 
 ---
 
-## 影响范围与风险
+## Impact Scope and Risks
 
-| # | 风险 | 影响 | 缓解措施 |
+| # | Risk | Impact | Mitigation |
 |---|------|------|---------|
-| 1 | {历史文档中的路径引用失效} | {ai_dev_history 中的旧报告链接指向不存在的路径} | {历史归档文档不做更新，仅在本计划中记录映射关系供追溯} |
-| 2 | {外部书签/链接失效} | {影响} | {措施} |
-| 3 | {并行开发分支冲突} | {其他分支的改动会与改名冲突} | {改名前合并所有在途分支，改名后统一 rebase} |
+| 1 | {Path references in historical documents become invalid} | {Old report links in ai_dev_history point to paths that no longer exist} | {Archived historical documents are not updated; this plan alone records the mapping for later traceability} |
+| 2 | {External bookmarks/links break} | {Impact} | {Measures} |
+| 3 | {Conflicts with parallel development branches} | {Other branches' changes will conflict with the rename} | {Merge all in-flight branches before renaming, then rebase them uniformly afterward} |
 
 ---
 
-## 旧路径 → 新路径 映射总表
+## Old Path → New Path Master Mapping Table
 
-> 供后续追溯历史文档中的旧路径。改名完成后此表长期保留。
+> For tracing old paths in historical documents afterward. Keep this table long-term once the rename is complete.
 
-| 旧路径 | 新路径 |
+| Old Path | New Path |
 |--------|--------|
 | `{old path}` | `{new path}` |
 | `{old path}` | `{new path}` |

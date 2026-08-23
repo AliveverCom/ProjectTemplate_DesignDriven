@@ -1,258 +1,258 @@
-# 索引
+# Index
 
 <!--
-模板说明（使用时删除本注释块）
-- 层级：**平台级技术文档**。放在 `docs/` 根目录，文件名去掉前导下划线 → `technical_overview.md`。
-- 与组件级 `{component}_tech_design.md` 的区别（务必守住边界）：
+TEMPLATE NOTES (delete this comment block when using)
+- Layer: **platform-level technical document**. Place at the root of `docs/`, drop the leading underscore in the filename → `technical_overview.md`.
+- Distinction from the component-level `{component}_tech_design.md` (this boundary must be kept):
 
-  | 维度 | 本文（平台级 technical_overview.md） | 组件级 {component}_tech_design.md |
+  | Dimension | This document (platform-level technical_overview.md) | Component-level {component}_tech_design.md |
   |------|-----------------------------------|----------------------------------|
-  | 范围 | 跨组件的架构、分层、全局规范 | 单个组件内部的类、表、API、源码目录 |
-  | API | 只定义**规范**（前缀、响应体、错误码、分页） | 定义**具体端点**（路径、参数、示例） |
-  | 数据库 | 只定义**规范**和**库的划分** | 定义**具体表结构**和索引 |
-  | 依赖 | **版本锁定表**（唯一权威） | 只引用，不重新指定版本 |
-  | 冲突时 | **以本文为准** | 需提 review 修正组件文档 |
+  | Scope | Cross-component architecture, layering, global conventions | Classes, tables, APIs, source directories within a single component |
+  | API | Defines only **conventions** (prefix, response body, error codes, pagination) | Defines **concrete endpoints** (paths, parameters, examples) |
+  | Database | Defines only **conventions** and **database partitioning** | Defines **concrete table schemas** and indexes |
+  | Dependencies | **Version lock table** (the sole authority) | References only, never re-specifies versions |
+  | On conflict | **This document takes precedence** | A review must be filed to correct the component document |
 
-- 全局规范一旦写入本文，组件文档**不得再重复定义**，只能引用章节号（如"遵循 technical_overview.md §4.2"）。
-- 平台级文档用 `# 一级标题` 做章节，首章为「索引」，第 0 章为「文档说明」
-  （与组件级文档用 `## 1 Table of Contents` 的风格不同）。
-- 建议为每个章节加锚点 `<a id="c4-2"></a>`，便于跨文档精确引用。
+- Once a global convention is written into this document, component documents **must not redefine it**, and may only reference the section number (e.g. "follows technical_overview.md §4.2").
+- The platform-level document uses `# H1` headings for sections, with the first section being "Index" and section 0 being "Document Description"
+  (unlike the component-level document, which uses a `## 1 Table of Contents` style).
+- It is recommended to add an anchor `<a id="c4-2"></a>` to every section, to enable precise cross-document referencing.
 -->
 
-- [0 文档说明](#0-文档说明)
-- [1 技术架构](#1-技术架构)
-  - [1.1 架构概览图](#11-架构概览图)
-  - [1.2 架构分层简述](#12-架构分层简述)
-  - [1.3 后端服务架构模式](#13-后端服务架构模式)
-- [2 项目目录规划](#2-项目目录规划)
-- [3 产品组件技术描述](#3-产品组件技术描述)
-- [4 技术设计规范](#4-技术设计规范)
-  - [4.1 API 设计规范](#41-api-设计规范)
-  - [4.2 数据库设计规范](#42-数据库设计规范)
-  - [4.3 前端开发规范](#43-前端开发规范)
-  - [4.4 后端开发规范](#44-后端开发规范)
-  - [4.5 日志与可观测性规范](#45-日志与可观测性规范)
-  - [4.6 安全规范](#46-安全规范)
-  - [4.7 版本管理规范](#47-版本管理规范)
-- [5 开发语言与依赖](#5-开发语言与依赖)
-  - [5.1 开发语言与运行时](#51-开发语言与运行时)
-  - [5.2 前端主要依赖](#52-前端主要依赖)
-  - [5.3 后端主要依赖 — {语言A}](#53-后端主要依赖--语言a)
-  - [5.4 后端主要依赖 — {语言B}](#54-后端主要依赖--语言b)
-  - [5.5 数据库与中间件](#55-数据库与中间件)
-  - [5.6 基础设施与工具链](#56-基础设施与工具链)
-- [6 部署与环境概述](#6-部署与环境概述)
-  - [6.1 环境划分](#61-环境划分)
-  - [6.2 容器化与编排](#62-容器化与编排)
-  - [6.3 CI/CD 流水线](#63-cicd-流水线)
-  - [6.4 统一部署目录（deployment/）](#64-统一部署目录deployment)
-- [7 附录](#7-附录)
-  - [7.1 参考文档](#71-参考文档)
-  - [7.2 名词解释](#72-名词解释)
-  - [7.3 常用关键词中英文对照](#73-常用关键词中英文对照)
-- [8 目录和文件命名规则](#8-目录和文件命名规则)
+- [0 Document Description](#0-document-description)
+- [1 Technical Architecture](#1-technical-architecture)
+  - [1.1 Architecture Overview Diagram](#11-architecture-overview-diagram)
+  - [1.2 Architecture Layers Overview](#12-architecture-layers-overview)
+  - [1.3 Backend Service Architecture Pattern](#13-backend-service-architecture-pattern)
+- [2 Project Directory Plan](#2-project-directory-plan)
+- [3 Product Component Technical Description](#3-product-component-technical-description)
+- [4 Technical Design Conventions](#4-technical-design-conventions)
+  - [4.1 API Design Conventions](#41-api-design-conventions)
+  - [4.2 Database Design Conventions](#42-database-design-conventions)
+  - [4.3 Frontend Development Conventions](#43-frontend-development-conventions)
+  - [4.4 Backend Development Conventions](#44-backend-development-conventions)
+  - [4.5 Logging and Observability Conventions](#45-logging-and-observability-conventions)
+  - [4.6 Security Conventions](#46-security-conventions)
+  - [4.7 Version Management Conventions](#47-version-management-conventions)
+- [5 Development Languages and Dependencies](#5-development-languages-and-dependencies)
+  - [5.1 Languages and Runtimes](#51-languages-and-runtimes)
+  - [5.2 Frontend Major Dependencies](#52-frontend-major-dependencies)
+  - [5.3 Backend Major Dependencies — {LanguageA}](#53-backend-major-dependencies--languagea)
+  - [5.4 Backend Major Dependencies — {LanguageB}](#54-backend-major-dependencies--languageb)
+  - [5.5 Database and Middleware](#55-database-and-middleware)
+  - [5.6 Infrastructure and Toolchain](#56-infrastructure-and-toolchain)
+- [6 Deployment and Environment Overview](#6-deployment-and-environment-overview)
+  - [6.1 Environment Types](#61-environment-types)
+  - [6.2 Containerization and Orchestration](#62-containerization-and-orchestration)
+  - [6.3 CI/CD Pipeline](#63-cicd-pipeline)
+  - [6.4 Unified Deployment Directory (deployment/)](#64-unified-deployment-directory-deployment)
+- [7 Appendix](#7-appendix)
+  - [7.1 Reference Documents](#71-reference-documents)
+  - [7.2 Glossary](#72-glossary)
+  - [7.3 Chinese-English Glossary of Common Terms](#73-chinese-english-glossary-of-common-terms)
+- [8 Directory and File Naming Rules](#8-directory-and-file-naming-rules)
 
 ---
 
 <a id="c0"></a>
 
-# 0 文档说明
+# 0 Document Description
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| **文档名称** | {平台中文名} 技术总览（technical_overview.md） |
-| **文档层级** | 平台级 —— 定义跨组件技术架构与全局规范 |
-| **文档版本** | {x.y.z} |
-| **适用读者** | 架构师、AI 开发者、前端/后端工程师、运维 |
-| **下位文档** | 各组件的 `docs/components/{component_code_name}/{component_code_name}_tech_design.md` |
-| **对应业务文档** | [business_overview.md](./business_overview.md) |
-| **相关规范** | [uiux_design_specification.md](./uiux_design_specification.md)、[naming_convention.md](./naming_convention.md)、[project_directory_plan.md](../project_directory_plan.md) |
+| **Document Name** | {PlatformName} Technical Overview (technical_overview.md) |
+| **Document Layer** | Platform-level — defines cross-component technical architecture and global conventions |
+| **Document Version** | {x.y.z} |
+| **Intended Readers** | Architects, AI developers, frontend/backend engineers, operations |
+| **Downstream Documents** | Each component's `docs/components/{component_code_name}/{component_code_name}_tech_design.md` |
+| **Corresponding Business Document** | [business_overview.md](./business_overview.md) |
+| **Related Conventions** | [uiux_design_specification.md](./uiux_design_specification.md), [naming_convention.md](./naming_convention.md), [project_directory_plan.md](../project_directory_plan.md) |
 
-> **规范优先级**：`technical_overview.md`（本文）> 组件 `tech_design.md`。
-> 若两者冲突，以本文为准，并应在 `ai_dev_history/01_DocReviewRefine/` 下提交一份 review 记录修正组件文档。
+> **Convention Precedence**: `technical_overview.md` (this document) > component `tech_design.md`.
+> On conflict, this document takes precedence, and a review record must be submitted under `ai_dev_history/01_DocReviewRefine/` to correct the component document.
 
-> **文档边界**：本文不写任何具体的表结构、类成员和 API 端点定义。凡是"某个组件独有的东西"，
-> 一律放进该组件的 `tech_design.md`；凡是"所有组件都要遵守的东西"，一律放进本文 §4。
+> **Document Boundary**: This document does not define any concrete table schemas, class members, or API endpoint definitions. Anything that is "specific to a single component"
+> belongs in that component's `tech_design.md`; anything that "every component must follow" belongs in §4 of this document.
 
 ---
 
 <a id="c1"></a>
 
-# 1 技术架构
+# 1 Technical Architecture
 
 <a id="c1-1"></a>
 
-## 1.1 架构概览图
+## 1.1 Architecture Overview Diagram
 
-![技术架构概览](./technical_architecture.png)
+![Technical Architecture Overview](./technical_architecture.png)
 
-> 源文件：[technical_architecture.mmd](./technical_architecture.mmd)
-> 绘制规范见 [templates/mermaid/mmd_style_guide.md](../templates/mermaid/mmd_style_guide.md)：
-> 白色画布、按层/类型分类着色的浅色系方框、全部文字为黑色。
+> Source file: [technical_architecture.mmd](./technical_architecture.mmd)
+> Drawing conventions: see [templates/mermaid/mmd_style_guide.md](../templates/mermaid/mmd_style_guide.md):
+> white canvas, light-colored boxes categorized by layer/type, all text in black.
 
 <a id="c1-2"></a>
 
-## 1.2 架构分层简述
+## 1.2 Architecture Layers Overview
 
-| 层 | 组成 | 职责 | 技术选型 |
+| Layer | Composition | Responsibility | Technology Choice |
 |----|------|------|---------|
-| 客户端层 | {Web 浏览器 / 移动端} | {职责} | {选型} |
-| 网关层 | {API Gateway、认证与权限服务} | {职责} | {选型} |
-| Portal 层 | {统一入口：菜单、视图框架、Dashboard} | {职责} | {选型} |
-| 产品组件层 | {各业务组件，每组件独立前端/后端/数据库} | {职责} | {选型} |
-| 共享服务层 | {Workflow 编排器、AI Agent 服务等} | {职责} | {选型} |
-| 数据层 | {关系数据库、缓存、文件存储} | {职责} | {选型} |
-| 外部系统 | {云认证、外部信息源、第三方平台} | {职责} | {选型} |
+| Client Layer | {Web browser / mobile} | {Responsibility} | {Choice} |
+| Gateway Layer | {API Gateway, authentication and authorization service} | {Responsibility} | {Choice} |
+| Portal Layer | {Unified entry point: menu, view framework, dashboard} | {Responsibility} | {Choice} |
+| Product Component Layer | {Individual business components, each with its own frontend/backend/database} | {Responsibility} | {Choice} |
+| Shared Service Layer | {Workflow orchestrator, AI Agent service, etc.} | {Responsibility} | {Choice} |
+| Data Layer | {Relational database, cache, file storage} | {Responsibility} | {Choice} |
+| External Systems | {Cloud authentication, external information sources, third-party platforms} | {Responsibility} | {Choice} |
 
-**层间调用约束**（必须明确写出，否则 AI 开发者会随意跨层）：
+**Inter-layer call constraints** (must be stated explicitly, otherwise AI developers will cross layers arbitrarily):
 
-| # | 规则 | 说明 |
+| # | Rule | Explanation |
 |---|------|------|
-| 1 | {组件层之间禁止直连对方数据库} | {只能通过对方暴露的 REST API 获取数据} |
-| 2 | {前端禁止直接访问数据库和文件系统} | {一切经由后端 API} |
-| 3 | {跨库关联不设外键约束} | {由程序逻辑保障引用正确性} |
-| 4 | {当前阶段是否存在 API Gateway} | {若无，前端直连各后端端口，需在此明确写出} |
+| 1 | {Component layers must not connect directly to each other's databases} | {Data can only be obtained via the other component's exposed REST API} |
+| 2 | {The frontend must not access the database or filesystem directly} | {Everything goes through backend APIs} |
+| 3 | {No foreign-key constraints across databases} | {Referential correctness is guaranteed by application logic} |
+| 4 | {Whether an API Gateway exists at the current stage} | {If not, the frontend connects directly to each backend port — this must be stated explicitly here} |
 
 <a id="c1-3"></a>
 
-## 1.3 后端服务架构模式
+## 1.3 Backend Service Architecture Pattern
 
-平台采用**{组件独立后端服务}**的架构模式：{每个产品组件的后端 API 服务是一个独立进程，
-拥有独立的入口文件、依赖管理、配置文件和监听端口，需要单独启动}。
+The platform adopts a **{component-independent backend service}** architecture pattern: {each product component's backend API service is an independent process,
+with its own entry file, dependency management, configuration file, and listening port, and must be started independently}.
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                Frontend（{框架}）                     │
-│        {monorepo 方案} — {统一入口}  :{3000}          │
+│                Frontend ({Framework})                 │
+│        {monorepo approach} — {unified entry}  :{3000} │
 │   ┌──────────────┐  ┌──────────────┐  ┌──────────┐  │
-│   │{组件A} FE 包 │  │{组件B} FE 包 │  │ ...more  │  │
+│   │{ComponentA} FE pkg│ │{ComponentB} FE pkg│ │ ...more│ │
 │   └──────┬───────┘  └──────┬───────┘  └────┬─────┘  │
 └──────────┼─────────────────┼───────────────┼─────────┘
            ▼                 ▼               ▼
 ┌──────────────────┐ ┌──────────────────┐ ┌────────────┐
-│ {组件A} API      │ │ {组件B} API      │ │  ...more   │
-│ {语言} — :{8080} │ │ {语言} — :{8081} │ │  services  │
-│ 独立依赖清单     │ │ 独立依赖清单     │ │            │
-│ 独立 config      │ │ 独立 config      │ │            │
+│ {ComponentA} API │ │ {ComponentB} API │ │  ...more   │
+│ {Language} — :{8080} │ │ {Language} — :{8081} │ │  services  │
+│ Independent deps │ │ Independent deps │ │            │
+│ Independent config│ │ Independent config│ │            │
 └──────────────────┘ └──────────────────┘ └────────────┘
 ```
 
-**已实现的后端服务**：
+**Implemented backend services**:
 
-| 产品组件 | 后端入口 | 默认端口 | 配置文件 |
+| Product Component | Backend Entry | Default Port | Config File |
 |---------|---------|---------|---------|
-| `{component_code_name}` | `src/backend/{component_code_name}/{入口路径}` | {8080} | `config/config.yaml` |
+| `{component_code_name}` | `src/backend/{component_code_name}/{entry_path}` | {8080} | `config/config.yaml` |
 
-**设计要点**：
+**Design Notes**:
 
-| # | 要点 | 说明 |
+| # | Point | Explanation |
 |---|------|------|
-| 1 | 独立进程 | {独立编译、启动、停止，互不影响} |
-| 2 | 独立依赖 | {每个服务管理自己的依赖版本，不共享依赖树} |
-| 3 | 独立端口 | {前端按组件连接对应端口} |
-| 4 | 独立配置 | {每服务一份 config，含端口、CORS 等} |
-| 5 | 前端架构差异 | {说明前端是否合并为单一 SPA，与后端多进程模式的区别} |
+| 1 | Independent process | {Independently compiled, started, and stopped, without affecting each other} |
+| 2 | Independent dependencies | {Each service manages its own dependency versions, not shared across a dependency tree} |
+| 3 | Independent ports | {The frontend connects to the corresponding port per component} |
+| 4 | Independent configuration | {Each service has one config, including port, CORS, etc.} |
+| 5 | Frontend architecture difference | {State whether the frontend is merged into a single SPA, versus the backend's multi-process pattern} |
 
-**分层职责边界**（`handler` → `service` → `repository` → `model`）：
+**Layer responsibility boundaries** (`handler` → `service` → `repository` → `model`):
 
-| 层 | 允许做的事 | 禁止做的事 |
+| Layer | Allowed to Do | Must Not Do |
 |----|-----------|-----------|
-| `handler` | 参数解析、输入验证、响应封装、HTTP 状态码 | 直接访问数据库、编写业务逻辑 |
-| `service` | 业务逻辑、事务编排、跨 repository 组合 | 直接拼接 SQL、感知 HTTP/Gin/Request 对象 |
-| `repository` | 数据访问、SQL/ORM、动态表名解析 | 编写业务规则、开启业务事务 |
-| `model` | 数据结构定义、ORM 标签 | 任何逻辑 |
+| `handler` | Parameter parsing, input validation, response wrapping, HTTP status codes | Access the database directly, write business logic |
+| `service` | Business logic, transaction orchestration, composing across repositories | Directly concatenate SQL, be aware of HTTP/Gin/Request objects |
+| `repository` | Data access, SQL/ORM, dynamic table name resolution | Write business rules, open business transactions |
+| `model` | Data structure definitions, ORM tags | Any logic |
 
-> 依赖注入方式：{方案}。禁止跨层调用（如 handler 直接调 repository）。
+> Dependency injection approach: {approach}. Cross-layer calls are prohibited (e.g. handler calling repository directly).
 
 ---
 
 <a id="c2"></a>
 
-# 2 项目目录规划
+# 2 Project Directory Plan
 
-平台完整目录规划（顶层、文档、源码、部署）见项目根目录下的独立文档：
+The platform's complete directory plan (top level, documentation, source code, deployment) is in a separate document at the project root:
 
 > 📄 [project_directory_plan.md](../project_directory_plan.md)
 
-技术视角摘要：
+Technical summary:
 
 ```
 src/
-├── frontend/                       # 前端 monorepo，包目录使用 kebab-case
+├── frontend/                       # Frontend monorepo, package directories use kebab-case
 │   └── packages/{component-code-name}/
-├── backend/                        # 后端服务，目录使用 snake_case
+├── backend/                        # Backend services, directories use snake_case
 │   └── {component_code_name}/
-├── api/                            # OpenAPI 契约（前后端唯一契约）
-├── gateway/                        # API 网关配置
-├── auth/                           # 认证与权限配置
-└── scripts/                        # 构建、开发、运维脚本
-deployment/                         # 编译产物与运行环境
+├── api/                            # OpenAPI contracts (the single contract between frontend and backend)
+├── gateway/                        # API gateway configuration
+├── auth/                           # Authentication and authorization configuration
+└── scripts/                        # Build, development, and ops scripts
+deployment/                         # Build artifacts and runtime environment
 ```
 
 ---
 
 <a id="c3"></a>
 
-# 3 产品组件技术描述
+# 3 Product Component Technical Description
 
-| # | 组件 | 前端包 | 后端服务 | 端口 | 数据库 | 实现语言 | 状态 |
+| # | Component | Frontend Package | Backend Service | Port | Database | Implementation Language | Status |
 |---|------|-------|---------|------|--------|---------|------|
-| 1 | {组件中文名}（`{component_code_name}`） | `{component-code-name}` | `{component_code_name}` | {8080} | `{db_name}` | {语言} | {规划中/开发中/已上线} |
-| 2 | {组件中文名}（`{component_code_name}`） | `{component-code-name}` | `{component_code_name}` | {8081} | `{db_name}` | {语言} | {状态} |
+| 1 | {Component1Name} (`{component_code_name}`) | `{component-code-name}` | `{component_code_name}` | {8080} | `{db_name}` | {Language} | {Planned/In Development/Live} |
+| 2 | {Component2Name} (`{component_code_name}`) | `{component-code-name}` | `{component_code_name}` | {8081} | `{db_name}` | {Language} | {Status} |
 
 <a id="c3-1"></a>
 
-## 3.1 {组件中文名}（{component_code_name}）
+## 3.1 {Component1Name} ({component_code_name})
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| **技术形态** | {前端 SPA 包 + REST 服务 + N 个常驻 daemon} |
-| **独立数据库** | `{db_name}` |
-| **对外 API 前缀** | `/api/v1/{resource}` |
-| **被谁跨模块调用** | {列出"调用方组件 → 被调用端点"，没有则填「无」} |
-| **跨模块调用了谁** | {列出"本组件 → 对方组件的端点"，没有则填「无」} |
-| **常驻进程** | {daemon 名称与职责，没有则填「无」} |
+| **Technical Form** | {Frontend SPA package + REST service + N resident daemons} |
+| **Dedicated Database** | `{db_name}` |
+| **External API Prefix** | `/api/v1/{resource}` |
+| **Called Cross-Module By** | {List "calling component → called endpoint"; fill "None" if none} |
+| **Calls Cross-Module To** | {List "this component → other component's endpoint"; fill "None" if none} |
+| **Resident Processes** | {Daemon name and responsibility; fill "None" if none} |
 
-> 详细技术设计见 [{component_code_name}_tech_design.md](./components/{component_code_name}/{component_code_name}_tech_design.md)。
+> Detailed technical design: see [{component_code_name}_tech_design.md](./components/{component_code_name}/{component_code_name}_tech_design.md).
 
 <a id="c3-2"></a>
 
-## 3.2 {组件中文名}（{component_code_name}）
+## 3.2 {Component2Name} ({component_code_name})
 
-{同 3.1 结构}
+{Same structure as 3.1}
 
-> 按组件数量重复 3.x 小节。**跨模块调用关系必须双向登记**：
-> 调用方在"跨模块调用了谁"中写一次，被调用方在"被谁跨模块调用"中写一次，两处必须一致。
+> Repeat section 3.x for each component. **Cross-module call relationships must be registered bidirectionally**:
+> the caller records it once under "Calls Cross-Module To", the callee records it once under "Called Cross-Module By", and the two must be consistent.
 
 ---
 
 <a id="c4"></a>
 
-# 4 技术设计规范
+# 4 Technical Design Conventions
 
-> 本章是**全平台强制规范**。组件级 `tech_design.md` 只引用章节号，不重复定义。
+> This chapter is a **platform-wide mandatory convention**. Component-level `tech_design.md` files may only reference section numbers, not redefine them.
 
 <a id="c4-1"></a>
 
-## 4.1 API 设计规范
+## 4.1 API Design Conventions
 
-| # | 规则 | 说明 |
+| # | Rule | Explanation |
 |---|------|------|
-| 1 | 风格 | {RESTful} |
-| 2 | 统一前缀与版本 | 所有端点使用 `/api/v{n}/` 前缀，版本号显式写在路径中 |
-| 3 | 资源命名 | 复数 kebab-case，如 `/source-media`、`/material-records` |
-| 4 | 方法语义 | GET 查询 / POST 创建 / PUT 全量更新 / PATCH 局部更新 / DELETE 删除 |
-| 5 | 批量操作 | 以子资源动词表达，如 `POST /{resource}/batch-delete`、`POST /{resource}/{id}/cancel` |
-| 6 | 字段命名 | 请求/响应 JSON 字段一律 `snake_case`，与数据库列名一致 |
-| 7 | 分页 | 列表接口统一支持 `page` + `page_size`，响应含 `total` |
-| 8 | 统一响应体 | 见 §4.1.1，全平台唯一格式 |
-| 9 | 错误码 | 见 §4.1.2，组件不得自定义与全局冲突的错误码 |
-| 10 | 契约优先 | 先写 `src/api/{component}/openapi.yaml`，再实现前后端 |
-| 11 | **以业务对象为粒度** | 默认只为业务对象提供标准 CRUD API，**不为单一 UI 页面定制专用 API**；特殊场景（复杂编辑器、统计报表）方可审慎新增。定制 API 越多，可维护性越差 |
-| 12 | 幂等性 | POST 以外的写操作应尽可能保证幂等 |
-| 13 | 跨模块调用 | {规则：谁可以调谁；禁止跨库直连；跨模块端点须在双方文档登记} |
+| 1 | Style | {RESTful} |
+| 2 | Unified prefix and versioning | All endpoints use the `/api/v{n}/` prefix, with the version number explicitly written in the path |
+| 3 | Resource naming | Plural kebab-case, e.g. `/source-media`, `/material-records` |
+| 4 | Method semantics | GET for query / POST for create / PUT for full update / PATCH for partial update / DELETE for delete |
+| 5 | Batch operations | Expressed as sub-resource verbs, e.g. `POST /{resource}/batch-delete`, `POST /{resource}/{id}/cancel` |
+| 6 | Field naming | Request/response JSON fields are always `snake_case`, matching database column names |
+| 7 | Pagination | List endpoints uniformly support `page` + `page_size`, with `total` included in the response |
+| 8 | Unified response body | See §4.1.1, the single format across the whole platform |
+| 9 | Error codes | See §4.1.2; components must not define custom error codes that conflict with the global set |
+| 10 | Contract-first | Write `src/api/{component}/openapi.yaml` first, then implement frontend and backend |
+| 11 | **Granularity: business objects** | By default, only standard CRUD APIs are provided for business objects; **do not build a dedicated API for a single UI page**. Special cases (complex editors, statistical reports) may add one cautiously. The more custom APIs, the worse the maintainability |
+| 12 | Idempotency | Write operations other than POST should be idempotent whenever possible |
+| 13 | Cross-module calls | {Rules: who may call whom; direct cross-database connections are prohibited; cross-module endpoints must be registered in both parties' documents} |
 
-### 4.1.1 统一响应格式
+### 4.1.1 Unified Response Format
 
 ```json
 {
@@ -262,7 +262,7 @@ deployment/                         # 编译产物与运行环境
 }
 ```
 
-**分页列表响应**（`data` 内固定结构）：
+**Paginated list response** (fixed structure inside `data`):
 
 ```json
 {
@@ -277,339 +277,339 @@ deployment/                         # 编译产物与运行环境
 }
 ```
 
-| 字段 | 类型 | 说明 |
+| Field | Type | Explanation |
 |------|------|------|
-| `code` | int | {0 表示成功，非 0 见 §4.1.2} |
-| `message` | string | {成功固定为 "success"；失败为面向用户的错误描述，前端直接展示} |
-| `data` | object / null | {业务数据；无返回值时为 `null` 或 `{}`} |
-| `items` | array | {当前页记录数组} |
-| `total` | int | {符合查询条件的总记录数（非当前页数量）} |
-| `page` | int | {当前页码，从 1 开始} |
-| `page_size` | int | {每页条数，默认 {50}} |
+| `code` | int | {0 means success; for non-zero see §4.1.2} |
+| `message` | string | {fixed as "success" on success; on failure, a user-facing error description that the frontend displays directly} |
+| `data` | object / null | {business data; `null` or `{}` when there is no return value} |
+| `items` | array | {array of records for the current page} |
+| `total` | int | {total number of records matching the query (not the count on the current page)} |
+| `page` | int | {current page number, starting from 1} |
+| `page_size` | int | {number of records per page, default {50}} |
 
-### 4.1.2 全局错误码
+### 4.1.2 Global Error Codes
 
-| HTTP | code | message 示例 | 含义 | 触发场景 |
+| HTTP | code | message example | Meaning | Trigger Scenario |
 |------|------|-------------|------|---------|
-| 200 | `0` | `success` | 成功 | — |
-| 400 | `{40001}` | `{invalid parameter}` | 参数校验失败 | {输入验证不通过} |
-| 401 | `{40101}` | `{unauthorized}` | 未认证 | {Token 缺失或过期} |
-| 403 | `{40301}` | `{forbidden}` | 无权限 | {已认证但无操作权限} |
-| 404 | `{40401}` | `{resource not found}` | 资源不存在 | {ID 不存在、动态表未创建} |
-| 409 | `{40901}` | `{conflict}` | 冲突 | {唯一键重复} |
-| 500 | `{50001}` | `{internal server error}` | 服务器内部错误 | {未捕获异常} |
+| 200 | `0` | `success` | Success | — |
+| 400 | `{40001}` | `{invalid parameter}` | Parameter validation failed | {Input validation failed} |
+| 401 | `{40101}` | `{unauthorized}` | Not authenticated | {Token missing or expired} |
+| 403 | `{40301}` | `{forbidden}` | No permission | {Authenticated but lacking permission for the operation} |
+| 404 | `{40401}` | `{resource not found}` | Resource not found | {ID does not exist, dynamic table not created} |
+| 409 | `{40901}` | `{conflict}` | Conflict | {Unique key duplicate} |
+| 500 | `{50001}` | `{internal server error}` | Internal server error | {Uncaught exception} |
 
-> 组件私有错误码从 `{组件错误码段}` 起分配，须在组件 `tech_design.md` 中登记，不得与本表冲突。
+> Component-private error codes are allocated starting from `{component error code range}` and must be registered in the component's `tech_design.md`; they must not conflict with this table.
 
 <a id="c4-2"></a>
 
-## 4.2 数据库设计规范
+## 4.2 Database Design Conventions
 
-| # | 规则 | 说明 |
+| # | Rule | Explanation |
 |---|------|------|
-| 1 | **隔离原则** | 每个产品组件使用独立的数据库（或 Schema）。**跨模块禁止直连对方数据库**，须通过对方 API 获取。跨库引用**不设外键约束**，靠程序逻辑保障 |
-| 2 | 表名 | `snake_case`，{单数 / 复数} 形式 |
-| 3 | 列名 | `snake_case`，与类成员名一一对应（见 [naming_convention.md](./naming_convention.md) §4） |
-| 4 | 主键 | 默认自增 `INT`，命名 `{对象缩写}_id`；分布式场景方可用 UUID，且须在组件文档说明 |
-| 5 | 审计字段 | 每张表必须包含 `created_at`、`updated_at`{、`created_by`} |
-| 6 | 时间字段 | 类型统一 `TIMESTAMPTZ`；`updated_at` 由 **DB 触发器自动维护**，并在文档中标注 `auto-update via DB trigger` |
-| 7 | **软删除** | 统一使用 `deleted_at TIMESTAMPTZ NULL`（**不使用** `is_deleted BOOLEAN`）。`NULL` = 未删除 |
-| 8 | **启用标志** | 统一使用 `is_active BOOLEAN NOT NULL DEFAULT true`。`is_active` 与 `deleted_at` 语义正交，不可互相替代 |
-| 9 | 默认字段类型 | 字符串默认 `TEXT`；整数默认 `INT`；浮点默认 `{FLOAT}`。例外须在组件文档说明 |
-| 10 | 枚举存储 | 以 `TEXT` 存储枚举**字面量**（如 `NEWS_FEED`），不使用数据库原生 enum 类型 |
-| 11 | **结构化字段** | 使用 `JSONB`。若其子字段参与查询或排序，**必须建立表达式索引**（如 `(bias_indexes->>'score')::int`），并在 API 文档中说明"API 参数名 → SQL 表达式"的映射 |
-| 12 | **索引必须标注** | 所有出现在 `WHERE` / `ORDER BY` / `JOIN` 的字段必须有索引，且在组件 `tech_design.md` 的表定义中以独立 `Index` 列标注（`None` / `BTREE` / `UNIQUE` / `GIN`） |
-| 13 | 不可变字段 | 用作分表名或对外标识的字段（如 `code_name`）创建后不可修改，须在表定义和 UPDATE API 中双向标注 |
-| 14 | 迁移管理 | {当前阶段方案：`CREATE TABLE IF NOT EXISTS` 初始化脚本 / 正式方案：{golang-migrate} + `sql/migrations/`} |
-| 15 | 动态分表 | {若存在按 `code_name` 动态建表的机制，须说明：建表时机、表不存在时 API 的行为（跳过 or 404）、表名白名单校验规则} |
+| 1 | **Isolation principle** | Each product component uses an independent database (or schema). **Direct cross-module connections to another component's database are prohibited**; access must go through that component's API. Cross-database references **do not use foreign-key constraints**; referential correctness is ensured by application logic |
+| 2 | Table names | `snake_case`, {singular / plural} form |
+| 3 | Column names | `snake_case`, corresponding one-to-one with class member names (see [naming_convention.md](./naming_convention.md) §4) |
+| 4 | Primary keys | Default auto-increment `INT`, named `{object_abbreviation}_id`; UUID may be used in distributed scenarios, and must be documented in the component document |
+| 5 | Audit fields | Every table must include `created_at`, `updated_at`{, `created_by`} |
+| 6 | Timestamp fields | Type uniformly `TIMESTAMPTZ`; `updated_at` is **auto-maintained by a DB trigger**, annotated in the documentation as `auto-update via DB trigger` |
+| 7 | **Soft delete** | Uniformly use `deleted_at TIMESTAMPTZ NULL` (**do not use** `is_deleted BOOLEAN`). `NULL` = not deleted |
+| 8 | **Active flag** | Uniformly use `is_active BOOLEAN NOT NULL DEFAULT true`. `is_active` and `deleted_at` are orthogonal in meaning and must not substitute for each other |
+| 9 | Default field types | String defaults to `TEXT`; integer defaults to `INT`; float defaults to `{FLOAT}`. Exceptions must be documented in the component document |
+| 10 | Enum storage | Store enum **literals** (e.g. `NEWS_FEED`) as `TEXT`; never use a native database enum type |
+| 11 | **Structured fields** | Use `JSONB`. If a sub-field participates in queries or sorting, an **expression index must be created** (e.g. `(bias_indexes->>'score')::int`), and the "API parameter name → SQL expression" mapping must be documented in the API documentation |
+| 12 | **Indexes must be documented** | Every field appearing in `WHERE` / `ORDER BY` / `JOIN` must have an index, and it must be annotated in a dedicated `Index` column in the table definitions of the component `tech_design.md` (`None` / `BTREE` / `UNIQUE` / `GIN`) |
+| 13 | Immutable fields | Fields used as a table-sharding name or an external identifier (e.g. `code_name`) must not be modified after creation, and must be annotated bidirectionally in both the table definition and the UPDATE API |
+| 14 | Migration management | {Current-stage approach: `CREATE TABLE IF NOT EXISTS` initialization scripts / formal approach: {golang-migrate} + `sql/migrations/`} |
+| 15 | Dynamic table sharding | {If a mechanism exists for creating tables dynamically by `code_name`, it must document: when tables are created, the API's behavior when a table does not exist (skip or 404), and the table-name allowlist validation rule} |
 
-### 4.2.1 数据库划分
+### 4.2.1 Database Partitioning
 
-按业务逻辑和业务对象关系划分，**不把所有数据放在一个库**。平台/模块的基本配置**不入库**，使用配置文件存储。
+Partitioned by business logic and business-object relationships; **do not put all data in one database**. Basic platform/module configuration **is not stored in the database**; it is stored in configuration files.
 
-| 数据库名 | 用途说明 | 归属模块 | 谁能读 |
+| Database Name | Purpose | Owning Module | Who May Read |
 |---------|---------|---------|--------|
-| `{db_name_1}` | {用途} | `{owner_component}` | {owner 写；其他模块经 API 读} |
-| `{db_name_2}` | {用途} | `{owner_component}` | {说明} |
+| `{db_name_1}` | {Purpose} | `{owner_component}` | {Owner writes; other modules read via API} |
+| `{db_name_2}` | {Purpose} | `{owner_component}` | {Explanation} |
 
-> 其它特殊需求的数据库由各模块在自己的 `tech_design.md` 中定义和说明。
+> Databases for other special needs are defined and documented by each module in its own `tech_design.md`.
 
 <a id="c4-3"></a>
 
-## 4.3 前端开发规范
+## 4.3 Frontend Development Conventions
 
-| # | 规则 | 说明 |
+| # | Rule | Explanation |
 |---|------|------|
-| 1 | 语言与类型 | {TypeScript strict}；{禁止 `any`，极端第三方兼容场景除外} |
-| 2 | 框架与版本 | 见 §5.2 版本锁定表，**各组件不得自行升级** |
-| 3 | 目录命名 | `src/frontend/packages/` 下使用 **kebab-case** |
-| 4 | 组件结构 | {函数组件 + Hooks，按功能模块组织文件} |
-| 5 | 状态管理 | {方案，如 Zustand：按业务实体一实体一 store + 全局 `uiStore`}；表单临时状态用组件内 `useState`，不入全局 store |
-| 6 | API 客户端 | 每包 `src/services/api.ts` 统一封装；**禁止在页面内直接发请求或手写 URL** |
-| 7 | 类型定义 | `src/models/`，类型名遵循 [naming_convention.md](./naming_convention.md) 的 `C`/`E`/`I` 前缀 |
-| 8 | 样式与配色 | 一律遵循 [uiux_design_specification.md](./uiux_design_specification.md)，本文不重复定义 |
-| 9 | 页面设计模式 | 一律引用 `uiux_design_specification.md` §2 的模式编号，不自创模式 |
-| 10 | **API 调试页** | 每个组件必须提供一个 API 调试页，覆盖本模块全部端点 + 被本模块跨模块调用的外部端点 |
+| 1 | Language and typing | {TypeScript strict}; {`any` is prohibited, except for extreme third-party compatibility cases} |
+| 2 | Framework and version | See the version lock table in §5.2; **no component may upgrade on its own** |
+| 3 | Directory naming | Use **kebab-case** under `src/frontend/packages/` |
+| 4 | Component structure | {Function components + Hooks, files organized by functional module} |
+| 5 | State management | {Approach, e.g. Zustand: one store per business entity + a global `uiStore`}; transient form state uses component-local `useState`, not the global store |
+| 6 | API client | Each package uniformly wraps calls in `src/services/api.ts`; **making requests or hardcoding URLs directly in pages is prohibited** |
+| 7 | Type definitions | `src/models/`, type names follow the `C`/`E`/`I` prefixes in [naming_convention.md](./naming_convention.md) |
+| 8 | Styling and color scheme | Always follow [uiux_design_specification.md](./uiux_design_specification.md); not redefined here |
+| 9 | Page design patterns | Always reference the pattern numbers in `uiux_design_specification.md` §2; do not invent new patterns |
+| 10 | **API debug page** | Every component must provide an API debug page covering all endpoints of that module plus any external endpoints called cross-module by that module |
 
 <a id="c4-4"></a>
 
-## 4.4 后端开发规范
+## 4.4 Backend Development Conventions
 
-| # | 规则 | 说明 |
+| # | Rule | Explanation |
 |---|------|------|
-| 1 | 分层 | 见 §1.3 职责边界表，**禁止跨层调用** |
-| 2 | 目录命名 | `src/backend/` 下使用 **snake_case** |
-| 3 | 输入验证 | 在 `handler` 层完成；具体规则（正则、长度、取值域）写入组件 `tech_design.md` 附录 |
-| 4 | 事务 | 在 `service` 层开启，`repository` 不自行提交 |
-| 5 | 配置 | {方案，如 Viper + 环境变量覆盖}；敏感项只走环境变量 |
-| 6 | **动态表名防注入** | 由用户输入拼接的表名/列名，**必须先用正则白名单校验**（如 `^[a-z][a-z0-9_]*$`，长度 {3–64}）再拼接 SQL；不通过则返回 400。参数值一律用参数化查询，禁止字符串拼接 |
-| 7 | 表不存在的处理 | 跨表聚合查询遇到未创建的动态表应**跳过不报错**；单表查询返回 404。须在组件 API 文档中逐个端点写明 |
-| 8 | 只读/系统字段 | 系统计算字段（统计值、审计字段）不得出现在 POST/PUT 可写字段列表中，须在 API 文档的"可写字段排除列表"中显式列出 |
-| 9 | 枚举与常量 | 后端枚举定义须与 `tech_design.md` §2 的 `E` 前缀枚举逐值一致 |
-| 10 | 单元测试 | {范围与要求，如：service 层必须有单测，handler/repository 可选} |
+| 1 | Layering | See the responsibility boundary table in §1.3; **cross-layer calls are prohibited** |
+| 2 | Directory naming | Use **snake_case** under `src/backend/` |
+| 3 | Input validation | Done at the `handler` layer; concrete rules (regex, length, value ranges) go in the component `tech_design.md` appendix |
+| 4 | Transactions | Opened at the `service` layer; `repository` does not commit on its own |
+| 5 | Configuration | {Approach, e.g. Viper + environment variable overrides}; sensitive items go only through environment variables |
+| 6 | **Dynamic table-name injection protection** | A table/column name assembled from user input **must first be validated against a regex allowlist** (e.g. `^[a-z][a-z0-9_]*$`, length {3–64}) before being concatenated into SQL; return 400 if it fails validation. Parameter values must always use parameterized queries; string concatenation is prohibited |
+| 7 | Handling nonexistent tables | Cross-table aggregate queries encountering a dynamic table that has not been created should **skip it without error**; single-table queries return 404. This must be documented endpoint by endpoint in the component's API documentation |
+| 8 | Read-only/system fields | System-computed fields (statistics, audit fields) must not appear in the writable field list for POST/PUT, and must be explicitly listed in the API documentation's "excluded writable fields" list |
+| 9 | Enums and constants | Backend enum definitions must match the `E`-prefixed enums in `tech_design.md` §2 value for value |
+| 10 | Unit testing | {Scope and requirements, e.g.: the service layer must have unit tests; handler/repository are optional} |
 
 <a id="c4-5"></a>
 
-## 4.5 日志与可观测性规范
+## 4.5 Logging and Observability Conventions
 
-| 级别 | 使用场景 | 必含字段 |
+| Level | Usage Scenario | Required Fields |
 |------|---------|---------|
-| `DEBUG` | {开发期详细追踪，生产关闭} | {trace_id, 关键入参} |
-| `INFO` | {正常业务节点：服务启动、任务开始/结束} | {trace_id, 操作对象 id, 耗时} |
-| `WARN` | {可恢复的异常：重试、降级、配置缺省} | {trace_id, 原因} |
-| `ERROR` | {失败且不可恢复：请求失败、任务异常} | {trace_id, 错误堆栈, 上下文} |
+| `DEBUG` | {Detailed tracing during development, disabled in production} | {trace_id, key input parameters} |
+| `INFO` | {Normal business milestones: service startup, task start/end} | {trace_id, target object id, duration} |
+| `WARN` | {Recoverable anomalies: retries, degradation, missing configuration defaults} | {trace_id, reason} |
+| `ERROR` | {Unrecoverable failures: request failures, task exceptions} | {trace_id, error stack, context} |
 
-| # | 规则 | 说明 |
+| # | Rule | Explanation |
 |---|------|------|
-| 1 | 输出格式 | {结构化 JSON 日志} |
-| 2 | 请求追踪 | {`trace_id` 生成与透传规则；跨模块调用须透传} |
-| 3 | 敏感信息 | 密码、Token、Cookie 一律脱敏，禁止原文入日志 |
-| 4 | daemon 心跳 | {常驻进程的存活判定方式与阈值，及其已知局限} |
-| 5 | 日志留存 | {位置、轮转策略、保留周期} |
+| 1 | Output format | {Structured JSON logs} |
+| 2 | Request tracing | {`trace_id` generation and propagation rules; must be propagated across cross-module calls} |
+| 3 | Sensitive information | Passwords, tokens, and cookies must always be masked; raw values must never be written to logs |
+| 4 | Daemon heartbeat | {How resident processes' liveness is determined and the thresholds used, plus known limitations} |
+| 5 | Log retention | {Location, rotation policy, retention period} |
 
 <a id="c4-6"></a>
 
-## 4.6 安全规范
+## 4.6 Security Conventions
 
-| # | 项目 | 规则 |
+| # | Item | Rule |
 |---|------|------|
-| 1 | 认证 | {方案，如 OAuth + JWT；签名算法；有效期} |
-| 2 | 授权 | {方案，如 RBAC；权限矩阵位置} |
-| 3 | 传输 | {HTTPS 强制；CORS 白名单来源} |
-| 4 | 密钥管理 | {方案；**禁止硬编码入库**，禁止提交进 Git} |
-| 5 | 注入防护 | 参数化查询 + 表名白名单（见 §4.4 第 6 条） |
-| 6 | 越权防护 | {对象级权限校验位置} |
-| 7 | 审计 | {需要留痕的操作清单} |
+| 1 | Authentication | {Approach, e.g. OAuth + JWT; signing algorithm; validity period} |
+| 2 | Authorization | {Approach, e.g. RBAC; location of the permission matrix} |
+| 3 | Transport | {HTTPS enforced; CORS allowlist of origins} |
+| 4 | Secrets management | {Approach; **hardcoding into the codebase is prohibited**, committing to Git is prohibited} |
+| 5 | Injection protection | Parameterized queries + table-name allowlist (see §4.4 item 6) |
+| 6 | Privilege-escalation protection | {Location of object-level permission checks} |
+| 7 | Auditing | {List of operations that must be logged for audit purposes} |
 
 <a id="c4-7"></a>
 
-## 4.7 版本管理规范
+## 4.7 Version Management Conventions
 
-平台采用**多组件独立版本控制**（Per-Component Versioning）：每个可独立发布的单元
-（文档、前端包、后端服务、公用库）在其目录中放置一个 `VERSION` 文件，内容为纯文本一行版本号
-（如 `0.0.0`，**不带 `v` 前缀**）。各组件按自身节奏独立演进，不要求版本号同步。
+The platform adopts **independent per-component versioning** (Per-Component Versioning): each independently releasable unit
+(document, frontend package, backend service, shared library) has a `VERSION` file in its directory, containing a single plain-text
+version-number line (e.g. `0.0.0`, **without a `v` prefix**). Each component evolves independently at its own pace; version numbers are not required to be synchronized.
 
-| 项目 | 规则 |
+| Item | Rule |
 |------|------|
-| 版本号格式 | `vA.B.C.D.E`，详见 `docs/version_plan.md` |
-| VERSION 文件 | 纯文本一行，不带 `v` 前缀 |
-| Git Tag | `{层}/{组件名}/v{版本号}`，如 `be/{component_code_name}/v0.2.3` |
-| CI/CD 集成 | 读取 `VERSION` 决定镜像 Tag、制品版本号与 Changelog |
-| 文档版本 | 每份设计文档头部标注 `**Document Version**: {x.y.z}`，并在文末维护 Change Log |
+| Version number format | `vA.B.C.D.E`, see `docs/version_plan.md` for details |
+| VERSION file | Single plain-text line, without a `v` prefix |
+| Git Tag | `{layer}/{component_name}/v{version}`, e.g. `be/{component_code_name}/v0.2.3` |
+| CI/CD integration | Reads `VERSION` to determine image tags, artifact version numbers, and changelog |
+| Document version | Every design document header is annotated with `**Document Version**: {x.y.z}`, and a Change Log is maintained at the end |
 
-> 完整规范见 `docs/version_plan.md`（模板：`templates/platform/_version_plan.md`）
-> 与 [project_directory_plan.md](../project_directory_plan.md) §5。
-> 组件自身的版本路线图见各组件的 `{component_code_name}_version_plan.md`。
+> Full conventions: see `docs/version_plan.md` (template: `templates/platform/_version_plan.md`)
+> and [project_directory_plan.md](../project_directory_plan.md) §5.
+> Each component's own version roadmap is in its `{component_code_name}_version_plan.md`.
 
 ---
 
 <a id="c5"></a>
 
-# 5 开发语言与依赖
+# 5 Development Languages and Dependencies
 
-> **本章是版本锁定表，也是唯一权威。** 任何组件不得使用未在此列出的语言或主要依赖；
-> 需要新增或升级时，**必须先更新本章**，再更新组件文档和代码。
-> 组件 `tech_design.md` 的"Major Dependencies"只能是本章的子集，且不得指定不同版本。
+> **This chapter is the version lock table and the sole authority.** No component may use a language or major dependency not listed here;
+> to add or upgrade one, **this chapter must be updated first**, followed by the component documentation and code.
+> A component's `tech_design.md` "Major Dependencies" may only be a subset of this chapter and must not specify a different version.
 
 <a id="c5-1"></a>
 
-## 5.1 开发语言与运行时
+## 5.1 Languages and Runtimes
 
-| 语言 / 运行时 | 版本 | 锁定粒度 | 用途 |
+| Language / Runtime | Version | Lock Granularity | Purpose |
 |--------------|------|---------|------|
-| {Go} | {1.25.x} | {minor} | {后端服务与 daemon} |
-| {TypeScript} | {5.7.3} | {patch} | {前端} |
-| {Python} | {3.12} | {minor} | {数据迁移 / AI 任务} |
+| {Go} | {1.25.x} | {minor} | {Backend services and daemons} |
+| {TypeScript} | {5.7.3} | {patch} | {Frontend} |
+| {Python} | {3.12} | {minor} | {Data migration / AI tasks} |
 
 <a id="c5-2"></a>
 
-## 5.2 前端主要依赖
+## 5.2 Frontend Major Dependencies
 
-| 依赖 | 版本 | 锁定粒度 | 用途 |
+| Dependency | Version | Lock Granularity | Purpose |
 |------|------|---------|------|
-| {React} | {19.0.0} | {patch} | {UI 框架} |
-| {Vite} | {6.2.0} | {patch} | {构建工具} |
-| {React Router} | {7.x} | {major} | {路由} |
-| {UI 组件库} | {5.x} | {major} | {组件库} |
-| {状态管理} | {5.x} | {major} | {全局状态} |
-| {HTTP 客户端} | {1.x} | {major} | {API 调用} |
-| {包管理器} | {9.x} | {major} | {Monorepo workspace} |
+| {React} | {19.0.0} | {patch} | {UI framework} |
+| {Vite} | {6.2.0} | {patch} | {Build tool} |
+| {React Router} | {7.x} | {major} | {Routing} |
+| {UI component library} | {5.x} | {major} | {Component library} |
+| {State management} | {5.x} | {major} | {Global state} |
+| {HTTP client} | {1.x} | {major} | {API calls} |
+| {Package manager} | {9.x} | {major} | {Monorepo workspace} |
 
-> 锁定粒度说明：`patch` = 锁到补丁号；`major` = 锁到大版本，使用该大版本下的最新补丁。
+> Lock granularity explanation: `patch` = locked to the patch number; `major` = locked to the major version, using the latest patch under that major version.
 
 <a id="c5-3"></a>
 
-## 5.3 后端主要依赖 — {语言A}
+## 5.3 Backend Major Dependencies — {LanguageA}
 
-| 依赖 | 版本 | 用途 |
+| Dependency | Version | Purpose |
 |------|------|------|
-| {Web 框架} | {1.x} | {HTTP 路由与中间件} |
-| {ORM} | {2.x} | {数据访问} |
-| {配置管理} | {1.x} | {配置加载} |
-| {数据库驱动} | {版本} | {数据库连接} |
+| {Web framework} | {1.x} | {HTTP routing and middleware} |
+| {ORM} | {2.x} | {Data access} |
+| {Configuration management} | {1.x} | {Config loading} |
+| {Database driver} | {version} | {Database connectivity} |
 
 <a id="c5-4"></a>
 
-## 5.4 后端主要依赖 — {语言B}
+## 5.4 Backend Major Dependencies — {LanguageB}
 
-| 依赖 | 版本 | 用途 |
+| Dependency | Version | Purpose |
 |------|------|------|
-| {依赖} | {版本} | {用途} |
+| {Dependency} | {Version} | {Purpose} |
 
 <a id="c5-5"></a>
 
-## 5.5 数据库与中间件
+## 5.5 Database and Middleware
 
-| 组件 | 版本 | 用途 |
+| Component | Version | Purpose |
 |------|------|------|
-| {PostgreSQL} | {17.x} | {主数据库} |
-| {Redis} | {7.x} | {缓存} |
-| {对象/文件存储} | {版本} | {媒体文件} |
+| {PostgreSQL} | {17.x} | {Primary database} |
+| {Redis} | {7.x} | {Cache} |
+| {Object/file storage} | {version} | {Media files} |
 
 <a id="c5-6"></a>
 
-## 5.6 基础设施与工具链
+## 5.6 Infrastructure and Toolchain
 
-| 工具 | 版本 | 用途 |
+| Tool | Version | Purpose |
 |------|------|------|
-| {Docker} | {版本} | {容器化} |
-| {编排方案} | {版本} | {服务编排} |
-| {CI 平台} | — | {流水线} |
-| {迁移工具} | {版本} | {数据库迁移} |
+| {Docker} | {version} | {Containerization} |
+| {Orchestration approach} | {version} | {Service orchestration} |
+| {CI platform} | — | {Pipeline} |
+| {Migration tool} | {version} | {Database migration} |
 
 ---
 
 <a id="c6"></a>
 
-# 6 部署与环境概述
+# 6 Deployment and Environment Overview
 
 <a id="c6-1"></a>
 
-## 6.1 环境划分
+## 6.1 Environment Types
 
-| 环境 | 标识 | 用途 | 数据来源 | 访问方式 |
+| Environment | Identifier | Purpose | Data Source | Access Method |
 |------|------|------|---------|---------|
-| 开发 | `dev` | {本地开发与联调} | {样例数据脚本} | {本地端口直连} |
-| 测试 | `staging` | {集成测试与验收} | {脱敏数据} | {内网域名} |
-| 生产 | `prod` | {对外服务} | {真实数据} | {公网域名 + HTTPS} |
+| Development | `dev` | {Local development and integration} | {Sample data scripts} | {Direct local port} |
+| Staging | `staging` | {Integration testing and acceptance} | {Anonymized data} | {Internal domain} |
+| Production | `prod` | {Serving external users} | {Real data} | {Public domain + HTTPS} |
 
 <a id="c6-2"></a>
 
-## 6.2 容器化与编排
+## 6.2 Containerization and Orchestration
 
-| 项目 | 方案 |
+| Item | Approach |
 |------|------|
-| 镜像构建 | {每组件一个 Dockerfile，位置} |
-| 镜像 Tag | {读取 VERSION 文件生成} |
-| 编排 | {docker-compose / K8s，清单位置} |
-| 服务清单 | {前端 1 个 + 后端 N 个 + daemon M 个 + 数据库} |
+| Image build | {One Dockerfile per component; location} |
+| Image tag | {Generated by reading the VERSION file} |
+| Orchestration | {docker-compose / K8s, manifest location} |
+| Service inventory | {1 frontend + N backends + M daemons + database} |
 
 <a id="c6-3"></a>
 
-## 6.3 CI/CD 流水线
+## 6.3 CI/CD Pipeline
 
-| 阶段 | 触发条件 | 动作 | 产物 |
+| Stage | Trigger Condition | Action | Artifact |
 |------|---------|------|------|
-| {lint} | {PR} | {静态检查} | {报告} |
-| {build} | {push to main} | {编译前后端} | {制品} |
-| {test} | {build 后} | {单元测试} | {测试报告} |
-| {package} | {test 通过} | {构建镜像并按 VERSION 打 Tag} | {镜像} |
-| {deploy} | {手动确认} | {发布到目标环境} | — |
+| {lint} | {PR} | {Static checks} | {Report} |
+| {build} | {push to main} | {Compile frontend and backend} | {Artifact} |
+| {test} | {after build} | {Unit tests} | {Test report} |
+| {package} | {tests pass} | {Build image and tag it per VERSION} | {Image} |
+| {deploy} | {manual confirmation} | {Release to target environment} | — |
 
 <a id="c6-4"></a>
 
-## 6.4 统一部署目录（deployment/）
+## 6.4 Unified Deployment Directory (deployment/)
 
 ```
 deployment/
-├── {子目录1}/                  # {说明}
-├── {子目录2}/                  # {说明}
-└── {配置文件}                  # {说明}
+├── {subdirectory1}/                  # {Explanation}
+├── {subdirectory2}/                  # {Explanation}
+└── {config file}                     # {Explanation}
 ```
 
-| 目录/文件 | 用途 | 是否入 Git |
+| Directory/File | Purpose | Committed to Git |
 |----------|------|-----------|
-| `{路径}` | {用途} | {是/否（含密钥则否）} |
+| `{path}` | {Purpose} | {Yes/No (No if it contains secrets)} |
 
 ---
 
 <a id="c7"></a>
 
-# 7 附录
+# 7 Appendix
 
 <a id="c7-1"></a>
 
-## 7.1 参考文档
+## 7.1 Reference Documents
 
-| # | 文档 | 层级 | 说明 |
+| # | Document | Layer | Description |
 |---|------|------|------|
-| 1 | [business_overview.md](./business_overview.md) | 平台级 | 业务与产品总览 |
-| 2 | [uiux_design_specification.md](./uiux_design_specification.md) | 平台级 | UI/UX 设计规范 |
-| 3 | [naming_convention.md](./naming_convention.md) | 平台级 | 命名规范 |
-| 4 | [project_directory_plan.md](../project_directory_plan.md) | 平台级 | 项目目录规划 |
-| 5 | [APIs/api_endpoint_list.md](./APIs/api_endpoint_list.md) | 平台级 | 全平台 API 端点汇总 |
-| 6 | [common_lib/common_lib_tech_design.md](./common_lib/common_lib_tech_design.md) | 公共库 | 跨模块共享类型与工具 |
+| 1 | [business_overview.md](./business_overview.md) | Platform-level | Business and product overview |
+| 2 | [uiux_design_specification.md](./uiux_design_specification.md) | Platform-level | UI/UX design conventions |
+| 3 | [naming_convention.md](./naming_convention.md) | Platform-level | Naming conventions |
+| 4 | [project_directory_plan.md](../project_directory_plan.md) | Platform-level | Project directory plan |
+| 5 | [APIs/api_endpoint_list.md](./APIs/api_endpoint_list.md) | Platform-level | Platform-wide API endpoint summary |
+| 6 | [common_lib/common_lib_tech_design.md](./common_lib/common_lib_tech_design.md) | Shared library | Cross-module shared types and utilities |
 
 <a id="c7-2"></a>
 
-## 7.2 名词解释
+## 7.2 Glossary
 
-| 术语 | 定义 |
+| Term | Definition |
 |------|------|
-| {幂等性} | {同一请求执行一次与执行多次对系统状态的影响相同} |
-| {软删除} | {不物理删除记录，仅置 `deleted_at` 为删除时刻} |
-| {动态分表} | {按业务标识（如 `code_name`）在运行时创建的同构表} |
-| {术语} | {定义} |
+| {Idempotency} | {Executing the same request once versus multiple times has the same effect on system state} |
+| {Soft delete} | {Records are not physically deleted; `deleted_at` is set to the time of deletion} |
+| {Dynamic table sharding} | {Structurally identical tables created at runtime keyed by a business identifier (e.g. `code_name`)} |
+| {Term} | {Definition} |
 
 <a id="c7-3"></a>
 
-## 7.3 常用关键词中英文对照
+## 7.3 Chinese-English Glossary of Common Terms
 
-| 中文 | 英文 | 代码标识 |
+| Chinese | English | Code Identifier |
 |------|------|---------|
-| {信息源} | {source media} | `source_media` |
-| {中文} | {English} | `{code_name}` |
+| {Source Media} | {source media} | `source_media` |
+| {Chinese} | {English} | `{code_name}` |
 
-> 缩写规则见 [naming_convention.md](./naming_convention.md) §2。本表只做中英对照，不定义缩写。
+> Abbreviation rules: see [naming_convention.md](./naming_convention.md) §2. This table is a Chinese-English mapping only; it does not define abbreviations.
 
 ---
 
 <a id="c8"></a>
 
-# 8 目录和文件命名规则
+# 8 Directory and File Naming Rules
 
-| 范围 | 命名风格 | 示例 |
+| Scope | Naming Style | Example |
 |------|---------|------|
-| 所有 `docs/` 目录和文件 | **snake_case** | `{component_code_name}/`、`{component_code_name}_tech_design.md` |
-| 所有后端代码（`src/backend/`） | **snake_case** | `{component_code_name}/`、`source_media_handler.go` |
-| 所有前端代码（`src/frontend/`） | **kebab-case** | `{component-code-name}/`、`source-media-list.tsx` |
-| `ui_page_design/` 子目录 | 自由格式 | `P{nn}  {页面中文名}/`（第三方工具生成，不强制 snake_case） |
-| `.mmd` / `.png` 图 | 与所属文档同前缀 | `{component_code_name}_class_diagram.mmd` |
+| All `docs/` directories and files | **snake_case** | `{component_code_name}/`, `{component_code_name}_tech_design.md` |
+| All backend code (`src/backend/`) | **snake_case** | `{component_code_name}/`, `source_media_handler.go` |
+| All frontend code (`src/frontend/`) | **kebab-case** | `{component-code-name}/`, `source-media-list.tsx` |
+| `ui_page_design/` subdirectories | Free format | `P{nn}  {PageName}/` (generated by a third-party tool, not required to be snake_case) |
+| `.mmd` / `.png` diagrams | Same prefix as the document they belong to | `{component_code_name}_class_diagram.mmd` |
 
-> **例外**：`VERSION`、`README.md`、`.gitkeep` 等通用文件名保持原样，不受上述规则约束。
+> **Exception**: generic filenames such as `VERSION`, `README.md`, `.gitkeep` keep their original form and are not subject to the rules above.
 
-详细规则见 [naming_convention.md](./naming_convention.md) 与
-[project_directory_plan.md](../project_directory_plan.md) §1.1。
+Detailed rules: see [naming_convention.md](./naming_convention.md) and
+[project_directory_plan.md](../project_directory_plan.md) §1.1.
 
 ---
 
@@ -617,4 +617,4 @@ deployment/
 
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
-| {x.y.z} | {YYYY-MM-DD} | {Author} | {变更说明} |
+| {x.y.z} | {YYYY-MM-DD} | {Author} | {Description of change} |

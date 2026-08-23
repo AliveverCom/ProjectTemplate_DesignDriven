@@ -1,189 +1,190 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档 —— 04_DebugFix
+[Document Tier] AI Development Process Documents —— 04_DebugFix
 
-【本目录收什么】
-  - 单个缺陷 / 联调故障的**排查与修复过程记录**（本文件）
-  - 一批缺陷的**修复汇总报告**（_FixReport.md）
-  边界：
-    - 成体系的、主动发起的代码审查放 `03_CodeReviewRefine/`
-    - 文档 / 设计稿的审查放 `01_DocReviewRefine/`
+[What This Directory Holds]
+  - The **investigation and fix process record** for a single defect / integration failure (this file)
+  - A **fix summary report** for a batch of defects (_FixReport.md)
+  Boundaries:
+    - Systematic, proactively-initiated code review goes in `03_CodeReviewRefine/`
+    - Reviews of documents / design mockups go in `01_DocReviewRefine/`
 
-【本文件定位】
-  记录一次具体故障从现象到闭环的完整过程，重点是**排查路径**
-  （试过哪些假设、如何证伪）而非只有结论 —— 这样下次遇到类似现象可以直接复用排查路径。
-  一个缺陷一份；同一缺陷多轮排查追加 -r{n}。
+[This File's Purpose]
+  Records the complete process of a specific failure from symptom to closure, with emphasis on the
+  **investigation path** (which hypotheses were tried, how they were disproved) rather than just the
+  conclusion — so that a similar symptom next time can directly reuse the investigation path.
+  One file per defect; if a defect requires multiple rounds of investigation, append -r{n}.
 
-【典型场景】
-  前后端联调时前端拿不到数据、字段对不上、CORS、分页参数不生效、
-  枚举值不匹配、时区错位、动态表不存在、daemon 崩溃等。
+[Typical Scenarios]
+  Frontend/backend integration issues such as the frontend not getting data, mismatched fields, CORS,
+  pagination parameters not taking effect, enum value mismatches, timezone misalignment, a dynamic
+  table not existing, daemon crashes, etc.
 
-【落盘目录】
-  平台级：docs/ai_dev_history/04_DebugFix/
-  组件级：docs/components/{component_code_name}/ai_dev_history/04_DebugFix/
+[Storage Location]
+  Platform level: docs/ai_dev_history/04_DebugFix/
+  Component level: docs/components/{component_code_name}/ai_dev_history/04_DebugFix/
 
-【文件命名】debug_{范围}_{YYYYMMDD}[-r{轮次}].md
-  {范围} 用简短标识：FE_API / BE_DB / daemon / migration 等。
-  示例：debug_FE_API_20260316-r1.md
-        debug_daemon_crash_20260402.md
+[File Naming] debug_{scope}_{YYYYMMDD}[-r{round}].md
+  {scope} uses a short identifier: FE_API / BE_DB / daemon / migration, etc.
+  Examples: debug_FE_API_20260316-r1.md
+            debug_daemon_crash_20260402.md
 
-【模板文件名】前导 `_` 只是模板标记，复制时按上面的命名规则重命名。
+[Template File Name] The leading `_` is only a template marker; rename the file per the naming rule above when copying it.
 -->
 
-# {ComponentDisplayName} {排查范围} 调试记录 r{次序}
+# {ComponentDisplayName} {Investigation Scope} Debug Record r{sequence}
 
-**日期**：{YYYY-MM-DD}
-**组件**：{component}
-**排查范围**：{例如：前端 → 后端 API 联调}
-**相关版本**：{前端 v{n} / 后端 v{n}}
-**排查人**：AI ({模型名称})
-**关联文档**：{02_DevPlanAndReport/v{版本}_FE_DevPlan.md / v{版本}_BE_DevPlan.md}
-**状态**：{🟢 已闭环 / 🟡 部分解决 / 🔴 未解决}
+**Date**: {YYYY-MM-DD}
+**Component**: {component}
+**Investigation Scope**: {e.g.: frontend → backend API integration}
+**Related Version**: {frontend v{n} / backend v{n}}
+**Investigated By**: AI ({model name})
+**Related Documents**: {02_DevPlanAndReport/v{version}_FE_DevPlan.md / v{version}_BE_DevPlan.md}
+**Status**: {🟢 Closed / 🟡 Partially Resolved / 🔴 Unresolved}
 
 ---
 
-## 1 现象描述
+## 1 Symptom
 
-{用可观测的事实描述，不带推测。写清楚：什么操作 → 期望什么 → 实际什么。}
+{Describe using observable facts, without speculation. Make clear: what action → what was expected → what actually happened.}
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| **触发操作** | {例如：打开 P01 页面，左侧选中第一个信息源} |
-| **期望结果** | {例如：右侧列表展示该信息源的素材记录} |
-| **实际结果** | {例如：右侧列表空白，控制台报 {错误信息}} |
-| **影响范围** | {例如：P01/P03 两个页面全部无法加载数据} |
-| **首次出现** | {例如：前端接入 API 后（v{版本}_FE_DevPlan Phase 4）} |
-| **是否必现** | {是 / 否（{n} 次中出现 {n} 次）} |
+| **Triggering Action** | {e.g.: opened the P01 page, selected the first source on the left} |
+| **Expected Result** | {e.g.: the right-hand list shows the material records for that source} |
+| **Actual Result** | {e.g.: the right-hand list is blank, console shows {error message}} |
+| **Impact Scope** | {e.g.: both P01/P03 pages fail to load data} |
+| **First Occurred** | {e.g.: after the frontend integrated the API (v{version}_FE_DevPlan Phase 4)} |
+| **Always Reproducible** | {Yes / No (occurred {n} out of {n} times)} |
 
-**关键报错 / 日志片段**：
+**Key Error / Log Excerpt**:
 
 ```
-{原始报错信息或日志，保留完整堆栈或响应体，不要摘要}
+{raw error message or log, keep the full stack trace or response body, do not summarize}
 ```
 
 ---
 
-## 2 复现步骤
+## 2 Reproduction Steps
 
-| # | 步骤 | 预期 | 实际 |
+| # | Step | Expected | Actual |
 |---|------|------|------|
-| 1 | {启动后端：`{命令}`} | {服务在 :{port} 监听} | {✅ 正常} |
-| 2 | {启动前端：`{命令}`} | {页面可访问} | {✅ 正常} |
-| 3 | {访问 `{路径}`} | {页面渲染} | {✅ 正常} |
-| 4 | {执行 {操作}} | {{期望}} | {❌ {实际}} |
+| 1 | {Start the backend: `{command}`} | {service listens on :{port}} | {✅ Normal} |
+| 2 | {Start the frontend: `{command}`} | {page is accessible} | {✅ Normal} |
+| 3 | {Visit `{path}`} | {page renders} | {✅ Normal} |
+| 4 | {Perform {action}} | {{expectation}} | {❌ {actual}} |
 
-**环境信息**：
+**Environment Info**:
 
-| 项目 | 值 |
+| Item | Value |
 |------|-----|
-| 操作系统 | {值} |
-| {后端语言}版本 | {值} |
-| {前端运行时}版本 | {值} |
-| 数据库版本 | {值} |
-| 后端服务地址 | {http://localhost:{port}} |
-| 前端开发服务器 | {http://localhost:{port}} |
+| Operating System | {value} |
+| {Backend language} version | {value} |
+| {Frontend runtime} version | {value} |
+| Database version | {value} |
+| Backend service address | {http://localhost:{port}} |
+| Frontend dev server | {http://localhost:{port}} |
 
 ---
 
-## 3 排查过程
+## 3 Investigation
 
-> 逐条记录假设与证伪过程。**已排除的假设同样要保留**，这是本文档最大的价值。
+> Record hypotheses and the disproving process one by one. **Disproved hypotheses must also be kept** — that is this document's greatest value.
 
-| # | 假设 | 验证方式 | 结论 |
+| # | Hypothesis | How It Was Tested | Conclusion |
 |---|------|---------|------|
-| 1 | {后端服务未启动} | {`curl {endpoint}`} | ❌ 排除：{后端正常返回 200} |
-| 2 | {端点路径不一致} | {对比 `router.go` 与 `services/{resource}Api.ts`} | ❌ 排除：{路径一致} |
-| 3 | {CORS 未放行} | {查看浏览器 Network 面板的 preflight 响应} | ❌ 排除：{`Access-Control-Allow-Origin` 已返回} |
-| 4 | {响应结构解包错误} | {对比后端 `pkg/response.go` 与前端拦截器解包逻辑} | ✅ **命中**：{前端拦截器取 `res.data` 而后端包了两层 `res.data.data`} |
-| 5 | {字段名大小写不一致} | {对比 tech_design §2 与实际 JSON} | ❌ 排除：{一致} |
+| 1 | {backend service is not running} | {`curl {endpoint}`} | ❌ Disproved: {backend returns 200 normally} |
+| 2 | {endpoint path mismatch} | {compared `router.go` with `services/{resource}Api.ts`} | ❌ Disproved: {paths match} |
+| 3 | {CORS not allowed} | {checked the preflight response in the browser Network panel} | ❌ Disproved: {`Access-Control-Allow-Origin` is already returned} |
+| 4 | {response structure unwrapping error} | {compared the backend `pkg/response.go` with the frontend interceptor's unwrapping logic} | ✅ **Confirmed**: {the frontend interceptor takes `res.data`, but the backend wraps it in two layers, `res.data.data`} |
+| 5 | {field name casing mismatch} | {compared tech_design §2 with the actual JSON} | ❌ Disproved: {they match} |
 
-**关键排查命令 / 手段**：
+**Key Investigation Commands / Techniques**:
 
 ```bash
-# {说明这条命令在验证什么}
-{命令}
+# {explain what this command verifies}
+{command}
 
-# {说明}
-{命令}
+# {explanation}
+{command}
 ```
 
 ---
 
-## 4 根因
+## 4 Root Cause
 
-**根因**：{一句话说清真正的原因。}
+**Root Cause**: {a one-sentence statement of the true cause.}
 
-**详细分析**：
+**Detailed Analysis**:
 
-{展开说明：为什么会这样、代码里哪一处的假设错了、为什么之前没暴露。}
+{expand: why this happened, which piece of code made a wrong assumption, why it was not exposed earlier.}
 
-**根因位置**：
+**Root Cause Location**:
 
-| # | 文件 | 行 | 问题代码 |
+| # | File | Line | Problematic Code |
 |---|------|----|---------|
-| 1 | `{path/to/file}` | {123} | {问题代码片段或说明} |
+| 1 | `{path/to/file}` | {123} | {problematic code snippet or description} |
 
-**为什么没被更早发现**：
+**Why It Was Not Caught Earlier**:
 
-{例如：v0.1 阶段前端用 mock 数据，从未真正调用过 API，解包逻辑没有被执行过。}
+{e.g.: during v0.1 the frontend used mock data, so the API was never actually called and the unwrapping logic was never exercised.}
 
 ---
 
-## 5 修复方案与改动文件
+## 5 Fix and Changed Files
 
-**方案**：{选定的修复方案。若有多个方案，说明为什么选这个。}
+**Approach**: {the chosen fix. If there were multiple options, explain why this one was chosen.}
 
-| # | 文件 | 改动内容 | 类型 |
+| # | File | Change | Type |
 |---|------|---------|------|
-| 1 | `{path/to/file}` | {具体改动} | {修复} |
-| 2 | `{path/to/file}` | {具体改动} | {修复} |
-| 3 | `{path/to/file}` | {补充防御性处理 / 补充日志} | {加固} |
+| 1 | `{path/to/file}` | {specific change} | {Fix} |
+| 2 | `{path/to/file}` | {specific change} | {Fix} |
+| 3 | `{path/to/file}` | {added defensive handling / added logging} | {Hardening} |
 
-**关键代码改动**：
+**Key Code Change**:
 
-```{语言}
-// 改动前
-{代码}
+```{language}
+// Before
+{code}
 
-// 改动后
-{代码}
+// After
+{code}
 ```
 
-**是否需要同步修改设计文档**：{是 / 否}。
-{若是，说明改哪个文档的哪一节，并转入 `01_DocReviewRefine/` 走文档 review 流程，
- 不要在本记录中直接改设计文档。}
+**Does the Design Document Need to Be Updated Too**: {Yes / No}.
+{If yes, state which document and section, and route it to `01_DocReviewRefine/` to go through the document review process — do not modify the design document directly in this record.}
 
 ---
 
-## 6 验证结果
+## 6 Verification Result
 
-| # | 验证项 | 方法 | 结果 |
+| # | Verification Item | Method | Result |
 |---|--------|------|------|
-| 1 | {原现象消失} | {重复 §2 复现步骤} | {🟢 通过} |
-| 2 | {相关页面回归} | {逐个访问受影响页面 {P01/P03}} | {🟢 通过} |
-| 3 | {全端点回归} | {P{nn} API 调试页逐个端点点击} | {🟢 {n}/{n} 通过} |
-| 4 | {边界场景} | {{空数据 / 大数据量 / 网络错误}} | {🟢 通过} |
-| 5 | {编译与构建} | {`{build 命令}`} | {🟢 通过} |
+| 1 | {original symptom is gone} | {repeat the §2 reproduction steps} | {🟢 Passed} |
+| 2 | {related pages regression} | {visit each affected page {P01/P03}} | {🟢 Passed} |
+| 3 | {full endpoint regression} | {click through each endpoint on the P{nn} API debug page} | {🟢 {n}/{n} passed} |
+| 4 | {boundary scenarios} | {{empty data / large data volume / network error}} | {🟢 Passed} |
+| 5 | {compile and build} | {`{build command}`} | {🟢 Passed} |
 
 ---
 
-## 7 遗留项
+## 7 Outstanding Items
 
-| # | 遗留内容 | 严重度 | 说明 | 计划处理 | 工程师回复 |
+| # | Outstanding Item | Severity | Notes | Planned Handling | Engineer's Reply |
 |---|---------|--------|------|---------|-----------|
-| 1 | {遗留问题} | 🟠 | {说明} | {v{n} / 转入 `03_CodeReviewRefine/`} | |
+| 1 | {outstanding issue} | 🟠 | {notes} | {v{n} / route to `03_CodeReviewRefine/`} | |
 
-> 「工程师回复」列由工程师人工填写，AI 生成时留空。
+> The "Engineer's Reply" column is filled in by the engineer by hand; the AI always leaves it empty.
 
 ---
 
-## 8 沉淀
+## 8 Lessons Learned
 
-> 本次排查得到的、应该防止重犯的经验。
-> 这些内容应回写到 `02_DevPlanAndReport/v{版本}_{BE|FE}_DevPlan.md` §6「开发注意事项」。
+> Lessons from this investigation that should prevent recurrence.
+> These should be written back into `02_DevPlanAndReport/v{version}_{BE|FE}_DevPlan.md` §6 "Development Notes."
 
-| # | 经验 | 建议沉淀到 |
+| # | Lesson | Suggested Destination |
 |---|------|-----------|
-| 1 | {例如：前端拦截器的解包层数必须与后端 response.go 的封装层数严格对齐，接入第一个端点时就要验证} | `v{版本}_FE_DevPlan.md` §{n} |
-| 2 | {例如：新组件接入 API 的第一步应先跑通 API 调试页，再改造业务页面} | `v{版本}_FE_DevPlan.md` §{n} |
+| 1 | {e.g.: the number of unwrapping layers in the frontend interceptor must strictly match the number of wrapping layers in the backend's response.go — this must be verified as soon as the first endpoint is integrated} | `v{version}_FE_DevPlan.md` §{n} |
+| 2 | {e.g.: the first step when integrating a new component with the API should be to get the API debug page working, before adapting the business page} | `v{version}_FE_DevPlan.md` §{n} |

@@ -1,384 +1,385 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档 —— `02_DevPlanAndReport`
+[Document Tier] AI Development Process Docs —— `02_DevPlanAndReport`
 
-【本目录收什么】开发计划、开发报告、保存现场、AI handover、改进计划、
-       命名规范化与目录整理计划。即"计划做什么"和"实际做成什么"这两类文档。
+[What this directory holds] Dev plans, dev reports, saved-state snapshots, AI handovers, improvement plans,
+       naming normalization and directory reorganization plans. In short: "what is planned" and "what was actually built."
 
-【落盘目录】
-  - 平台级：docs/ai_dev_history/02_DevPlanAndReport/
-  - 组件级：docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
+[Landing Directory]
+  - Platform level: docs/ai_dev_history/02_DevPlanAndReport/
+  - Component level: docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
 
-【文件命名 —— 本目录的硬规则】所有文档一律以**所在版本号开头**：
-       `v{版本号}_{DocType}[_{YYYYMMDD}].md`
+[File Naming —— hard rule for this directory] All documents must start with **the version number they belong to**:
+       `v{version}_{DocType}[_{YYYYMMDD}].md`
   - v0.3_DevPlan.md / v0.3_BE_DevPlan.md / v0.3_FE_DevPlan.md / v0.3_DevReport.md
   - v0.3_Snapshot.md / v0.3_Handover.md / v0.3_ImprovePlan.md
   - v0.3_RenamePlan.md / v0.3_ReorganizePlan.md
-  - 同一版本内同类型有多份时追加日期后缀：v0.3_Snapshot_20260320.md
-  - 版本号取自 {component}_version_plan.md；跨版本的整理类计划取发起时的当前版本号
+  - When multiple documents of the same type exist within one version, append a date suffix: v0.3_Snapshot_20260320.md
+  - The version number is taken from {component}_version_plan.md; cross-version organizational plans take the current version number at the time they were initiated
 
-【本文件的定位】某个版本的**开发报告**：以 version_plan 为基准，逐层盘点代码的
-       实际完成度，给出版本交付结论与遗留问题清单。
+[Positioning of this file] The **dev report** for a given version: taking the version_plan as the baseline, it
+       inventories the actual completion state of the code layer by layer, and gives the version delivery conclusion and a list of outstanding issues.
 
-【与同目录其它文档的区别】
-  - v{x}_DevPlan.md    —— 开发**前**写，定义"本版本要做什么"，是范围契约。
-  - 本文件（DevReport）—— 开发**后**写，回答"本版本实际做成了什么"，是交付验收。
-    两者一一对应：DevReport 的 §0 必须直接对照同版本 DevPlan 的任务清单。
-  - v{x}_Snapshot.md   —— session 中断时的现场快照，面向"如何接着干"，不做交付判定。
+[Distinction from other documents in this directory]
+  - v{x}_DevPlan.md    —— written **before** development, defines "what this version is scoped to do"; it is a scope contract.
+  - This file (DevReport)—— written **after** development, answers "what did this version actually deliver"; it is delivery acceptance.
+    The two correspond one to one: §0 of the DevReport must map directly onto the task list of the same version's DevPlan.
+  - v{x}_Snapshot.md   —— a saved-state snapshot taken when a session is interrupted, oriented toward "how to continue," not a delivery judgment.
 
-【关键特征】
-  - 不看文档写了什么，**只看代码里有什么**。每一行结论都要对应到具体文件路径。
-  - 按"层"组织（前端页面 / API 端点 / 后端各层 / 数据库 / daemon / 迁移），
-    而非按版本组织，因为断层往往出现在层与层之间。
-  - 结论用 🟢🟡🔴⚪ 四色标，便于一眼看出断层位置。
+[Key Characteristics]
+  - Do not go by what the docs say — **only go by what is in the code**. Every conclusion must map to a concrete file path.
+  - Organized by "layer" (frontend pages / API endpoints / backend layers / database / daemons / migrations),
+    rather than by version, because gaps most often appear between layers.
+  - Conclusions are color-coded 🟢🟡🔴⚪ so gaps can be spotted at a glance.
 
-【人工填写列】「工程师回复」等列 AI 生成时一律留空。
+[Human-filled columns] Columns such as "Engineer's Response" are always left empty when AI-generated.
 
-【模板文件名】前导 `_` 只是模板标记，复制时按上面的命名规则重命名。
+[Template File Name] The leading `_` is only a template marker; rename per the convention above when copying.
 -->
 
-# {ComponentDisplayName} v{版本号} 开发报告
+# {ComponentDisplayName} v{version} Dev Report
 
-**报告日期**：{YYYY-MM-DD}
-**版本**：v{版本号}
-**基准文档**：`{component}_version_plan.md` v{x.y.z}
-**对应开发计划**：`v{版本号}_DevPlan.md`{、`v{版本号}_BE_DevPlan.md`、`v{版本号}_FE_DevPlan.md`}
-**当前代码路径**：
-- 前端：`src/frontend/packages/{component-kebab}/`
-- 后端：`src/backend/{component}/`
-- {其他：`{路径}`}
+**Report Date**: {YYYY-MM-DD}
+**Version**: v{version}
+**Baseline Document**: `{component}_version_plan.md` v{x.y.z}
+**Corresponding Dev Plan**: `v{version}_DevPlan.md`{, `v{version}_BE_DevPlan.md`, `v{version}_FE_DevPlan.md`}
+**Current Code Paths**:
+- Frontend: `src/frontend/packages/{component-kebab}/`
+- Backend: `src/backend/{component}/`
+- {Other: `{path}`}
 
-**审查方式**：{逐目录遍历实际代码文件，对照 version_plan 各版本的功能范围逐条核对。}
+**Review Method**: {Walk through the actual code files directory by directory, checking each item against the scope of each version_plan version.}
 
 ---
 
-## 0 版本交付结论
+## 0 Delivery Conclusion
 
-> 本节是整份报告的结论摘要，供工程师直接判断"这个版本能不能收"。
-> 详细依据见后续各章。
+> This section is the summary conclusion of the whole report, for the engineer to directly judge whether "this version can be accepted."
+> Detailed evidence is in the sections that follow.
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| **版本** | v{版本号}（{代号}） |
-| **计划范围来源** | `v{版本号}_DevPlan.md`{、`v{版本号}_BE_DevPlan.md`、`v{版本号}_FE_DevPlan.md`} |
-| **实际交付** | {一句话概括本版本实际完成的内容} |
-| **未交付项及原因** | {逐项列出计划内但未完成的内容及原因；全部完成则填"无"} |
-| **是否可进入下一版本** | {🟢 可以 / 🟡 有条件可以（需先解决 P1-xx）/ 🔴 不可以} |
+| **Version** | v{version} ({Code Name}) |
+| **Planned Scope Source** | `v{version}_DevPlan.md`{, `v{version}_BE_DevPlan.md`, `v{version}_FE_DevPlan.md`} |
+| **Actually Delivered** | {One sentence summarizing what was actually completed in this version} |
+| **Undelivered Items and Why** | {List item by item what was planned but not completed, and why; if everything was completed, write "None"} |
+| **Cleared to Proceed to the Next Version** | {🟢 Yes / 🟡 Conditionally yes (P1-xx must be resolved first) / 🔴 No} |
 
-### 0.1 计划任务交付明细
+### 0.1 Delivery Detail Against Planned Tasks
 
-> 与 `v{版本号}_DevPlan.md` 的任务清单逐条对应，不得增删条目。
+> Maps item by item onto the task list of `v{version}_DevPlan.md`; items must not be added or removed.
 
-| # | 计划任务（来自 DevPlan） | 计划产出 | 实际状态 | 说明 |
+| # | Planned Task (from DevPlan) | Planned Output | Actual Status | Notes |
 |---|------------------------|---------|---------|------|
-| 1 | {Phase {n} — {任务}} | `{文件路径}` | 🟢 已完成 | {说明} |
-| 2 | {Phase {n} — {任务}} | `{文件路径}` | 🟡 部分完成 | {缺什么} |
-| 3 | {Phase {n} — {任务}} | `{文件路径}` | 🔴 未实现 | {未做的原因} |
+| 1 | {Phase {n} — {Task}} | `{file path}` | 🟢 Done | {Notes} |
+| 2 | {Phase {n} — {Task}} | `{file path}` | 🟡 Partial | {What's missing} |
+| 3 | {Phase {n} — {Task}} | `{file path}` | 🔴 Not Implemented | {Reason it wasn't done} |
 
-**交付统计**：计划 {n} 项 / 完成 {n} 项 / 部分完成 {n} 项 / 未完成 {n} 项。
+**Delivery Statistics**: {n} planned / {n} completed / {n} partially completed / {n} not completed.
 
-### 0.2 计划外的额外交付
+### 0.2 Unplanned Extra Deliveries
 
-> 本版本实际做了但 DevPlan 中没有的内容。若与 version_plan 的版本边界冲突，
-> 必须在此说明，并判断是否需要回写 version_plan。
+> Content actually built in this version that is not in the DevPlan. If it conflicts with the version boundaries in version_plan,
+> it must be noted here, along with a judgment of whether version_plan needs to be updated.
 
-| # | 额外交付内容 | 产出文件 | 为什么做 | 是否需回写 version_plan |
+| # | Extra Delivery | Output File | Why It Was Done | Does version_plan Need to Be Updated |
 |---|-------------|---------|---------|----------------------|
-| 1 | {内容} | `{文件}` | {原因} | {是/否} |
+| 1 | {Content} | `{file}` | {Reason} | {Yes/No} |
 
-### 0.3 进入下一版本的前置条件
+### 0.3 Prerequisites for Entering the Next Version
 
-| # | 前置条件 | 对应遗留问题 | 状态 |
+| # | Prerequisite | Corresponding Outstanding Issue | Status |
 |---|---------|-------------|------|
-| 1 | {条件} | P1-01 | {🔴 未解决} |
-| 2 | {条件} | P1-02 | {🟢 已解决} |
+| 1 | {Condition} | P1-01 | {🔴 Unresolved} |
+| 2 | {Condition} | P1-02 | {🟢 Resolved} |
 
 ---
 
-## 状态色标说明
+## Status Marker Legend
 
-| 色标 | 含义 |
+| Marker | Meaning |
 |------|------|
-| 🟢 **已完成** | 功能已实现，代码存在 |
-| 🟡 **部分完成** | 骨架或部分逻辑存在，但尚未完整 |
-| 🔴 **未实现** | 按版本计划该功能应存在，但代码中缺失 |
-| ⚪ **计划外** | 在当前未开发版本中，属于未来迭代范围 |
+| 🟢 **Done** | Feature is implemented, code exists |
+| 🟡 **Partial** | Skeleton or part of the logic exists, but incomplete |
+| 🔴 **Not Implemented** | Per the version plan the feature should exist, but is missing from the code |
+| ⚪ **Out of Scope** | Under the currently un-developed version, belongs to a future iteration |
 
 ---
 
-## 总体版本进度摘要
+## Overall Version Progress Summary
 
-| 版本 | 代号 | 前端状态 | 后端状态 | 综合评估 |
+| Version | Code Name | Frontend Status | Backend Status | Overall Assessment |
 |------|------|---------|---------|---------|
-| v{0.1} | {纯前端（Mock 数据）} | {🟡 部分完成（P{nn} 缺失）} | — | {{n}/{n} 页完成} |
-| v{0.2} | {后端 API + 硬编码} | {🔴 未开始} | {🟢 已完成} | {后端超前，前端滞后} |
-| v{0.3} | {接入数据库} | — | {🟢 已完成} | {后端完整实现} |
-| v{0.4} | {数据迁移} | — | {🟡 大部分完成} | {说明} |
-| v{0.5} | {功能名} | — | {🔴 未实现} | ⚪ |
+| v{0.1} | {Frontend Only (Mock Data)} | {🟡 Partial (P{nn} missing)} | — | {{n}/{n} pages done} |
+| v{0.2} | {Backend API + Hardcoded} | {🔴 Not Started} | {🟢 Done} | {Backend ahead, frontend lagging} |
+| v{0.3} | {Database Integration} | — | {🟢 Done} | {Backend fully implemented} |
+| v{0.4} | {Data Migration} | — | {🟡 Mostly Done} | {Notes} |
+| v{0.5} | {Feature Name} | — | {🔴 Not Implemented} | ⚪ |
 
-> **核心发现**：{一段话点明最关键的断层。例如：后端已完整实现至 v0.3（含真实数据库、
-> ORM、动态表、service 层单元测试），但前端仍停留在 v0.1 Mock 数据阶段（未接入 API），
-> 且 v0.1 本身还存在 P04 缺失问题。前后端存在明显的进度断层。}
+> **Key Finding**: {A paragraph pointing out the most critical gap. For example: The backend is fully implemented
+> through v0.3 (including a real database, ORM, dynamic tables, and service-layer unit tests), but the frontend
+> is still at the v0.1 Mock Data stage (not yet wired to the API), and v0.1 itself still has the P04 gap.
+> There is a clear progress gap between frontend and backend.}
 
 ---
 
-## 1 前端页面（Pages）
+## 1 Frontend Pages
 
-### 1.1 v{n} 页面功能清单
+### 1.1 v{n} Page Feature Inventory
 
-| # | 页面 | 版本计划 | 文件路径 | 实现状态 | 说明 |
+| # | Page | Version Plan | File Path | Implementation Status | Notes |
 |---|------|---------|---------|---------|------|
-| {P01} | {页面中文名} | v{0.1} | `pages/{page-kebab}/index.tsx` | 🟢 **已完成** | {实现要点：布局结构、已实现的交互、数据来源} |
-| {P02} | {页面中文名} | v{0.1} | `pages/{page-kebab}/index.tsx` | 🟢 **已完成** | {要点} |
-| {P03} | {页面中文名} | v{0.1} | `pages/{page-kebab}/` | 🔴 **未实现** | {目录不存在，`routes.tsx` 和 `index.ts` 均未注册} |
-| {P04} | {页面中文名} | v{0.2} | — | ⚪ **计划外** | {属于 v{n} 范围} |
+| {P01} | {Page Name} | v{0.1} | `pages/{page-kebab}/index.tsx` | 🟢 **Done** | {Implementation highlights: layout structure, implemented interactions, data source} |
+| {P02} | {Page Name} | v{0.1} | `pages/{page-kebab}/index.tsx` | 🟢 **Done** | {Highlights} |
+| {P03} | {Page Name} | v{0.1} | `pages/{page-kebab}/` | 🔴 **Not Implemented** | {Directory does not exist; neither `routes.tsx` nor `index.ts` registers it} |
+| {P04} | {Page Name} | v{0.2} | — | ⚪ **Out of Scope** | {Belongs to v{n} scope} |
 
-### 1.2 v{n} 路由注册
+### 1.2 v{n} Route Registration
 
-| # | 路径 | 页面组件 | uiux §4 要求 | 实际注册 | 状态 |
+| # | Path | Page Component | uiux §4 Requirement | Actually Registered | Status |
 |---|------|---------|-------------|---------|------|
 | 1 | `{/path}` | `{Component}` | ✅ | ✅ | 🟢 |
 | 2 | `{/path/:id}` | `{Component}` | ✅ | ❌ | 🔴 |
 
-**路由数**：计划 {n} 条 / 实际 {n} 条。{差异说明。}
+**Route Count**: {n} planned / {n} actual. {Explanation of the discrepancy.}
 
-### 1.3 v{n} 前端功能清单
+### 1.3 v{n} Frontend Feature Inventory
 
-| # | 功能 | 版本计划 | 文件路径 | 实现状态 | 说明 |
+| # | Feature | Version Plan | File Path | Implementation Status | Notes |
 |---|------|---------|---------|---------|------|
-| 1 | {API 客户端层} | v{0.2} | `services/` | {🔴 未实现} | {目录不存在} |
-| 2 | {数据钩子层} | v{0.2} | `hooks/` | {🔴 未实现} | {目录不存在} |
-| 3 | {API 调试页} | v{0.2} | `pages/api-debug/` | {🔴 未实现} | {说明} |
+| 1 | {API client layer} | v{0.2} | `services/` | {🔴 Not Implemented} | {Directory does not exist} |
+| 2 | {Data hooks layer} | v{0.2} | `hooks/` | {🔴 Not Implemented} | {Directory does not exist} |
+| 3 | {API debug page} | v{0.2} | `pages/api-debug/` | {🔴 Not Implemented} | {Notes} |
 
-### 1.4 TypeScript 类型定义（models/）
+### 1.4 TypeScript Type Definitions (models/)
 
-| # | 类型 | 对应 tech_design | 文件路径 | 状态 | 说明 |
+| # | Type | Corresponding tech_design | File Path | Status | Notes |
 |---|------|-----------------|---------|------|------|
-| 1 | `{C{Resource}}` | §2.{n} | `models/{resource}.ts` | 🟢 | {字段完整} |
-| 2 | `{E{Enum}}` | §2.{n} | `models/enums.ts` | 🟡 | {缺少 {取值}} |
-| 3 | `{ApiResponse<T>}` | §5 | `models/api.ts` | 🔴 | {未定义} |
+| 1 | `{C{Resource}}` | §2.{n} | `models/{resource}.ts` | 🟢 | {Fields complete} |
+| 2 | `{E{Enum}}` | §2.{n} | `models/enums.ts` | 🟡 | {Missing {values}} |
+| 3 | `{ApiResponse<T>}` | §5 | `models/api.ts` | 🔴 | {Not defined} |
 
-### 1.5 Mock 数据（mock/）
+### 1.5 Mock Data (mock/)
 
-| # | 文件 | 覆盖对象 | 记录数 | 状态 | 说明 |
+| # | File | Covers | Record Count | Status | Notes |
 |---|------|---------|--------|------|------|
-| 1 | `mock/{resource}.ts` | `{C{Resource}}` | {n} | 🟢 | {覆盖 {枚举取值} 各场景} |
-| 2 | `mock/{resource}.ts` | `{C{Resource}}` | {n} | 🟡 | {未覆盖 {边界场景}} |
+| 1 | `mock/{resource}.ts` | `{C{Resource}}` | {n} | 🟢 | {Covers each {enum value} scenario} |
+| 2 | `mock/{resource}.ts` | `{C{Resource}}` | {n} | 🟡 | {Does not cover {edge case}} |
 
-> {若已进入 API 对接阶段，说明 mock 的去留：是保留供测试，还是应删除。}
+> {If already at the API-integration stage, state whether the mocks should be kept for testing or removed.}
 
-### 1.6 状态管理（stores/）
+### 1.6 State Management (stores/)
 
-| # | Store | 管理对象 | 文件路径 | 状态 | 说明 |
+| # | Store | Manages | File Path | Status | Notes |
 |---|-------|---------|---------|------|------|
-| 1 | `{resource}Store` | `{C{Resource}}` | `stores/{resource}Store.ts` | 🟢 | {说明} |
-| 2 | `uiStore` | {UI 全局状态} | `stores/uiStore.ts` | 🟡 | {说明} |
+| 1 | `{resource}Store` | `{C{Resource}}` | `stores/{resource}Store.ts` | 🟢 | {Notes} |
+| 2 | `uiStore` | {Global UI state} | `stores/uiStore.ts` | 🟡 | {Notes} |
 
 ---
 
-## 2 API 端点
+## 2 API Endpoints
 
-> 按 tech_design §5 的资源分组逐组核对。「实现状态」看后端 `router.go` 与 handler 实际代码。
+> Checked group by group against the resource grouping in tech_design §5. "Implementation Status" refers to the backend's actual `router.go` and handler code.
 
-### 2.1 {资源名} CRUD（`{/api/v1/resource}`）
+### 2.1 {Resource Name} CRUD (`{/api/v1/resource}`)
 
-| # | Method | Endpoint | tech_design | 后端实现 | 前端对接 | 说明 |
+| # | Method | Endpoint | tech_design | Backend Implementation | Frontend Integration | Notes |
 |---|--------|----------|-------------|---------|---------|------|
-| 1 | GET | `/api/v1/{resource}` | §5.1.1 | 🟢 | 🔴 | {说明} |
-| 2 | GET | `/api/v1/{resource}/:{id}` | §5.1.2 | 🟢 | 🔴 | {说明} |
-| 3 | POST | `/api/v1/{resource}` | §5.1.3 | 🟢 | 🔴 | {说明} |
-| 4 | PUT | `/api/v1/{resource}/:{id}` | §5.1.4 | 🟢 | 🔴 | {说明} |
-| 5 | DELETE | `/api/v1/{resource}/:{id}` | §5.1.5 | 🟢 | 🔴 | {说明} |
+| 1 | GET | `/api/v1/{resource}` | §5.1.1 | 🟢 | 🔴 | {Notes} |
+| 2 | GET | `/api/v1/{resource}/:{id}` | §5.1.2 | 🟢 | 🔴 | {Notes} |
+| 3 | POST | `/api/v1/{resource}` | §5.1.3 | 🟢 | 🔴 | {Notes} |
+| 4 | PUT | `/api/v1/{resource}/:{id}` | §5.1.4 | 🟢 | 🔴 | {Notes} |
+| 5 | DELETE | `/api/v1/{resource}/:{id}` | §5.1.5 | 🟢 | 🔴 | {Notes} |
 
-### 2.2 {资源名}查询（`{/api/v1/resource}`）
+### 2.2 {Resource Name} Query (`{/api/v1/resource}`)
 
-| # | Method | Endpoint | tech_design | 后端实现 | 前端对接 | 说明 |
+| # | Method | Endpoint | tech_design | Backend Implementation | Frontend Integration | Notes |
 |---|--------|----------|-------------|---------|---------|------|
-| 1 | GET | `{endpoint}` | §5.2.1 | 🟢 | 🔴 | {说明} |
+| 1 | GET | `{endpoint}` | §5.2.1 | 🟢 | 🔴 | {Notes} |
 
-### 2.3 {资源名}（`{/api/v1/resource}`）
+### 2.3 {Resource Name} (`{/api/v1/resource}`)
 
-| # | Method | Endpoint | tech_design | 后端实现 | 前端对接 | 说明 |
+| # | Method | Endpoint | tech_design | Backend Implementation | Frontend Integration | Notes |
 |---|--------|----------|-------------|---------|---------|------|
-| 1 | {METHOD} | `{endpoint}` | §5.3.1 | 🟢 | 🔴 | {说明} |
+| 1 | {METHOD} | `{endpoint}` | §5.3.1 | 🟢 | 🔴 | {Notes} |
 
-**端点统计**：tech_design 定义 {n} 个 / 后端实现 {n} 个 / 前端对接 {n} 个。
+**Endpoint Statistics**: {n} defined in tech_design / {n} implemented in backend / {n} integrated in frontend.
 
 ---
 
-## 3 后端服务（Backend Services）
+## 3 Backend Services
 
-### 3.1 数据模型（internal/model/）
+### 3.1 Data Models (internal/model/)
 
-| # | 模型 | 对应 tech_design | 文件 | 状态 | 说明 |
+| # | Model | Corresponding tech_design | File | Status | Notes |
 |---|------|-----------------|------|------|------|
-| 1 | `{CResource}` | §2.{n} | `model/{resource}.go` | 🟢 | {含 ORM 标签、JSONB 序列化} |
-| 2 | `{CResource}` | §2.{n} | `model/{resource}.go` | 🟡 | {缺少 {字段}} |
+| 1 | `{CResource}` | §2.{n} | `model/{resource}.go` | 🟢 | {Includes ORM tags, JSONB serialization} |
+| 2 | `{CResource}` | §2.{n} | `model/{resource}.go` | 🟡 | {Missing {field}} |
 
-### 3.2 枚举（internal/enum/）
+### 3.2 Enums (internal/enum/)
 
-| # | 枚举 | 对应 tech_design | 文件 | 状态 | 说明 |
+| # | Enum | Corresponding tech_design | File | Status | Notes |
 |---|------|-----------------|------|------|------|
-| 1 | `{EEnum}` | §2.{n} | `enum/{enum}.go` | 🟢 | {取值完整} |
+| 1 | `{EEnum}` | §2.{n} | `enum/{enum}.go` | 🟢 | {Values complete} |
 
-### 3.3 Service 层（internal/service/）
+### 3.3 Service Layer (internal/service/)
 
-| # | Service | 职责 | 文件 | 状态 | 说明 |
+| # | Service | Responsibility | File | Status | Notes |
 |---|---------|------|------|------|------|
-| 1 | `{Resource}Service` | {业务逻辑} | `service/{resource}_service.go` | 🟢 | {已注入 Repository，真实业务逻辑} |
-| 2 | `{Resource}Service` | {业务逻辑} | `service/{resource}_service.go` | 🟡 | {仍为桩实现，返回 mock} |
+| 1 | `{Resource}Service` | {Business logic} | `service/{resource}_service.go` | 🟢 | {Repository injected, real business logic} |
+| 2 | `{Resource}Service` | {Business logic} | `service/{resource}_service.go` | 🟡 | {Still a stub, returns mock data} |
 
-### 3.4 Repository 层（internal/repository/）
+### 3.4 Repository Layer (internal/repository/)
 
-| # | Repository | 接口定义 | GORM 实现 | 状态 | 说明 |
+| # | Repository | Interface Defined | GORM Implementation | Status | Notes |
 |---|-----------|---------|----------|------|------|
-| 1 | `{IResourceRepo}` | 🟢 | 🟢 | 🟢 | {说明} |
-| 2 | `{IResourceRepo}` | 🟢 | 🔴 | 🟡 | {仅有接口，无实现} |
+| 1 | `{IResourceRepo}` | 🟢 | 🟢 | 🟢 | {Notes} |
+| 2 | `{IResourceRepo}` | 🟢 | 🔴 | 🟡 | {Interface only, no implementation} |
 
-### 3.5 Handler 层（internal/handler/）
+### 3.5 Handler Layer (internal/handler/)
 
-| # | Handler | 覆盖端点数 | 文件 | 状态 | 说明 |
+| # | Handler | Endpoints Covered | File | Status | Notes |
 |---|---------|-----------|------|------|------|
-| 1 | `{Resource}Handler` | {n} | `handler/{resource}_handler.go` | 🟢 | {含输入验证} |
-| 2 | `router.go` | {n} 条路由 | `handler/router.go` | 🟢 | {说明} |
+| 1 | `{Resource}Handler` | {n} | `handler/{resource}_handler.go` | 🟢 | {Includes input validation} |
+| 2 | `router.go` | {n} routes | `handler/router.go` | 🟢 | {Notes} |
 
-### 3.6 工具包（pkg/）
+### 3.6 Packages (pkg/)
 
-| # | 文件 | 职责 | 状态 | 说明 |
+| # | File | Responsibility | Status | Notes |
 |---|------|------|------|------|
-| 1 | `pkg/response.go` | {统一响应封装} | 🟢 | {`ApiResponse<T>` + `PaginatedData<T>`} |
-| 2 | `pkg/{util}.go` | {职责} | 🟢 | {说明} |
+| 1 | `pkg/response.go` | {Unified response wrapper} | 🟢 | {`ApiResponse<T>` + `PaginatedData<T>`} |
+| 2 | `pkg/{util}.go` | {Responsibility} | 🟢 | {Notes} |
 
-### 3.7 配置（config/）
+### 3.7 Config (config/)
 
-| # | 文件 | 职责 | 状态 | 说明 |
+| # | File | Responsibility | Status | Notes |
 |---|------|------|------|------|
-| 1 | `config/config.go` | {配置结构体} | 🟢 | {含数据库连接参数} |
-| 2 | `config/config.yaml` | {默认配置} | 🟢 | {说明} |
+| 1 | `config/config.go` | {Config struct} | 🟢 | {Includes database connection parameters} |
+| 2 | `config/config.yaml` | {Default config} | 🟢 | {Notes} |
 
-### 3.8 主入口（cmd/）
+### 3.8 Entry Point (cmd/)
 
-| # | 文件 | 职责 | 状态 | 说明 |
+| # | File | Responsibility | Status | Notes |
 |---|------|------|------|------|
-| 1 | `cmd/{service}/main.go` | {服务入口} | 🟢 | {依赖装配、优雅退出} |
-| 2 | `cmd/{daemon}/main.go` | {daemon 入口} | 🔴 | {目录不存在} |
+| 1 | `cmd/{service}/main.go` | {Service entry point} | 🟢 | {Dependency wiring, graceful shutdown} |
+| 2 | `cmd/{daemon}/main.go` | {Daemon entry point} | 🔴 | {Directory does not exist} |
 
-### 3.9 单元测试
+### 3.9 Unit Tests
 
-| # | 覆盖层 | 文件 | 状态 | 说明 |
+| # | Layer Covered | File | Status | Notes |
 |---|--------|------|------|------|
-| 1 | {service} | `service/*_test.go` | 🟢 | {{n} 个测试用例} |
-| 2 | {repository} | — | 🔴 | {未编写} |
+| 1 | {service} | `service/*_test.go` | 🟢 | {{n} test cases} |
+| 2 | {repository} | — | 🔴 | {Not written} |
 
 ---
 
-## 4 数据库（Database）
+## 4 Database
 
-### 4.1 数据库初始化（v{n}）
+### 4.1 Database Initialization (v{n})
 
-| # | 项目 | 文件 | 状态 | 说明 |
+| # | Item | File | Status | Notes |
 |---|------|------|------|------|
-| 1 | {建库脚本} | `sql/init_databases.sql` | 🟢 | {幂等，可重复执行} |
-| 2 | {迁移脚本} | `sql/migrations/` | 🟢 | {{n} 个迁移，含 up/down} |
+| 1 | {Database creation script} | `sql/init_databases.sql` | 🟢 | {Idempotent, safe to re-run} |
+| 2 | {Migration scripts} | `sql/migrations/` | 🟢 | {{n} migrations, with up/down} |
 
-### 4.2 {主表}表（v{n}）
+### 4.2 {Primary Table} Table (v{n})
 
-| # | 项目 | tech_design | 实际 DDL | 状态 | 说明 |
+| # | Item | tech_design | Actual DDL | Status | Notes |
 |---|------|-------------|---------|------|------|
-| 1 | {列定义} | §4.{n} | `{migration 文件}` | 🟢 | {列名与类型一致} |
-| 2 | {索引} | §4.{n} | 同上 | 🟡 | {缺少 {字段} 索引} |
+| 1 | {Column definitions} | §4.{n} | `{migration file}` | 🟢 | {Column names and types match} |
+| 2 | {Indexes} | §4.{n} | Same as above | 🟡 | {Missing index on {field}} |
 
-### 4.3 {动态表}创建机制（v{n}）
+### 4.3 {Dynamic Table} Creation Mechanism (v{n})
 
-| # | 项目 | 状态 | 说明 |
+| # | Item | Status | Notes |
 |---|------|------|------|
-| 1 | {创建时机} | 🟢 | {{何时由谁创建}} |
-| 2 | {表名白名单校验} | 🟢 | {正则 `{regex}`} |
-| 3 | {表不存在处理} | 🟡 | {单表查询已处理，跨表聚合未处理} |
+| 1 | {Creation timing} | 🟢 | {When and by whom it is created} |
+| 2 | {Table name whitelist validation} | 🟢 | {Regex `{regex}`} |
+| 3 | {Handling of missing tables} | 🟡 | {Single-table queries handled, cross-table aggregation not handled} |
 
-### 4.4 示例数据及开发辅助
+### 4.4 Sample Data and Dev Aids
 
-| # | 项目 | 文件 | 状态 | 说明 |
+| # | Item | File | Status | Notes |
 |---|------|------|------|------|
-| 1 | {样例数据脚本} | `sql/sample_data.sql` | 🟢 | {每表 {n} 条} |
-| 2 | {关联键对照表} | `v{版本号}_BE_DevPlan.md` §3.4 | 🟢 | {前后端联调契约} |
+| 1 | {Sample data script} | `sql/sample_data.sql` | 🟢 | {{n} rows per table} |
+| 2 | {Cross-reference key table} | `v{version}_BE_DevPlan.md` §3.4 | 🟢 | {Frontend-backend integration contract} |
 
 ---
 
-## 5 后台守护进程（Daemons）
+## 5 Daemons
 
-| # | Daemon | 版本计划 | 设计文档 | 代码路径 | 状态 | 说明 |
+| # | Daemon | Version Plan | Design Document | Code Path | Status | Notes |
 |---|--------|---------|---------|---------|------|------|
-| 1 | {daemon_name} | v{0.5} | `sub_{xxx}/{xxx}_design.md` | `cmd/{daemon}/` | 🔴 | {未实现} |
-| 2 | {daemon_name} | v{0.6} | `sub_{xxx}/{xxx}_design.md` | — | ⚪ | {计划外} |
+| 1 | {daemon_name} | v{0.5} | `sub_{xxx}/{xxx}_design.md` | `cmd/{daemon}/` | 🔴 | {Not implemented} |
+| 2 | {daemon_name} | v{0.6} | `sub_{xxx}/{xxx}_design.md` | — | ⚪ | {Out of scope} |
 
-{若 daemon 全部未实现，说明这对当前版本是否构成阻塞。}
+{If all daemons are unimplemented, note whether this blocks the current version.}
 
 ---
 
-## 6 数据迁移（v{n}）
+## 6 Data Migration (v{n})
 
-### 6.1 迁移工具功能清单
+### 6.1 Migration Tool Feature Inventory
 
-| # | 功能 | 版本计划 | 代码路径 | 状态 | 说明 |
+| # | Feature | Version Plan | Code Path | Status | Notes |
 |---|------|---------|---------|------|------|
-| 1 | {源库连接与读取} | v{0.4} | `{路径}` | 🟢 | {说明} |
-| 2 | {字段映射转换} | v{0.4} | `{路径}` | 🟢 | {说明} |
-| 3 | {{子表}迁移} | v{0.4} | — | 🔴 | {缺失} |
-| 4 | {Dry-run 模式} | v{0.4} | `{路径}` | 🟢 | {说明} |
-| 5 | {校验模式} | v{0.4} | `{路径}` | 🟢 | {说明} |
+| 1 | {Source database connection and read} | v{0.4} | `{path}` | 🟢 | {Notes} |
+| 2 | {Field mapping conversion} | v{0.4} | `{path}` | 🟢 | {Notes} |
+| 3 | {{Sub-table} migration} | v{0.4} | — | 🔴 | {Missing} |
+| 4 | {Dry-run mode} | v{0.4} | `{path}` | 🟢 | {Notes} |
+| 5 | {Validation mode} | v{0.4} | `{path}` | 🟢 | {Notes} |
 
-### 6.2 迁移工具测试状态
+### 6.2 Migration Tool Test Status
 
-| # | 测试项 | 状态 | 说明 |
+| # | Test Item | Status | Notes |
 |---|--------|------|------|
-| 1 | {Dry-run 通过} | 🟢 | {说明} |
-| 2 | {全量迁移通过} | 🟡 | {说明} |
-| 3 | {数据校验通过} | 🔴 | {说明} |
+| 1 | {Dry-run passed} | 🟢 | {Notes} |
+| 2 | {Full migration passed} | 🟡 | {Notes} |
+| 3 | {Data validation passed} | 🔴 | {Notes} |
 
-### 6.3 与 version_plan.md 的偏差
+### 6.3 Deviations from version_plan.md
 
-| # | version_plan 要求 | 实际情况 | 偏差原因 | 是否需回写文档 |
+| # | version_plan Requirement | Actual Situation | Reason for Deviation | Does the Document Need to Be Updated |
 |---|------------------|---------|---------|---------------|
-| 1 | {§{n}：{要求}} | {实际} | {原因} | {是/否} |
+| 1 | {§{n}: {Requirement}} | {Actual} | {Reason} | {Yes/No} |
 
 ---
 
-## 7 遗留问题与建议
+## 7 Outstanding Issues and Recommendations
 
-### P1 — 阻塞性问题
+### P1 — Blocking Issues
 
-> 必须在进入下一版本前解决。与 §0.3 前置条件表一一对应。
+> Must be resolved before entering the next version. Correspond one to one with the §0.3 prerequisites table.
 
-| # | 问题 | 位置 | 影响 | 建议 | 工程师回复 |
+| # | Issue | Location | Impact | Recommendation | Engineer's Response |
 |---|------|------|------|------|-----------|
-| P1-01 | {问题描述} | {文件/模块} | {阻塞什么} | {建议动作，例如：新建 v{版本}_FE_DevPlan.md 补齐} | |
-| P1-02 | {问题描述} | {位置} | {影响} | {建议} | |
+| P1-01 | {Issue description} | {File/Module} | {What it blocks} | {Recommended action, e.g.: create v{version}_FE_DevPlan.md to fill the gap} | |
+| P1-02 | {Issue description} | {Location} | {Impact} | {Recommendation} | |
 
-### P2 — 重要改进项
+### P2 — Important Improvements
 
-> 应尽快排期，但不阻塞当前版本。
+> Should be scheduled soon, but does not block the current version.
 
-| # | 问题 | 位置 | 影响 | 建议 | 工程师回复 |
+| # | Issue | Location | Impact | Recommendation | Engineer's Response |
 |---|------|------|------|------|-----------|
-| P2-01 | {问题描述} | {位置} | {影响} | {建议} | |
+| P2-01 | {Issue description} | {Location} | {Impact} | {Recommendation} | |
 
-### P3 — 维护建议
+### P3 — Maintenance Suggestions
 
-> 可延后处理。
+> Can be deferred.
 
-| # | 问题 | 位置 | 建议 | 工程师回复 |
+| # | Issue | Location | Recommendation | Engineer's Response |
 |---|------|------|------|-----------|
-| P3-01 | {问题描述} | {位置} | {建议} | |
+| P3-01 | {Issue description} | {Location} | {Recommendation} | |
 
-> 「工程师回复」列由工程师人工填写，AI 生成时一律留空。
+> The "Engineer's Response" column is filled in manually by the engineer; always left empty when AI-generated.
 
 ---
 
-## 8 下一步行动建议
+## 8 Recommended Next Steps
 
-| # | 行动 | 产出文档 | 优先级 |
+| # | Action | Output Document | Priority |
 |---|------|---------|--------|
-| 1 | {补齐前端 v{n} 遗留 + 完成 v{n} API 对接} | `v{版本号}_FE_DevPlan.md` | P1 |
-| 2 | {行动} | `v{版本号}_{DocType}.md` | P2 |
+| 1 | {Fill in the outstanding frontend v{n} gaps + complete v{n} API integration} | `v{version}_FE_DevPlan.md` | P1 |
+| 2 | {Action} | `v{version}_{DocType}.md` | P2 |

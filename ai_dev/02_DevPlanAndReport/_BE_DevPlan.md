@@ -1,373 +1,382 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档 —— 02_DevPlanAndReport
+[Document Level] AI Development Process Documents -- 02_DevPlanAndReport
 
-【本目录收什么】
-  开发计划（DevPlan / BE_DevPlan / FE_DevPlan）、开发报告（DevReport）、
-  保存现场文档（Snapshot）、AI 之间的交接文档（Handover）、改进计划（ImprovePlan）、
-  命名规范化与目录整理计划（RenamePlan / ReorganizePlan）。
+[What This Directory Collects]
+  Dev Plans (DevPlan / BE_DevPlan / FE_DevPlan), Dev Reports (DevReport),
+  context-saving documents (Snapshot), AI-to-AI handover documents (Handover),
+  improvement plans (ImprovePlan), naming-normalization and directory-reorganization
+  plans (RenamePlan / ReorganizePlan).
 
-【落盘目录】
-  平台级：docs/ai_dev_history/02_DevPlanAndReport/
-  组件级：docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
+[Target Directory]
+  Platform level: docs/ai_dev_history/02_DevPlanAndReport/
+  Component level: docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
 
-【文件命名 —— 本目录的硬规则】
-  所有文档一律以**所在版本号**开头：v{版本号}_{DocType}[_{YYYYMMDD}].md
-    v0.3_DevPlan.md        — 该版本的总体开发计划
-    v0.3_BE_DevPlan.md     — 后端专项开发计划（本模板）
-    v0.3_FE_DevPlan.md     — 前端专项开发计划
-    v0.3_DevReport.md      — 该版本的开发报告 / 进度审查
-    v0.3_Snapshot.md       — 保存现场
-    v0.3_Handover.md       — AI 之间交接
-    v0.3_ImprovePlan.md    — 改进计划
-  同一版本内同类型有多份时，追加日期后缀：v0.3_BE_DevPlan_20260320.md
-  版本号取自组件的 {component}_version_plan.md；
-  跨版本的整理类计划（RenamePlan / ReorganizePlan）取**发起时的当前版本号**。
+[File Naming -- Hard Rule for This Directory]
+  All documents must start with **the version number they belong to**: v{version}_{DocType}[_{YYYYMMDD}].md
+    v0.3_DevPlan.md        -- the version's overall dev plan
+    v0.3_BE_DevPlan.md     -- backend-specific dev plan (this template)
+    v0.3_FE_DevPlan.md     -- frontend-specific dev plan
+    v0.3_DevReport.md      -- the version's dev report / progress review
+    v0.3_Snapshot.md       -- saved context
+    v0.3_Handover.md       -- AI-to-AI handover
+    v0.3_ImprovePlan.md    -- improvement plan
+  When multiple documents of the same type exist within one version, append a date suffix: v0.3_BE_DevPlan_20260320.md
+  The version number is taken from the component's {component}_version_plan.md;
+  cross-version organizational plans (RenamePlan / ReorganizePlan) use **the current version number at the time they are initiated**.
 
-【三份开发计划模板的分工】
-  _DevPlan.md = **版本总纲**。面向一次完整的 AI 编码 session，是交给执行者的
-      作战简报，偏"开工前必须知道什么"：读什么（带 🔴必读 / 🟠重要 / 🟡参考
-      优先级）、红线是什么、当前代码到哪了、Phase 划分、产出文件清单、
-      路由速查、技术版本锁定、给执行者的提示。前后端同版本一并完成时用它。
-  _BE_DevPlan.md（本文件）= **后端专项计划**。关联设计文档索引（本组件 /
-      平台规范 / 公共库 / 上一版本代码 四类）、技术栈与架构约束、
-      目标目录结构、数据库脚本规划、按 Phase 的开发任务、API 端点路由表、
-      开发注意事项、完成状态 Review。
-  _FE_DevPlan.md = **前端专项计划**。背景与动机、关联文档索引、技术方案
-      （架构变更 / 新增目录 / API 对接端点清单）、Phase 任务、
-      路由注册最终状态、文件变更汇总、验证方法。
+[Division of Labor Among the Three Dev Plan Templates]
+  _DevPlan.md = **version master plan**. Aimed at a single complete AI coding session,
+      it is the battle briefing handed to the executor, leaning toward "what you must
+      know before starting work": what to read (with 🔴 Must Read / 🟠 Important /
+      🟡 Reference priority), what the hard constraints are, where the current code
+      stands, the Phase breakdown, the deliverable file list, a route quick-reference,
+      locked tech versions, and notes for the executor. Used when frontend and backend
+      are completed together within the same version.
+  _BE_DevPlan.md (this file) = **backend-specific plan**. Referenced design document
+      index (this component / platform conventions / shared library / previous-version
+      code -- four categories), tech stack and architecture constraints, target
+      directory structure, database script plan, development tasks by Phase,
+      API endpoint routing table, development notes, completion status review.
+  _FE_DevPlan.md = **frontend-specific plan**. Background and motivation, referenced
+      document index, technical approach (architecture changes / new directories /
+      API integration endpoint list), Phase tasks, final routing registration state,
+      file change summary, verification method.
 
-【关键设计意图】
-  §0 的存在是为了解决"AI 上下文冷启动"问题 —— 新 session 的 AI 不知道该读哪些
-  文档，§0 用表格精确指定文件路径 + 必读章节，避免 AI 漏读或读错版本。
-  §6 沉淀的是上一版本踩过的坑，防止重复犯错。
-  §7 在开发完成后回填，使这份计划同时成为完成度记录。
+[Key Design Intent]
+  §0 exists to solve the "AI cold-context start" problem -- an AI in a new session
+  doesn't know which documents to read, so §0 uses a table to precisely specify
+  file paths + required sections, avoiding missed reads or the wrong version being read.
+  §6 captures the pitfalls hit in the previous version, to prevent repeating mistakes.
+  §7 is filled in after development completes, so this plan also serves as a
+  completion-status record.
 
-【权威范围依据】
-  开发计划只能实现 {component}_version_plan.md 已定义的版本范围。
-  超出范围必须先回去修订 version_plan，不得在计划里自行扩张。
+[Authoritative Scope Definition]
+  A dev plan may only implement the version scope already defined in {component}_version_plan.md.
+  Anything beyond that scope must first go back and revise version_plan; the plan must not
+  expand scope on its own.
 
-【配套文档】
-  计划 → 执行 → v{版本}_DevReport.md 回填完成状态；
-  中途换 session / 换模型 → v{版本}_Handover.md 交接；
-  中断需保存上下文 → v{版本}_Snapshot.md。
+[Companion Documents]
+  Plan -> Execute -> v{version}_DevReport.md fills in completion status;
+  Mid-way session/model change -> v{version}_Handover.md for handover;
+  Interruption requiring context to be saved -> v{version}_Snapshot.md.
 
-【模板文件名】
-  前导 `_` 只是模板标记，复制时按上面的命名规则重命名。
+[Template File Name]
+  The leading `_` is only a template marker; rename per the naming rule above when copying.
 -->
 
-# {ComponentDisplayName} 后端开发计划 — v{目标版本} {版本代号}
+# {ComponentDisplayName} Backend Dev Plan -- v{TargetVersion} {Version Codename}
 
-**Document**: v{目标版本}_BE_DevPlan.md
+**Document**: v{TargetVersion}_BE_DevPlan.md
 **Date**: {YYYY-MM-DD}
 **Component**: {component}
-**Target**: v{目标版本} — {本版本要达成的目标一句话}
-**Developer**: AI ({模型名称})
-**Prerequisite**: {前置条件，例如：v0.2 后端 API + 硬编码 mock 数据已完成}
-**Status**: {🟡 进行中 / 🟢 全部完成 / ⚪ 待启动}
+**Target**: v{TargetVersion} -- {one-sentence statement of what this version is meant to achieve}
+**Developer**: AI ({model name})
+**Prerequisite**: {prerequisite conditions, e.g.: v0.2 backend API + hardcoded mock data completed}
+**Status**: {🟡 In Progress / 🟢 Fully Completed / ⚪ Not Started}
 
 ---
 
-## 0 关联设计文档索引
+## 0 Referenced Design Documents Index
 
-> **⚠️ 开发前必读**：以下文件包含本组件后端开发所需的全部设计规格。AI 开发者在编码前必须逐一阅读这些文件以获取完整上下文。
+> **⚠️ Must Read Before Development**: the following files contain the complete design specifications needed for this component's backend development. AI developers must read each of these files before coding, to obtain full context.
 
-### 0.1 本组件设计文档
+### 0.1 This Component's Design Documents
 
-| # | 文件路径 | 必读章节 | 说明 |
+| # | File Path | Required Sections | Notes |
 |---|---------|---------|------|
-| 1 | `docs/components/{component}/{component}_tech_design.md` | **全文** | 技术设计核心文档：类定义（§2）、程序描述（§3）、数据库定义（§4）、API 定义（§5，共 {n} 个端点）、源码目录布局（§{n}） |
-| 2 | `docs/components/{component}/{component}_version_plan.md` | §{n}（v{目标版本} 定义） | v{目标版本} 版本功能范围和技术栈 |
-| 3 | `docs/components/{component}/{component}_business_desc.md` | §{n}（业务对象）、§{n}（业务流程） | 业务语义，理解字段含义与流程约束 |
-| 4 | `docs/components/{component}/{component}_db_schema.mmd` | 全文 | 数据库 ER 图，建表参照 |
-| 5 | `docs/components/{component}/{component}_class_diagram.mmd` | 全文 | 类关系与继承，Model 定义参照 |
+| 1 | `docs/components/{component}/{component}_tech_design.md` | **Entire document** | Core technical design document: class definitions (§2), program description (§3), database definitions (§4), API definitions (§5, {n} endpoints total), source code directory layout (§{n}) |
+| 2 | `docs/components/{component}/{component}_version_plan.md` | §{n} (v{TargetVersion} definition) | v{TargetVersion} feature scope and tech stack |
+| 3 | `docs/components/{component}/{component}_business_desc.md` | §{n} (business objects), §{n} (business processes) | Business semantics, for understanding field meanings and process constraints |
+| 4 | `docs/components/{component}/{component}_db_schema.mmd` | Entire document | Database ER diagram, reference for table creation |
+| 5 | `docs/components/{component}/{component}_class_diagram.mmd` | Entire document | Class relationships and inheritance, reference for Model definitions |
 
-### 0.2 平台级规范文档
+### 0.2 Platform-Level Convention Documents
 
-| # | 文件路径 | 必读章节 | 说明 |
+| # | File Path | Required Sections | Notes |
 |---|---------|---------|------|
-| {n} | `docs/naming_convention.md` | §2（缩写表）、§3（类型前缀）、§4（变量命名） | 项目统一命名规范：C 前缀类、E 前缀枚举、snake_case 列名 |
-| {n} | `docs/technical_overview.md` | §{n}（数据库划分）、§{n}（跨模块 API 调用规则）、§{n}（API 设计规范） | 平台技术全局设计 |
-| {n} | `project_directory_plan.md` | §{n}（后端目录）、§{n}（API 定义） | 后端代码目录结构和 OpenAPI 契约路径 |
+| {n} | `docs/naming_convention.md` | §2 (abbreviation table), §3 (type prefixes), §4 (variable naming) | Platform-wide naming convention: C-prefixed classes, E-prefixed enums, snake_case column names |
+| {n} | `docs/technical_overview.md` | §{n} (database partitioning), §{n} (cross-module API call rules), §{n} (API design conventions) | Platform-wide technical design |
+| {n} | `project_directory_plan.md` | §{n} (backend directory), §{n} (API definitions) | Backend code directory structure and OpenAPI contract paths |
 
-### 0.3 公共库参考文档
+### 0.3 Shared-Library Reference Documents
 
-| # | 文件路径 | 必读章节 | 说明 |
+| # | File Path | Required Sections | Notes |
 |---|---------|---------|------|
-| {n} | `docs/common_lib/common_lib_tech_design.md` | §{n}（{共享类型1}）、§{n}（{共享类型2}） | 公共库中的跨模块共享类型定义 |
-| {n} | `docs/common_lib/common_backend.md` | **全文** | 后端公共代码规范：统一响应、中间件、数据库工具、日志工具 |
+| {n} | `docs/common_lib/common_lib_tech_design.md` | §{n} ({shared type 1}), §{n} ({shared type 2}) | Cross-module shared type definitions in the shared library |
+| {n} | `docs/common_lib/common_backend.md` | **Entire document** | Backend shared code conventions: unified response, middleware, database utilities, logging utilities |
 
-### 0.4 v{上一版本} 代码参考（在此基础上改造）
+### 0.4 Previous-Version Code Reference (v{PreviousVersion}, the basis for this rework)
 
-| # | 文件路径 | 参考内容 |
+| # | File Path | Reference Content |
 |---|---------|---------|
-| {n} | `src/backend/{component}/` | v{上一版本} 完整代码：{cmd/、config/、internal/(handler+service+model+enum+repository)、pkg/、sql/} |
-| {n} | `src/backend/{component}/{路径}` | {该文件在本版本中的改造点} |
-| {n} | `docs/components/{component}/ai_dev_history/02_DevPlanAndReport/v{上一版本}_BE_DevPlan.md` | 上一版本开发计划（了解既有架构和样例数据关联键） |
+| {n} | `src/backend/{component}/` | Complete v{PreviousVersion} code: {cmd/, config/, internal/(handler+service+model+enum+repository), pkg/, sql/} |
+| {n} | `src/backend/{component}/{path}` | {The rework points for this file in this version} |
+| {n} | `docs/components/{component}/ai_dev_history/02_DevPlanAndReport/v{PreviousVersion}_BE_DevPlan.md` | Previous version's dev plan (to understand the existing architecture and sample-data cross-reference keys) |
 
 ---
 
-## 1 技术栈与架构约束
+## 1 Tech Stack and Architecture Constraints
 
-| 项目 | 值 |
+| Item | Value |
 |------|-----|
-| 后端语言 | {Go 1.25.x（go.mod 使用 1.22 兼容）} |
-| Web 框架 | {Gin 1.x（v{上一版本} 已有）} |
-| 配置管理 | {Viper 1.x（v{上一版本} 已有）} |
-| CORS | {gin-contrib/cors（v{上一版本} 已有）} |
-| **数据库** | **{PostgreSQL 17.x（v{目标版本} 新增）}** |
-| **ORM** | **{GORM 2.x + gorm/driver/postgres（v{目标版本} 新增）}** |
-| 迁移工具 | {golang-migrate（v{目标版本} 新增）} |
-| 日志 | {方案} |
-| 监听端口 | {8081} |
-| API 前缀 | `/api/v1/` |
+| Backend language | {Go 1.25.x (go.mod uses 1.22 compatibility)} |
+| Web framework | {Gin 1.x (already present in v{PreviousVersion})} |
+| Configuration management | {Viper 1.x (already present in v{PreviousVersion})} |
+| CORS | {gin-contrib/cors (already present in v{PreviousVersion})} |
+| **Database** | **{PostgreSQL 17.x (new in v{TargetVersion})}** |
+| **ORM** | **{GORM 2.x + gorm/driver/postgres (new in v{TargetVersion})}** |
+| Migration tool | {golang-migrate (new in v{TargetVersion})} |
+| Logging | {Approach} |
+| Listening port | {8081} |
+| API prefix | `/api/v1/` |
 
-> 本版本新增的技术栈用**加粗**标注，便于快速识别改造范围。
-> 版本必须与 `docs/technical_overview.md` §{n} 的锁定版本一致，不得自行升级。
+> Tech stack items new in this version are marked in **bold**, for quick identification of the rework scope.
+> Versions must match the locked versions in `docs/technical_overview.md` §{n}; do not upgrade on your own.
 
-### 1.1 v{目标版本} 架构变更概要
+### 1.1 v{TargetVersion} Architecture Change Summary
 
-| 层 | v{上一版本} 状态 | v{目标版本} 目标 |
+| Layer | v{PreviousVersion} State | v{TargetVersion} Target |
 |----|-----------------|-----------------|
-| handler | {现状} | {目标} |
-| service | {桩实现，返回 mock 数据} | {注入 Repository + 真实业务逻辑} |
-| repository | {仅接口定义} | {GORM 实现} |
-| model | {纯结构体} | {增加 GORM 标签} |
-| 数据源 | {internal/mock/ 硬编码} | {PostgreSQL} |
+| handler | {Current state} | {Target} |
+| service | {Stub implementation, returns mock data} | {Inject Repository + real business logic} |
+| repository | {Interface definitions only} | {GORM implementation} |
+| model | {Plain structs} | {Add GORM tags} |
+| Data source | {internal/mock/ hardcoded} | {PostgreSQL} |
 
-### 1.2 v{目标版本} 不包含的内容
+### 1.2 What v{TargetVersion} Explicitly Does Not Include
 
-> 明确写出**不做什么**，防止 AI 超范围实现，导致版本边界模糊。
+> Explicitly state **what is not being done**, to prevent the AI from implementing beyond scope and blurring the version boundary.
 
-| # | 不包含项 | 计划版本 |
+| # | Excluded Item | Planned Version |
 |---|---------|---------|
-| 1 | {daemon 采集程序} | v{n} |
-| 2 | {用户认证与权限} | v{n} |
-| 3 | {数据迁移工具} | v{n} |
-| 4 | {缓存层} | {未规划} |
+| 1 | {daemon collection process} | v{n} |
+| 2 | {user authentication and permissions} | v{n} |
+| 3 | {data migration tooling} | v{n} |
+| 4 | {caching layer} | {not yet planned} |
 
 ---
 
-## 2 目标目录结构
+## 2 Target Directory Structure
 
-v{目标版本} 完成后 `src/backend/{component}/` 的目标形态（**加粗**为本版本新增/改造）：
+The target shape of `src/backend/{component}/` after v{TargetVersion} is complete (**bold** marks items new/reworked in this version):
 
 ```
 src/backend/{component}/
 ├── cmd/
 │   └── {service_name}/
-│       └── main.go                 # 服务入口
+│       └── main.go                 # Service entry point
 ├── config/
-│   ├── config.go                   # 配置结构体
-│   └── config.yaml                 # 默认配置
+│   ├── config.go                   # Config struct
+│   └── config.yaml                 # Default config
 ├── internal/
 │   ├── handler/
-│   │   ├── router.go               # 路由注册
-│   │   └── {resource}_handler.go   # 各资源 handler
+│   │   ├── router.go               # Route registration
+│   │   └── {resource}_handler.go   # Per-resource handler
 │   ├── service/
-│   │   └── {resource}_service.go   # 业务逻辑
+│   │   └── {resource}_service.go   # Business logic
 │   ├── repository/
-│   │   ├── {resource}_repo.go      # 接口定义
-│   │   └── {resource}_repo_gorm.go # GORM 实现
+│   │   ├── {resource}_repo.go      # Interface definition
+│   │   └── {resource}_repo_gorm.go # GORM implementation
 │   ├── model/
-│   │   └── {resource}.go           # 数据模型
+│   │   └── {resource}.go           # Data model
 │   ├── enum/
-│   │   └── {enum_name}.go          # 枚举
+│   │   └── {enum_name}.go          # Enum
 │   └── db/
-│       └── db.go                   # 数据库连接管理
+│       └── db.go                   # Database connection management
 ├── pkg/
-│   ├── response.go                 # 统一响应封装
+│   ├── response.go                 # Unified response wrapper
 │   └── {util}.go
 ├── sql/
-│   ├── init_databases.sql          # 建库脚本
-│   ├── migrations/                 # 迁移脚本
-│   └── sample_data.sql             # 样例数据
+│   ├── init_databases.sql          # DB creation script
+│   ├── migrations/                 # Migration scripts
+│   └── sample_data.sql             # Sample data
 ├── go.mod
 └── go.sum
 ```
 
-{对关键目录的职责补充说明。}
+{Additional notes on the responsibilities of key directories.}
 
 ---
 
-## 3 数据库脚本规划
+## 3 Database Script Plan
 
-### 3.1 init_databases.sql — 建库脚本
+### 3.1 init_databases.sql -- DB Creation Script
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| 路径 | `src/backend/{component}/sql/init_databases.sql` |
-| 职责 | {创建数据库、schema、扩展、专用角色} |
-| 幂等性 | {使用 IF NOT EXISTS，可重复执行} |
-| 执行方式 | `{psql -U postgres -f init_databases.sql}` |
+| Path | `src/backend/{component}/sql/init_databases.sql` |
+| Responsibility | {Create database, schema, extensions, dedicated role} |
+| Idempotency | {Use IF NOT EXISTS, safely re-runnable} |
+| Execution | `{psql -U postgres -f init_databases.sql}` |
 
-### 3.2 migrations/ — {迁移工具} 迁移脚本
+### 3.2 migrations/ -- {Migration Tool} Migration Scripts
 
-| 序号 | 文件名 | 内容 |
+| Seq | File Name | Content |
 |------|--------|------|
-| {000001} | `{000001_create_{table}.up.sql}` / `.down.sql` | {建 {table} 表 + 索引} |
-| {000002} | `{000002_xxx.up.sql}` / `.down.sql` | {说明} |
+| {000001} | `{000001_create_{table}.up.sql}` / `.down.sql` | {Create {table} table + indexes} |
+| {000002} | `{000002_xxx.up.sql}` / `.down.sql` | {Description} |
 
-| 约定 | 规则 |
+| Convention | Rule |
 |------|------|
-| 命名 | `{序号}_{动作}_{对象}.{up|down}.sql` |
-| 可回滚 | 每个 up 必须有对应 down |
-| 不可修改 | 已执行过的迁移脚本禁止修改，只能新增 |
+| Naming | `{seq}_{action}_{object}.{up|down}.sql` |
+| Reversible | Every up must have a matching down |
+| Immutable | Migration scripts that have already been run must not be modified, only added to |
 
-### 3.3 sample_data.sql — 样例数据脚本
+### 3.3 sample_data.sql -- Sample Data Script
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| 路径 | `src/backend/{component}/sql/sample_data.sql` |
-| 记录量 | {每张主表 {n} 条，覆盖各枚举取值与边界情况} |
-| 用途 | {本地开发、API 联调、前端对接} |
-| 幂等性 | {先 TRUNCATE 再插入 / 使用固定主键 + ON CONFLICT DO NOTHING} |
+| Path | `src/backend/{component}/sql/sample_data.sql` |
+| Record count | {{n} rows per main table, covering each enum value and boundary case} |
+| Purpose | {Local development, API integration testing, frontend integration} |
+| Idempotency | {TRUNCATE first then insert / use fixed primary keys + ON CONFLICT DO NOTHING} |
 
-### 3.4 样例数据关联键对照表
+### 3.4 Sample Data Cross-Reference Key Table
 
-> 前后端联调时需要用固定的 ID 对齐，此表是前端 mock 与后端样例数据的契约。
+> Frontend-backend integration testing needs fixed IDs to align; this table is the contract between the frontend mock and the backend sample data.
 
-| {主对象} | {主键值} | {code_name} | 关联的{子对象} | 备注 |
+| {Main Object} | {Primary Key Value} | {code_name} | Related {Sub-object} | Notes |
 |---------|---------|------------|---------------|------|
-| {对象名1} | {1} | `{code_name_1}` | {子对象清单} | {覆盖 {枚举值} 场景} |
-| {对象名2} | {2} | `{code_name_2}` | {子对象清单} | {覆盖 {边界} 场景} |
+| {Object 1} | {1} | `{code_name_1}` | {Sub-object list} | {Covers {enum value} scenario} |
+| {Object 2} | {2} | `{code_name_2}` | {Sub-object list} | {Covers {boundary} scenario} |
 
 ---
 
-## 4 开发任务列表
+## 4 Development Task List
 
-> 每个 Phase 内的任务可并行；Phase 之间严格串行。
-> 「状态」列在开发过程中回填：🟢 已完成 / 🟡 部分完成 / 🔴 未开始。
+> Tasks within a Phase can run in parallel; Phases must run strictly in series.
+> The "Status" column is filled in during development: 🟢 Done / 🟡 Partial / 🔴 Not Implemented.
 
-### Phase 1: {阶段名，如 依赖更新}
+### Phase 1: {Phase name, e.g. Dependency Update}
 
-| # | 任务 | 产出文件 | 说明 | 状态 |
+| # | Task | Output File | Notes | Status |
 |---|------|---------|------|------|
-| 1.1 | {任务描述} | `{文件路径}` | {实现要点、注意事项} | |
-| 1.2 | {任务描述} | `{文件路径}` | {要点} | |
+| 1.1 | {Task description} | `{file path}` | {Implementation points, notes} | |
+| 1.2 | {Task description} | `{file path}` | {Points} | |
 
-### Phase 2: {阶段名，如 配置扩展}
+### Phase 2: {Phase name, e.g. Config Extension}
 
-| # | 任务 | 产出文件 | 说明 | 状态 |
+| # | Task | Output File | Notes | Status |
 |---|------|---------|------|------|
-| 2.1 | {任务描述} | `{文件路径}` | {要点} | |
-| 2.2 | {任务描述} | `{文件路径}` | {要点} | |
+| 2.1 | {Task description} | `{file path}` | {Points} | |
+| 2.2 | {Task description} | `{file path}` | {Points} | |
 
-### Phase 3: {阶段名，如 数据库连接管理}
+### Phase 3: {Phase name, e.g. Database Connection Management}
 
-| # | 任务 | 产出文件 | 说明 | 状态 |
+| # | Task | Output File | Notes | Status |
 |---|------|---------|------|------|
-| 3.1 | {任务描述} | `{文件路径}` | {要点} | |
+| 3.1 | {Task description} | `{file path}` | {Points} | |
 
-### Phase 4: {阶段名，如 Model 与 ORM 标签}
+### Phase 4: {Phase name, e.g. Model and ORM Tags}
 
-| # | 任务 | 产出文件 | 说明 | 状态 |
+| # | Task | Output File | Notes | Status |
 |---|------|---------|------|------|
-| 4.1 | {任务描述} | `{文件路径}` | {字段级要点：JSONB 序列化、时间字段、软删除} | |
+| 4.1 | {Task description} | `{file path}` | {Field-level points: JSONB serialization, timestamp fields, soft delete} | |
 
-### Phase 5: {阶段名，如 数据库脚本}
+### Phase 5: {Phase name, e.g. Database Scripts}
 
-| # | 任务 | 产出文件 | 说明 | 状态 |
+| # | Task | Output File | Notes | Status |
 |---|------|---------|------|------|
-| 5.1 | {任务描述} | `{文件路径}` | {要点} | |
+| 5.1 | {Task description} | `{file path}` | {Points} | |
 
-### Phase 6: {阶段名，如 Repository 实现}
+### Phase 6: {Phase name, e.g. Repository Implementation}
 
-| # | 任务 | 产出文件 | 说明 | 状态 |
+| # | Task | Output File | Notes | Status |
 |---|------|---------|------|------|
-| 6.1 | {任务描述} | `{文件路径}` | {查询构造、分页、排序白名单、动态表名校验} | |
+| 6.1 | {Task description} | `{file path}` | {Query construction, pagination, sort-field whitelist, dynamic table name validation} | |
 
-### Phase 7: {阶段名，如 Service 层重构}
+### Phase 7: {Phase name, e.g. Service Layer Refactor}
 
-| # | 任务 | 产出文件 | 说明 | 状态 |
+| # | Task | Output File | Notes | Status |
 |---|------|---------|------|------|
-| 7.1 | {任务描述} | `{文件路径}` | {业务规则、事务边界、级联处理} | |
+| 7.1 | {Task description} | `{file path}` | {Business rules, transaction boundaries, cascade handling} | |
 
-### Phase 8: {阶段名，如 Handler 层输入验证}
+### Phase 8: {Phase name, e.g. Handler Layer Input Validation}
 
-| # | 任务 | 产出文件 | 说明 | 状态 |
+| # | Task | Output File | Notes | Status |
 |---|------|---------|------|------|
-| 8.1 | {任务描述} | `{文件路径}` | {验证规则来源：tech_design 附录「输入验证规则」} | |
+| 8.1 | {Task description} | `{file path}` | {Source of validation rules: tech_design appendix "Input Validation Rules"} | |
 
-### Phase 9: {阶段名，如 入口程序更新}
+### Phase 9: {Phase name, e.g. Entry Point Update}
 
-| # | 任务 | 产出文件 | 说明 | 状态 |
+| # | Task | Output File | Notes | Status |
 |---|------|---------|------|------|
-| 9.1 | {任务描述} | `{文件路径}` | {依赖装配顺序、优雅退出} | |
+| 9.1 | {Task description} | `{file path}` | {Dependency wiring order, graceful shutdown} | |
 
-### Phase 10: {阶段名，如 单元测试}
+### Phase 10: {Phase name, e.g. Unit Tests}
 
-| # | 任务 | 产出文件 | 说明 | 状态 |
+| # | Task | Output File | Notes | Status |
 |---|------|---------|------|------|
-| 10.1 | {任务描述} | `{文件路径}` | {覆盖层次、mock 方式} | |
+| 10.1 | {Task description} | `{file path}` | {Coverage layers, mocking approach} | |
 
 ---
 
-## 5 API 端点路由表
+## 5 API Endpoint Routing Table
 
-> 本表是 handler 路由注册的验收清单，端点必须与 `{component}_tech_design.md` §5 完全一致。
+> This table is the acceptance checklist for handler route registration; endpoints must exactly match `{component}_tech_design.md` §5.
 
-| # | Method | Endpoint | Handler | Service | 认证 | tech_design 章节 | 状态 |
+| # | Method | Endpoint | Handler | Service | Auth | tech_design Section | Status |
 |---|--------|----------|---------|---------|------|-----------------|------|
-| 1 | GET | `/api/v1/{resource}` | `{Handler}.List` | `{Service}.List` | {是/否} | §5.1.1 | |
-| 2 | GET | `/api/v1/{resource}/:{id}` | `{Handler}.Get` | `{Service}.Get` | {是/否} | §5.1.2 | |
-| 3 | POST | `/api/v1/{resource}` | `{Handler}.Create` | `{Service}.Create` | {是/否} | §5.1.3 | |
-| 4 | PUT | `/api/v1/{resource}/:{id}` | `{Handler}.Update` | `{Service}.Update` | {是/否} | §5.1.4 | |
-| 5 | DELETE | `/api/v1/{resource}/:{id}` | `{Handler}.Delete` | `{Service}.Delete` | {是/否} | §5.1.5 | |
-| 6 | POST | `/api/v1/{resource}/batch-delete` | `{Handler}.BatchDelete` | `{Service}.BatchDelete` | {是/否} | §5.2.4 | |
+| 1 | GET | `/api/v1/{resource}` | `{Handler}.List` | `{Service}.List` | {Yes/No} | §5.1.1 | |
+| 2 | GET | `/api/v1/{resource}/:{id}` | `{Handler}.Get` | `{Service}.Get` | {Yes/No} | §5.1.2 | |
+| 3 | POST | `/api/v1/{resource}` | `{Handler}.Create` | `{Service}.Create` | {Yes/No} | §5.1.3 | |
+| 4 | PUT | `/api/v1/{resource}/:{id}` | `{Handler}.Update` | `{Service}.Update` | {Yes/No} | §5.1.4 | |
+| 5 | DELETE | `/api/v1/{resource}/:{id}` | `{Handler}.Delete` | `{Service}.Delete` | {Yes/No} | §5.1.5 | |
+| 6 | POST | `/api/v1/{resource}/batch-delete` | `{Handler}.BatchDelete` | `{Service}.BatchDelete` | {Yes/No} | §5.2.4 | |
 
-**端点总数**：{n} 个。
+**Total endpoints**: {n}.
 
 ---
 
-## 6 开发注意事项
+## 6 Development Notes
 
-### 6.1 v{目标版本} 版本边界
+### 6.1 v{TargetVersion} Version Boundary
 
-{再次强调本版本做什么、不做什么。引用 §1.2。遇到设计文档中标注为后续版本的功能，一律跳过并在代码中留 TODO 注释标明目标版本。}
+{Reiterate what this version does and does not do. Reference §1.2. Whenever the design documents mark a feature as belonging to a later version, skip it and leave a TODO comment in the code stating the target version.}
 
-### 6.2 动态表安全
+### 6.2 Dynamic Table Safety
 
-{若本组件使用由用户输入拼接的动态表名（如 `{code_name}_mrecord`）：}
+{If this component uses table names concatenated from user input (e.g. `{code_name}_mrecord`):}
 
-- 表名参数在进入 SQL 前**必须**先用白名单正则校验：`^[a-z][a-z0-9_]*$`，长度 {3–64}。
-- 校验失败直接返回 {400}，不得进入 repository 层。
-- 禁止使用字符串拼接构造 WHERE 条件值，一律参数化。
+- The table-name parameter **must** be validated against a whitelist regex before entering SQL: `^[a-z][a-z0-9_]*$`, length {3-64}.
+- On validation failure, return {400} directly; it must not reach the repository layer.
+- String concatenation must not be used to construct WHERE clause values; always parameterize.
 
-### 6.3 表不存在的处理
+### 6.3 Handling a Table That Does Not Exist
 
-{动态表在 {什么时机} 才被创建。API 访问尚未创建的表时的约定：}
+{Dynamic tables are only created {at what point}. The convention for API access to a table that has not yet been created:}
 
-| 场景 | 处理方式 |
+| Scenario | Handling |
 |------|---------|
-| {单表查询，表不存在} | {返回 404 + 明确 message} |
-| {跨表聚合，某表不存在} | {跳过该表，不报错，仅统计已存在的表} |
+| {Single-table query, table does not exist} | {Return 404 with a clear message} |
+| {Cross-table aggregation, some table does not exist} | {Skip that table without erroring, only aggregate over tables that exist} |
 
-### 6.4 {ORM} 使用注意事项
+### 6.4 {ORM} Usage Notes
 
-| # | 注意事项 |
+| # | Note |
 |---|---------|
-| 1 | {JSONB 字段的序列化方式与自定义类型实现} |
-| 2 | {软删除：使用 `deleted_at` 而非 ORM 默认的 soft delete 语义，需显式配置} |
-| 3 | {`updated_at` 由数据库触发器维护，ORM 侧不得自动写入} |
-| 4 | {动态表名通过 `Table()` 指定，不用 AutoMigrate} |
-| 5 | {排序字段必须走白名单映射，禁止直接把用户传入的 sort_by 拼进 ORDER BY} |
-| 6 | {JSONB 子字段排序需使用表达式：`(jsonb_col->>'field')::int`，并确认已有表达式索引} |
+| 1 | {How JSONB fields are serialized and the custom type implementation} |
+| 2 | {Soft delete: use `deleted_at` rather than the ORM's default soft-delete semantics, must be configured explicitly} |
+| 3 | {`updated_at` is maintained by a database trigger; the ORM side must not write it automatically} |
+| 4 | {Dynamic table names are specified via `Table()`, not via AutoMigrate} |
+| 5 | {Sort fields must go through a whitelist mapping; user-supplied sort_by must never be concatenated directly into ORDER BY} |
+| 6 | {Sorting on a JSONB sub-field requires an expression: `(jsonb_col->>'field')::int`, and confirm a matching expression index already exists} |
 
-### 6.5 跨数据库查询
+### 6.5 Cross-Database Queries
 
-{平台约定每组件独立数据库，**禁止跨库 JOIN**。需要他模块数据时，通过 REST API 跨模块调用。
- 本组件的跨模块调用清单：}
+{Platform convention: each component has its own independent database, **cross-database JOINs are prohibited**. When data from another module is needed, call it through a REST API across modules.
+ This component's cross-module call list:}
 
-| 调用方向 | 对方组件 | 端点 | 用途 |
+| Direction | Counterpart Component | Endpoint | Purpose |
 |---------|---------|------|------|
-| {本组件调用他人} | {component_x} | `{GET /api/v1/xxx}` | {用途} |
-| {他人调用本组件} | {component_y} | `{GET /api/v1/yyy}` | {用途} |
+| {This component calls another} | {component_x} | `{GET /api/v1/xxx}` | {Purpose} |
+| {Another calls this component} | {component_y} | `{GET /api/v1/yyy}` | {Purpose} |
 
-### 6.6 响应格式约定
+### 6.6 Response Format Convention
 
-与 v{上一版本} 一致，所有端点返回统一结构：
+Consistent with v{PreviousVersion}, all endpoints return a unified structure:
 
 ```json
 {
@@ -377,7 +386,7 @@ src/backend/{component}/
 }
 ```
 
-分页端点的 `data`：
+`data` for paginated endpoints:
 
 ```json
 {
@@ -388,57 +397,57 @@ src/backend/{component}/
 }
 ```
 
-### 6.7 日志策略
+### 6.7 Logging Strategy
 
-| 级别 | 使用场景 | 必含字段 |
+| Level | Usage Scenario | Required Fields |
 |------|---------|---------|
-| DEBUG | {SQL 语句、请求体} | {trace_id} |
-| INFO | {请求进出、关键业务动作} | {trace_id, method, path, status, latency} |
-| WARN | {可恢复异常、降级} | {trace_id, reason} |
-| ERROR | {未处理异常、依赖失败} | {trace_id, error, stack} |
+| DEBUG | {SQL statements, request bodies} | {trace_id} |
+| INFO | {request in/out, key business actions} | {trace_id, method, path, status, latency} |
+| WARN | {recoverable exceptions, degradation} | {trace_id, reason} |
+| ERROR | {unhandled exceptions, dependency failures} | {trace_id, error, stack} |
 
-> 密码、Token 等敏感字段一律脱敏后再记录。
+> Sensitive fields such as passwords and tokens must always be masked before being logged.
 
-### 6.8 命名规范速查
+### 6.8 Naming Convention Quick Reference
 
-| 对象 | 规则 | 示例 |
+| Object | Rule | Example |
 |------|------|------|
-| 类 / 结构体 | `C` 前缀 + PascalCase | `{CSourceMedia}` |
-| 枚举 | `E` 前缀 + PascalCase | `{EExeStatus}` |
-| 接口 | `I` 前缀 + PascalCase | `{IRepository}` |
-| 数据库表 | snake_case | `{source_media}` |
-| 数据库列 | snake_case | `{created_at}` |
-| API 路径 | 复数 kebab-case | `{/api/v1/source-media}` |
-| 后端目录 | snake_case | `{material_collector}` |
-| 配置属性 | `cfg` 前缀 | `{cfgDbHost}` |
+| Class / struct | `C` prefix + PascalCase | `{CSourceMedia}` |
+| Enum | `E` prefix + PascalCase | `{EExeStatus}` |
+| Interface | `I` prefix + PascalCase | `{IRepository}` |
+| Database table | snake_case | `{source_media}` |
+| Database column | snake_case | `{created_at}` |
+| API path | plural kebab-case | `{/api/v1/source-media}` |
+| Backend directory | snake_case | `{material_collector}` |
+| Config property | `cfg` prefix | `{cfgDbHost}` |
 
-> 完整规则见 `docs/naming_convention.md`。
+> Full rules are in `docs/naming_convention.md`.
 
 ---
 
-## 7 完成状态 Review（{YYYY-MM-DD}）
+## 7 Completion Status Review ({YYYY-MM-DD})
 
-> 本章在开发完成后回填，使这份计划同时成为完成度记录。
-> 版本级的完整进度审查另出独立文档 `v{目标版本}_DevReport.md`（同目录 02_DevPlanAndReport）；
-> 本章只回填本计划内各 Phase 任务的完成情况。
+> This section is filled in after development is complete, so this plan also serves as a completion-status record.
+> The full version-level progress review is issued separately as `v{TargetVersion}_DevReport.md` (same directory, 02_DevPlanAndReport);
+> this section only records the completion status of each Phase's tasks within this plan.
 
-### 7.1 总览
+### 7.1 Overview
 
-| Phase | 任务数 | 🟢 完成 | 🟡 部分 | 🔴 未开始 | 备注 |
+| Phase | Task Count | 🟢 Done | 🟡 Partial | 🔴 Not Implemented | Notes |
 |-------|-------|--------|--------|----------|------|
-| Phase 1 {阶段名} | {n} | {n} | {n} | {n} | |
-| Phase 2 {阶段名} | {n} | {n} | {n} | {n} | |
-| Phase 3 {阶段名} | {n} | {n} | {n} | {n} | |
-| **合计** | **{N}** | **{N}** | **{N}** | **{N}** | |
+| Phase 1 {Phase name} | {n} | {n} | {n} | {n} | |
+| Phase 2 {Phase name} | {n} | {n} | {n} | {n} | |
+| Phase 3 {Phase name} | {n} | {n} | {n} | {n} | |
+| **Total** | **{N}** | **{N}** | **{N}** | **{N}** | |
 
-### 7.2 🟡 partial 项说明
+### 7.2 🟡 Partial Item Details
 
-| # | 任务 | 已完成部分 | 未完成部分 | 原因 | 后续计划 |
+| # | Task | Completed Part | Remaining Part | Reason | Follow-up Plan |
 |---|------|-----------|-----------|------|---------|
-| {n.n} | {任务} | {已做} | {未做} | {原因} | {v{n} 补齐 / 转入遗留问题} |
+| {n.n} | {Task} | {Done} | {Not done} | {Reason} | {Complete in v{n} / move to open items} |
 
-### 7.3 与设计文档的偏差
+### 7.3 Deviations From the Design Documents
 
-| # | 设计文档要求 | 实际实现 | 偏差原因 | 是否需回写文档 |
+| # | Design Document Requirement | Actual Implementation | Deviation Reason | Needs Doc Update? |
 |---|-------------|---------|---------|---------------|
-| 1 | {tech_design §x.y 要求} | {实际做法} | {原因} | {是/否} |
+| 1 | {tech_design §x.y requirement} | {Actual approach} | {Reason} | {Yes/No} |

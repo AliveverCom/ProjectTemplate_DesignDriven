@@ -1,190 +1,195 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档 —— `02_DevPlanAndReport`
+[Document Tier] AI Development Process Documents —— `02_DevPlanAndReport`
 
-【本目录收什么】开发计划、开发报告、保存现场、AI handover、改进计划、
-       命名规范化与目录整理计划。即"计划做什么"和"实际做成什么"这两类文档。
+[What This Directory Holds] Dev plans, dev reports, saved-state snapshots, AI handovers, improve plans,
+       naming normalization and directory reorganization plans. In short, the two document types
+       "what is planned" and "what was actually delivered."
 
-【落盘目录】
-  - 平台级：docs/ai_dev_history/02_DevPlanAndReport/
-  - 组件级：docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
+[Storage Location]
+  - Platform level: docs/ai_dev_history/02_DevPlanAndReport/
+  - Component level: docs/components/{component_code_name}/ai_dev_history/02_DevPlanAndReport/
 
-【文件命名 —— 本目录的硬规则】所有文档一律以**所在版本号开头**：
-       `v{版本号}_{DocType}[_{YYYYMMDD}].md`
+[File Naming —— hard rule for this directory] Every document must start with its version number:
+       `v{version}_{DocType}[_{YYYYMMDD}].md`
   - v0.3_DevPlan.md / v0.3_BE_DevPlan.md / v0.3_FE_DevPlan.md / v0.3_DevReport.md
   - v0.3_Snapshot.md / v0.3_Handover.md / v0.3_ImprovePlan.md
   - v0.3_RenamePlan.md / v0.3_ReorganizePlan.md
-  - 同一版本内同类型有多份时追加日期后缀：v0.3_ReorganizePlan_20260326.md
-  - 版本号取自 {component}_version_plan.md；本文这类跨版本的整理计划取**发起时的
-    当前版本号**
+  - When multiple documents of the same type exist within one version, append a date suffix: v0.3_ReorganizePlan_20260326.md
+  - The version number comes from {component}_version_plan.md; a cross-version reorganization plan like
+    this one uses the **current version at the time it was initiated**
 
-【本文件的定位】目录整理计划。当某个目录（典型是 ai_dev_history/）文件平铺过多、
-       查找困难时，按文档类型建立子目录并批量归档。
+[This File's Purpose] A directory reorganization plan. When a directory (typically ai_dev_history/) has
+       accumulated too many files flat in one level and become hard to search, establish subdirectories
+       by document type and batch-archive into them.
 
-【与同目录其它文档的区别】
-  - v{x}_RenamePlan.md   —— 只改**文件/目录名**，不换所在层级。
-  - 本文件（ReorganizePlan）—— 只**移动位置**、建子目录，不改文件名。
-    两者常配合使用，但应分成两份文档、分两步执行，便于回滚与 Git rename 识别。
-  - v{x}_DevPlan.md —— 改功能代码，与本文无关。
+[Difference From Other Documents in This Directory]
+  - v{x}_RenamePlan.md   —— only renames **files/directories**, without changing their level.
+  - This file (ReorganizePlan) —— only **moves locations** and creates subdirectories, without renaming
+    files. The two are often used together, but should be split into two documents and executed in two
+    steps to make rollback and Git rename detection easier.
+  - v{x}_DevPlan.md —— changes functional code; unrelated to this file.
 
-【触发条件】单目录文件数 > 20 且存在明显的类型分组。
+[Trigger Condition] File count in a single directory > 20 and there is a clear type grouping.
 
-【特点】这类计划通常是**边做边写**（执行完立刻把状态回填为已完成），
-       文档本身就是执行记录，不需要工程师答复列。
+[Characteristic] This kind of plan is typically **written as it is executed** (status is filled back in
+       as completed immediately after each step runs); the document itself is the execution record and
+       does not need an engineer-response column.
 
-【模板文件名】前导 `_` 只是模板标记，复制时按上面的命名规则重命名。
+[Template File Name] The leading `_` is only a template marker; rename the file per the naming rule above when copying it.
 -->
 
-# v{版本号} {目标目录} 目录整理计划
+# v{version} {TargetDirectory} Directory Reorganization Plan
 
-**Document**: v{版本号}_ReorganizePlan[_{YYYYMMDD}].md
-**版本**: v{版本号}
+**Document**: v{version}_ReorganizePlan[_{YYYYMMDD}].md
+**Version**: v{version}
 **Date**: {YYYY-MM-DD}
-**Component**: {component} / {目标目录}
-**Target**: {将 {目标目录} 下的历史文档按类别归入子目录，提升可维护性}
+**Component**: {component} / {TargetDirectory}
+**Target**: {Sort the historical documents under {TargetDirectory} into subdirectories by category to improve maintainability}
 **Developer**: AI Agent
-**Status**: {🟢 已完成 / 🟡 执行中}
+**Status**: {🟢 Completed / 🟡 In Progress}
 
 ---
 
-## 1 背景与动机
+## 1 Background and Motivation
 
-{`{目标目录}/` 目录随着开发迭代不断积累文档（{文档类型枚举}），所有文件平铺在同一层级，
- 文件数量已达 {n}+，查找和管理效率下降。需要按文档类型建立子目录分类存放。}
+{As `{TargetDirectory}/` accumulates documents through iterative development ({enumeration of document
+ types}), all files sit flat at the same level, and the file count has reached {n}+, reducing
+ findability and manageability. Subdirectories need to be established by document type.}
 
-**整理前的目录状态**：
+**Directory State Before Reorganization**:
 
-| 项目 | 值 |
+| Item | Value |
 |------|-----|
-| 文件总数 | {n} |
-| 目录层级 | {全部平铺在根目录} |
-| 主要文档类型 | {类型枚举} |
-| 最早文件日期 | {YYYY-MM-DD} |
-| 最新文件日期 | {YYYY-MM-DD} |
+| Total file count | {n} |
+| Directory levels | {all flat in the root directory} |
+| Main document types | {type enumeration} |
+| Earliest file date | {YYYY-MM-DD} |
+| Latest file date | {YYYY-MM-DD} |
 
 ---
 
-## 2 目录结构设计
+## 2 Target Directory Structure
 
-> 标准结构见 `templates/ai_dev/readme.md`。整理目标一律向标准结构对齐，
-> 不要自造新的分类体系。
+> See `templates/ai_dev/readme.md` for the standard structure. Reorganization should always align with
+> the standard structure; do not invent a new classification scheme.
 
 ```
-{目标目录}/                            # ai_dev_history/
-├── prompt_history.md                  # 原始 Prompt 累积记录（保留在根目录）
-├── 01_DocReviewRefine/                # 文档级 review 与 refine
-│   ├── docs_review_*.md               # 跨文档一致性审查
-│   ├── tech_design_review_*.md        # 技术设计深度审查
-│   ├── design_completeness_review_*.md # 设计完备性审查
-│   ├── html_review_*.md               # HTML 设计稿审查
-│   └── uiux_pattern_summary_*.md      # UI/UX 通用模式提炼
-├── 02_DevPlanAndReport/               # 计划 / 报告 / 现场 / 交接（文件名以版本号开头）
-│   ├── v{x}_DevPlan.md                # 版本开发计划
-│   ├── v{x}_BE_DevPlan.md             # 后端开发计划
-│   ├── v{x}_FE_DevPlan.md             # 前端开发计划
-│   ├── v{x}_DevReport.md              # 版本开发报告
-│   ├── v{x}_Snapshot.md               # 保存现场
-│   ├── v{x}_Handover.md               # AI 之间交接
-│   ├── v{x}_ImprovePlan.md            # 继续改进计划
-│   ├── v{x}_RenamePlan.md             # 命名规范化计划
-│   └── v{x}_ReorganizePlan.md         # 目录整理计划（本文件）
-├── 03_CodeReviewRefine/               # 代码级 review 与 refine
+{TargetDirectory}/                     # ai_dev_history/
+├── prompt_history.md                  # Cumulative record of raw prompts (kept in the root directory)
+├── 01_DocReviewRefine/                # Document-level review and refine
+│   ├── docs_review_*.md               # Cross-document consistency review
+│   ├── tech_design_review_*.md        # In-depth technical design review
+│   ├── design_completeness_review_*.md # Design completeness review
+│   ├── html_review_*.md               # HTML design mockup review
+│   └── uiux_pattern_summary_*.md      # UI/UX common-pattern distillation
+├── 02_DevPlanAndReport/               # Plans / reports / snapshots / handovers (file names start with the version number)
+│   ├── v{x}_DevPlan.md                # Version dev plan
+│   ├── v{x}_BE_DevPlan.md             # Backend dev plan
+│   ├── v{x}_FE_DevPlan.md             # Frontend dev plan
+│   ├── v{x}_DevReport.md              # Version dev report
+│   ├── v{x}_Snapshot.md               # Saved state snapshot
+│   ├── v{x}_Handover.md               # AI-to-AI handover
+│   ├── v{x}_ImprovePlan.md            # Continued improvement plan
+│   ├── v{x}_RenamePlan.md             # Naming normalization plan
+│   └── v{x}_ReorganizePlan.md         # Directory reorganization plan (this file)
+├── 03_CodeReviewRefine/               # Code-level review and refine
 │   └── {FE|BE}_code_review_*.md
-├── 04_DebugFix/                       # 调试与缺陷修复
+├── 04_DebugFix/                       # Debugging and defect fixes
 │   ├── debug_*.md
 │   └── fix_report_*.md
-└── 99_Prompts/                        # 可复用 Prompt 库
+└── 99_Prompts/                        # Reusable prompt library
     └── prompt_library.md
 ```
 
-**设计原则**：
+**Design Principles**:
 
-| # | 原则 | 说明 |
+| # | Principle | Notes |
 |---|------|------|
-| 1 | {只分两层} | {不建三级子目录，避免过度嵌套} |
-| 2 | {按开发生命周期阶段分类} | {编号目录 01→99 对应文档审查→开发→代码审查→调试→Prompt，而非按年月} |
-| 3 | {prompt_history.md 保留根目录} | {单文件持续追加，是该目录的入口文档，不归入任何编号子目录} |
-| 4 | {编号目录名保持与 templates/ai_dev/ 一致} | {模板目录与落盘目录同名，便于对照取模板} |
-| 5 | {02 目录内文件名以版本号开头} | {便于按版本聚类，`ls` 即按版本排序} |
+| 1 | {Only two levels} | {Do not create a third-level subdirectory, to avoid over-nesting} |
+| 2 | {Categorize by development lifecycle stage} | {The numbered directories 01→99 correspond to document review → development → code review → debugging → prompts, not to a calendar month} |
+| 3 | {prompt_history.md stays in the root directory} | {A single file that is continually appended to; it is the entry point document of this directory and is not filed into any numbered subdirectory} |
+| 4 | {Numbered directory names stay consistent with templates/ai_dev/} | {The template directory and the storage directory share the same names, for easy cross-reference when fetching a template} |
+| 5 | {File names inside 02 start with the version number} | {Makes it easy to cluster by version; `ls` sorts by version} |
 
 ---
 
-## 3 分类规则
+## 3 Classification Rules
 
-| 子目录 | 匹配规则 | 文件数 |
+| Subdirectory | Match Rule | File Count |
 |--------|---------|--------|
-| `01_DocReviewRefine/` | {文件名含 `docs_review`、`tech_design_review`、`design_completeness_review`、`html_review`、`uiux_pattern_summary`} | {n} |
-| `02_DevPlanAndReport/` | {文件名含 `_dev_plan_`、`_implementation_`、`_progress_review_`、`_improvement_plan_`、`_rename_plan_`、`_reorganize_plan_`} | {n} → {n}（含本文件） |
-| `03_CodeReviewRefine/` | {文件名含 `FE_review`、`BE_review`、`code_review`} | {n} |
-| `04_DebugFix/` | {文件名以 `debug_` 开头，或含 `fix_report`} | {n} |
-| `99_Prompts/` | {`prompt_library.md` 及其它可复用 prompt 集} | {n} |
-| 根目录保留 | `prompt_history.md`{（原 `{component}_raw_prompts.md`）} | {1} |
+| `01_DocReviewRefine/` | {File name contains `docs_review`, `tech_design_review`, `design_completeness_review`, `html_review`, or `uiux_pattern_summary`} | {n} |
+| `02_DevPlanAndReport/` | {File name contains `_dev_plan_`, `_implementation_`, `_progress_review_`, `_improvement_plan_`, `_rename_plan_`, or `_reorganize_plan_`} | {n} → {n} (including this file) |
+| `03_CodeReviewRefine/` | {File name contains `FE_review`, `BE_review`, or `code_review`} | {n} |
+| `04_DebugFix/` | {File name starts with `debug_`, or contains `fix_report`} | {n} |
+| `99_Prompts/` | {`prompt_library.md` and other reusable prompt collections} | {n} |
+| Kept in root | `prompt_history.md` {(formerly `{component}_raw_prompts.md`)} | {1} |
 
-**边界情况处理**：
+**Edge Case Handling**:
 
-| 文件 | 归类 | 理由 |
+| File | Classification | Reason |
 |------|------|------|
-| `{文件名}` | `{子目录}` | {理由} |
-| `{文件名}` | {根目录} | {理由} |
+| `{file name}` | `{subdirectory}` | {reason} |
+| `{file name}` | {root directory} | {reason} |
 
-> 归入 `02_DevPlanAndReport/` 的旧文件若文件名不是以版本号开头，
-> 需一并按 `v{版本号}_{DocType}.md` 重命名；重命名条目单独列在
-> `v{版本号}_RenamePlan.md` 中，本文只负责移动。
+> For old files filed into `02_DevPlanAndReport/` whose file name does not already start with a version
+> number, they must also be renamed per `v{version}_{DocType}.md`; the rename entries are listed
+> separately in `v{version}_RenamePlan.md` — this document is only responsible for moving them.
 
 ---
 
-## 4 执行步骤
+## 4 Execution Steps
 
-| # | 操作 | 命令/说明 | 状态 |
+| # | Action | Command/Notes | Status |
 |---|------|----------|------|
-| 1 | 创建子目录 | `mkdir -p 01_DocReviewRefine 02_DevPlanAndReport 03_CodeReviewRefine 04_DebugFix 99_Prompts` | {🟢 已完成} |
-| 2 | 移动文档审查类 | `git mv docs_review_*.md tech_design_review_*.md design_completeness_review_*.md html_review_*.md uiux_pattern_summary_*.md 01_DocReviewRefine/` | {🟢 已完成} |
-| 3 | 移动计划与报告类 | `git mv *_dev_plan_*.md *_implementation_*.md *_progress_review_*.md *_improvement_plan_*.md *_rename_plan_*.md *_reorganize_plan_*.md 02_DevPlanAndReport/` | {🟢 已完成} |
-| 4 | 移动代码审查类 | `git mv FE_review_*.md BE_review_*.md code_review_*.md 03_CodeReviewRefine/` | {🟢 已完成} |
-| 5 | 移动调试类 | `git mv debug_*.md fix_report_*.md 04_DebugFix/` | {🟢 已完成} |
-| 6 | 移动 Prompt 库 | `git mv prompt_library.md 99_Prompts/` | {🟢 已完成} |
-| 7 | 验证结果 | {确认根目录仅剩 `prompt_history.md` + 五个编号子目录} | {🟢 已完成} |
-| 8 | 更新交叉引用 | {扫描并更新指向被移动文件的链接，见 §5} | {🟢 已完成} |
+| 1 | Create subdirectories | `mkdir -p 01_DocReviewRefine 02_DevPlanAndReport 03_CodeReviewRefine 04_DebugFix 99_Prompts` | {🟢 Completed} |
+| 2 | Move document-review-type files | `git mv docs_review_*.md tech_design_review_*.md design_completeness_review_*.md html_review_*.md uiux_pattern_summary_*.md 01_DocReviewRefine/` | {🟢 Completed} |
+| 3 | Move plans-and-reports-type files | `git mv *_dev_plan_*.md *_implementation_*.md *_progress_review_*.md *_improvement_plan_*.md *_rename_plan_*.md *_reorganize_plan_*.md 02_DevPlanAndReport/` | {🟢 Completed} |
+| 4 | Move code-review-type files | `git mv FE_review_*.md BE_review_*.md code_review_*.md 03_CodeReviewRefine/` | {🟢 Completed} |
+| 5 | Move debug-type files | `git mv debug_*.md fix_report_*.md 04_DebugFix/` | {🟢 Completed} |
+| 6 | Move the prompt library | `git mv prompt_library.md 99_Prompts/` | {🟢 Completed} |
+| 7 | Verify the result | {Confirm the root directory contains only `prompt_history.md` plus the five numbered subdirectories} | {🟢 Completed} |
+| 8 | Update cross-references | {Scan and update links pointing to the moved files, see §5} | {🟢 Completed} |
 
-> 使用 `git mv` 而非 `mv`，可让 Git 更准确地识别为 rename。
+> Use `git mv` rather than `mv`, so Git can more accurately detect the change as a rename.
 
 ---
 
-## 5 影响范围
+## 5 Impact Scope
 
-- **无代码影响**：{仅涉及 `docs/` 目录下的文档文件移动，不影响任何源代码或构建流程。}
-- **交叉引用**：{这些历史文档{不被 / 被} 代码或 CI 引用。}
-  - {若被引用，列出需更新的引用点：}
+- **No code impact**: {Only involves moving document files under the `docs/` directory; does not affect any source code or the build process.}
+- **Cross-references**: {These historical documents are {not referenced / referenced} by code or CI.}
+  - {If referenced, list the reference points that need updating:}
 
-| # | 引用所在文件 | 旧路径 | 新路径 | 状态 |
+| # | File Containing the Reference | Old Path | New Path | Status |
 |---|-------------|--------|--------|------|
-| 1 | `{文件}` | `{ai_dev_history/xxx.md}` | `{ai_dev_history/01_DocReviewRefine/xxx.md}` | {🟢} |
-| 2 | `{文件}` | `{ai_dev_history/dev_plan/xxx.md}` | `{ai_dev_history/02_DevPlanAndReport/xxx.md}` | {🟢} |
+| 1 | `{file}` | `{ai_dev_history/xxx.md}` | `{ai_dev_history/01_DocReviewRefine/xxx.md}` | {🟢} |
+| 2 | `{file}` | `{ai_dev_history/dev_plan/xxx.md}` | `{ai_dev_history/02_DevPlanAndReport/xxx.md}` | {🟢} |
 
-- **Git 追踪**：{Git 会自动识别为 rename，历史记录保留完整。}
-- **后续约定**：{新产出的文档按 §3 分类规则直接放入对应编号子目录，不再平铺到根目录。}
+- **Git tracking**: {Git automatically recognizes these as renames, preserving full history.}
+- **Going forward**: {New documents are filed directly into the corresponding numbered subdirectory per the §3 classification rules, rather than placed flat in the root directory.}
 
 ---
 
-## 6 整理后状态
+## 6 State After Reorganization
 
-| 项目 | 整理前 | 整理后 |
+| Item | Before Reorganization | After Reorganization |
 |------|-------|--------|
-| 根目录文件数 | {n} | {1} |
-| `01_DocReviewRefine/` 文件数 | — | {n} |
-| `02_DevPlanAndReport/` 文件数 | — | {n} |
-| `03_CodeReviewRefine/` 文件数 | — | {n} |
-| `04_DebugFix/` 文件数 | — | {n} |
-| `99_Prompts/` 文件数 | — | {n} |
-| 最大目录深度 | {1} | {2} |
+| Root directory file count | {n} | {1} |
+| `01_DocReviewRefine/` file count | — | {n} |
+| `02_DevPlanAndReport/` file count | — | {n} |
+| `03_CodeReviewRefine/` file count | — | {n} |
+| `04_DebugFix/` file count | — | {n} |
+| `99_Prompts/` file count | — | {n} |
+| Maximum directory depth | {1} | {2} |
 
-**验证**：
+**Verification**:
 
 ```bash
-# 确认根目录只剩 prompt_history.md + 五个编号子目录
-ls -la {目标目录}/
+# Confirm the root directory contains only prompt_history.md plus the five numbered subdirectories
+ls -la {TargetDirectory}/
 
-# 确认文件总数未变
-find {目标目录} -name "*.md" | wc -l
+# Confirm the total file count is unchanged
+find {TargetDirectory} -name "*.md" | wc -l
 ```

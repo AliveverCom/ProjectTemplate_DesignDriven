@@ -1,176 +1,179 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档 —— 03_CodeReviewRefine
+[Document Tier] AI Development Process Documents —— 03_CodeReviewRefine
 
-【本目录收什么】
-  审查对象是**源代码**的 review 与 refine：
-    - 前端代码审查（FE_code_review）
-    - 后端代码审查（BE_code_review）
-    - 代码与设计文档的一致性偏差审查
-    - 重构建议 / 代码 refine 方案
-  边界：
-    - 审查对象是 **.md / .mmd / .html 设计稿** 的一律放 `01_DocReviewRefine/`
-    - 单个缺陷的排查与修复过程放 `04_DebugFix/`
+[What This Directory Holds]
+  The review target is **source code** review and refine:
+    - Frontend code review (FE_code_review)
+    - Backend code review (BE_code_review)
+    - Review of deviations between code and the design documents
+    - Refactoring recommendations / code refine proposals
+  Boundaries:
+    - Reviews whose target is **.md / .mmd / .html design mockups** always go in `01_DocReviewRefine/`
+    - The investigation and fix process for a single defect goes in `04_DebugFix/`
 
-【落盘目录】
-  平台级：docs/ai_dev_history/03_CodeReviewRefine/
-  组件级：docs/components/{component_code_name}/ai_dev_history/03_CodeReviewRefine/
+[Storage Location]
+  Platform level: docs/ai_dev_history/03_CodeReviewRefine/
+  Component level: docs/components/{component_code_name}/ai_dev_history/03_CodeReviewRefine/
 
-【文件命名】{FE|BE}_code_review_{YYYYMMDD}-r{轮次}.md
-  轮次跨日期不重置（r6 → 次日继续 r7）。
-  示例：FE_code_review_20260314-r1.md
-        BE_code_review_20260320-r2.md
-  前后端一起审查时：code_review_{YYYYMMDD}-r{n}.md
+[File Naming] {FE|BE}_code_review_{YYYYMMDD}-r{round}.md
+  The round number does not reset across dates (r6 → continues as r7 the next day).
+  Examples: FE_code_review_20260314-r1.md
+            BE_code_review_20260320-r2.md
+  When frontend and backend are reviewed together: code_review_{YYYYMMDD}-r{n}.md
 
-【Review 迭代协议】与 01_DocReviewRefine 完全相同，见 templates/ai_dev/readme.md：
-  - 「工程师回复」列 AI 生成时一律留空，由工程师人工填写
-  - 第 N 轮报告的第一章固定是「上轮问题落实确认表」，不是新问题
-  - 已修复的问题不再重复列出，且不区分新老问题
-  - 问题 ID 全局唯一、永不复用
+[Review Iteration Protocol] Identical to 01_DocReviewRefine, see templates/ai_dev/readme.md:
+  - The "Engineer's Reply" column must always be left empty when the AI generates the file, to be filled in by the engineer by hand
+  - Chapter 1 of the round-N report is always fixed as the "Previous-Round Verification" table, not new issues
+  - Issues that have been fixed are not listed again, and new/old issues are not distinguished
+  - Issue IDs are globally unique and never reused
 
-【与设计文档的关系】
-  代码审查的基准是 {component}_tech_design.md 与 {component}_uiux.md。
-  发现偏差时必须判定是**代码错**还是**文档错**：
-    - 代码错 → 在本报告中开问题项，改代码
-    - 文档错 → 回到 01_DocReviewRefine 走文档 review 流程修正设计文档，
-              不要在代码审查报告里直接改文档
+[Relationship to the Design Documents]
+  The baseline for code review is {component}_tech_design.md and {component}_uiux.md.
+  When a deviation is found, it must be judged as either **a code defect** or **a document defect**:
+    - Code defect → open an issue item in this report, fix the code
+    - Document defect → return to 01_DocReviewRefine and go through the document review process to
+              correct the design document; do not modify the document directly inside a code review report
 
-【模板文件名】前导 `_` 只是模板标记，复制时按上面的命名规则重命名。
+[Template File Name] The leading `_` is only a template marker; rename the file per the naming rule above when copying it.
 -->
 
-# {ComponentDisplayName} {前端 / 后端}代码 Review 报告 r{轮次}
+# {ComponentDisplayName} {Frontend / Backend} Code Review Report r{round}
 
-**审查日期**：{YYYY-MM-DD}
-**审查轮次**：r{N}
-**审查对象**：
-- {前端}：`src/frontend/packages/{component-kebab}/`
-- {后端}：`src/backend/{component}/`
+**Review Date**: {YYYY-MM-DD}
+**Review Round**: r{N}
+**Reviewed**:
+- {Frontend}: `src/frontend/packages/{component-kebab}/`
+- {Backend}: `src/backend/{component}/`
 
-**审查基准**：
-| # | 基准文档 | 版本 | 用途 |
+**Review Baseline**:
+| # | Baseline Document | Version | Purpose |
 |---|---------|------|------|
-| 1 | `{component}_tech_design.md` | v{x.y.z} | {类定义、数据库、API 规格} |
-| 2 | `{component}_uiux.md` | v{x.y.z} | {页面元素与交互规格} |
-| 3 | `02_DevPlanAndReport/v{版本}_{BE\|FE}_DevPlan.md` | — | {本轮开发的任务清单与验收标准} |
-| 4 | `docs/naming_convention.md` | v{x.y.z} | {命名规范} |
-| 5 | `docs/technical_overview.md` §{n} | v{x.y.z} | {平台级开发规范} |
+| 1 | `{component}_tech_design.md` | v{x.y.z} | {class definitions, database, API specs} |
+| 2 | `{component}_uiux.md` | v{x.y.z} | {page element and interaction specs} |
+| 3 | `02_DevPlanAndReport/v{version}_{BE\|FE}_DevPlan.md` | — | {task checklist and acceptance criteria for this round of development} |
+| 4 | `docs/naming_convention.md` | v{x.y.z} | {naming conventions} |
+| 5 | `docs/technical_overview.md` §{n} | v{x.y.z} | {platform-level development conventions} |
 
-**目标版本**：v{目标版本}
-**审查范围**：{明确包含什么，例如：§4 开发任务列表中 Phase 1–7 的全部产出}
-**不涉及的内容**：{明确排除什么，例如：不涉及 daemon 程序代码；不涉及样式细节（由 01_DocReviewRefine 的 HTML review 覆盖）}
+**Target Version**: v{target version}
+**Review Scope**: {State clearly what is included, e.g.: all output of Phase 1–7 from the §4 development task list}
+**Out of Scope**: {State clearly what is excluded, e.g.: does not cover daemon program code; does not cover styling details (covered by the HTML review in 01_DocReviewRefine)}
 
-> **说明**：
-> 1. {本报告仅列出本轮仍需处理的问题，r{N-1} 已修复项见落实确认表。}
-> 2. {忽略 🔵 低级别问题。}
+> **Notes**:
+> 1. {This report only lists issues that still need to be addressed this round; items fixed in r{N-1} appear in the previous-round verification table.}
+> 2. {🔵 Low-severity issues are ignored.}
 
 ---
 
-## 上轮（r{N-1}）问题落实确认
+## Previous-Round (r{N-1}) Verification
 
-| r{N-1} 问题 ID | 处理方式 | 验证结果 |
+| r{N-1} Issue ID | Handling | Verification Result |
 |----------------|---------|---------|
-| {CR-01} | {工程师决定 + 实际改动} | ✅ {已修复，`{文件}:{行}` 现为 {新实现}} |
-| {CR-02} | {工程师决定不予修改，理由：{理由}} | ✅ {符合决定，代码未改} |
-| {CR-03} | {改动内容} | 🟡 {部分完成：{尚存差距}} |
-| {CR-04} | {—} | 🔴 {未落实} |
+| {CR-01} | {Engineer's decision + actual change} | ✅ {Fixed, `{file}:{line}` is now {new implementation}} |
+| {CR-02} | {Engineer decided not to fix it, reason: {reason}} | ✅ {Consistent with the decision, code unchanged} |
+| {CR-03} | {Change made} | 🟡 {Partially complete: {remaining gap}} |
+| {CR-04} | {—} | 🔴 {Not implemented} |
 
-> 🟡 / 🔴 的条目必须在下方「问题列表」中重新列出并保留原 ID。
+> Items marked 🟡 / 🔴 must be re-listed below in the "Issue List" and keep their original ID.
 
 ---
 
-## 问题列表
+## Issue List
 
-| # | 严重度 | 文件:行 | 问题 | 建议修改 | 工程师回复 |
+| # | Severity | File:Line | Issue | Suggested Fix | Engineer's Reply |
 |---|--------|---------|------|---------|-----------|
-| {CR-{n}} | 🔴 高 | `{path/to/file.ts}:{123}` | **{问题标题}**<br>{现状描述}<br>**影响**：{会导致什么后果} | {具体到"把 X 改成 Y"的可执行建议} | |
-| {CR-{n}} | 🔴 高 | `{path/to/file.go}:{45-58}` | **{问题标题}**<br>{现状}<br>**违反**：{tech_design §x.y / naming_convention §n / 平台规范 §n} | {建议} | |
-| {CR-{n}} | 🟠 中 | `{path}` | **{问题标题}**<br>{现状}<br>**影响**：{后果} | {建议} | |
-| {CR-{n}} | 🟡 低 | `{path}:{行}` | **{问题标题}**<br>{现状} | {建议} | |
+| {CR-{n}} | 🔴 High | `{path/to/file.ts}:{123}` | **{Issue title}**<br>{current state}<br>**Impact**: {what consequences it causes} | {an actionable suggestion specific enough to be "change X to Y"} | |
+| {CR-{n}} | 🔴 High | `{path/to/file.go}:{45-58}` | **{Issue title}**<br>{current state}<br>**Violates**: {tech_design §x.y / naming_convention §n / platform convention §n} | {suggestion} | |
+| {CR-{n}} | 🟠 Medium | `{path}` | **{Issue title}**<br>{current state}<br>**Impact**: {consequences} | {suggestion} | |
+| {CR-{n}} | 🟡 Low | `{path}:{line}` | **{Issue title}**<br>{current state} | {suggestion} | |
 
-> 「工程师回复」列由工程师人工填写，AI 生成时一律留空。
-> 严重度：🔴 高（功能错误/安全风险/阻塞联调）| 🟠 中（偏离设计需返工）| 🟡 低（可读性/一致性）| 🔵 极低（措辞排版）
+> The "Engineer's Reply" column is filled in by the engineer by hand; the AI always leaves it empty when generating this report.
+> Severity: 🔴 Critical (functional bug/security risk/blocks integration) | 🟠 High (deviates from the design, needs rework) | 🟡 Medium (readability/consistency) | 🔵 Low (wording/formatting)
 
 ---
 
-## 与设计文档的偏差
+## Deviation From the Design Documents
 
-> 代码与设计文档不一致时，需判定"改代码"还是"改文档"。有些偏差是实现中的合理演进，
-> 应回写文档；有些是实现错误，应改代码。
-> **判定为"改文档"的条目不在本报告中直接修改文档**，须转入 `01_DocReviewRefine/`
-> 走文档 review 流程，并在那边保留本报告的问题 ID 作为来源标注。
+> When code and the design document are inconsistent, it must be judged whether to "fix the code" or
+> "fix the document." Some deviations are reasonable evolution during implementation and should be
+> written back into the document; some are implementation errors and should be fixed in the code.
+> **An item judged as "fix the document" is not fixed directly in this report** — it must be routed to
+> `01_DocReviewRefine/` and go through the document review process, keeping this report's issue ID as
+> the source annotation over there.
 
-| # | 设计文档要求 | 代码实际实现 | 位置 | 判定 | 工程师回复 |
+| # | Design Document Requirement | Actual Code Implementation | Location | Judgment | Engineer's Reply |
 |---|-------------|-------------|------|------|-----------|
-| {D-01} | {tech_design §x.y：{要求}} | {实际做法} | `{文件}:{行}` | {改代码 / 改文档 / 两者都改} | |
-| {D-02} | {uiux §3.x.3：{要求}} | {实际做法} | `{文件}:{行}` | {建议} | |
+| {D-01} | {tech_design §x.y: {requirement}} | {actual approach} | `{file}:{line}` | {Fix code / Fix document / Both} | |
+| {D-02} | {uiux §3.x.3: {requirement}} | {actual approach} | `{file}:{line}` | {suggestion} | |
 
-> 「判定」列给出 AI 的建议，「工程师回复」列由工程师人工拍板。
+> The "Judgment" column gives the AI's recommendation; the "Engineer's Reply" column is where the engineer makes the final call.
 
 ---
 
-## 规范符合性检查
+## Convention Compliance Check
 
-| # | 检查项 | 依据 | 结果 | 说明 |
+| # | Check Item | Basis | Result | Notes |
 |---|--------|------|------|------|
-| 1 | {类型命名 C/E/I 前缀} | `naming_convention.md` §3 | ✅ | |
-| 2 | {文件与目录命名（前端 kebab-case / 后端 snake_case）} | `naming_convention.md` §{n} | ✅ | |
-| 3 | {分层职责边界（handler→service→repository 不跨层）} | `technical_overview.md` §{n} | ✅ | |
-| 4 | {统一响应结构与错误码} | `technical_overview.md` §{n} | ✅ | |
-| 5 | {输入验证在 handler 层完成} | `tech_design.md` 附录 | ✅ | |
-| 6 | {动态表名白名单校验（防注入）} | `v{版本}_BE_DevPlan.md` §{n} | ✅ | |
-| 7 | {排序字段白名单映射，未直拼 ORDER BY} | `v{版本}_BE_DevPlan.md` §{n} | ✅ | |
-| 8 | {软删除使用 `deleted_at`，查询过滤规则一致} | `technical_overview.md` §{n} | ✅ | |
-| 9 | {日志级别与必含字段、敏感信息脱敏} | `technical_overview.md` §{n} | ✅ | |
-| 10 | {前端无直接 fetch/axios 调用，统一走 services 层} | `v{版本}_FE_DevPlan.md` §{n} | ✅ | |
-| 11 | {前端未引入设计文档外的依赖，版本符合锁定表} | `technical_overview.md` §5 | ✅ | |
-| 12 | {路由清单与 uiux §4 完全一致} | `{component}_uiux.md` §4 | ✅ | |
-| 13 | {API 端点清单与 tech_design §5 完全一致} | `{component}_tech_design.md` §5 | ✅ | |
-| 14 | {版本边界：未实现超出本版本范围的功能} | `v{版本}_DevPlan.md` §1.2 | ✅ | |
+| 1 | {Type naming C/E/I prefixes} | `naming_convention.md` §3 | ✅ | |
+| 2 | {File and directory naming (frontend kebab-case / backend snake_case)} | `naming_convention.md` §{n} | ✅ | |
+| 3 | {Layer responsibility boundaries (handler→service→repository, no cross-layer calls)} | `technical_overview.md` §{n} | ✅ | |
+| 4 | {Unified response structure and error codes} | `technical_overview.md` §{n} | ✅ | |
+| 5 | {Input validation done at the handler layer} | `tech_design.md` appendix | ✅ | |
+| 6 | {Dynamic table name allowlist validation (injection prevention)} | `v{version}_BE_DevPlan.md` §{n} | ✅ | |
+| 7 | {Sort field allowlist mapping, not concatenated directly into ORDER BY} | `v{version}_BE_DevPlan.md` §{n} | ✅ | |
+| 8 | {Soft delete uses `deleted_at`, with consistent query filtering rules} | `technical_overview.md` §{n} | ✅ | |
+| 9 | {Log levels, required fields, and sensitive-data masking} | `technical_overview.md` §{n} | ✅ | |
+| 10 | {Frontend has no direct fetch/axios calls, all go through the services layer} | `v{version}_FE_DevPlan.md` §{n} | ✅ | |
+| 11 | {Frontend introduces no dependency outside the design documents; versions match the lock table} | `technical_overview.md` §5 | ✅ | |
+| 12 | {Route list exactly matches uiux §4} | `{component}_uiux.md` §4 | ✅ | |
+| 13 | {API endpoint list exactly matches tech_design §5} | `{component}_tech_design.md` §5 | ✅ | |
+| 14 | {Version boundary: no functionality beyond this version's scope was implemented} | `v{version}_DevPlan.md` §1.2 | ✅ | |
 
-> 结果取值：✅ 通过 / ❌ 不通过（不通过项必须在「问题列表」中有对应 ID）。
+> Result values: ✅ Passed / ❌ Failed (a failed item must have a corresponding ID in "Issue List").
 
 ---
 
-## 开发计划完成度核对
+## Dev Plan Completion Check
 
-> 对照 `02_DevPlanAndReport/v{版本}_{BE|FE}_DevPlan.md` §{n} 的任务清单，逐 Phase 核对实际产出。
-> 本节的核对结论应与该版本的 `v{版本}_DevReport.md` 保持一致；若不一致，以本报告为准并回写 DevReport。
+> Cross-check the actual output against the task checklist in `02_DevPlanAndReport/v{version}_{BE|FE}_DevPlan.md` §{n}, phase by phase.
+> The conclusions in this section should be consistent with that version's `v{version}_DevReport.md`; if not, this report takes precedence and the DevReport should be updated to match.
 
-| Phase | 计划任务数 | 🟢 完成 | 🟡 部分 | 🔴 未做 | 说明 |
+| Phase | Planned Task Count | 🟢 Complete | 🟡 Partial | 🔴 Not Done | Notes |
 |-------|-----------|--------|--------|--------|------|
-| Phase 1 {阶段名} | {n} | {n} | {n} | {n} | |
-| Phase 2 {阶段名} | {n} | {n} | {n} | {n} | |
-| **合计** | **{N}** | **{N}** | **{N}** | **{N}** | |
+| Phase 1 {phase name} | {n} | {n} | {n} | {n} | |
+| Phase 2 {phase name} | {n} | {n} | {n} | {n} | |
+| **Total** | **{N}** | **{N}** | **{N}** | **{N}** | |
 
 ---
 
-## 汇总
+## Summary
 
-| 严重度 | 数量 |
+| Severity | Count |
 |--------|------|
-| 🔴 高 | {n} |
-| 🟠 中 | {n} |
-| 🟡 低 | {n} |
-| **合计** | **{N}** |
+| 🔴 Critical | {n} |
+| 🟠 High | {n} |
+| 🟡 Medium | {n} |
+| **Total** | **{N}** |
 
-| 维度 | 结论 |
+| Dimension | Conclusion |
 |------|------|
-| 与设计文档偏差项 | {n} 项（其中判定"改文档" {n} 项，已转 `01_DocReviewRefine/`） |
-| 规范不符合项 | {n} 项 |
-| 上轮遗留未落实 | {n} 项 |
-| **是否可进入下一版本开发** | **{是 / 否}** |
+| Deviations from the design documents | {n} items (of which {n} judged "fix document", already routed to `01_DocReviewRefine/`) |
+| Convention non-compliance items | {n} |
+| Unresolved items from the previous round | {n} |
+| **Ready for the next version's development?** | **{Yes / No}** |
 
-{若否，列出必须先关闭的 🔴 项 ID 清单。}
+{If No, list the IDs of the 🔴 items that must be closed first.}
 
 ---
 
-## 共性问题
+## Common Issues
 
-{列出重复出现的同类问题。这类问题通常意味着开发计划缺少一条统一约定，
- 应回写到 `02_DevPlanAndReport/v{版本}_{BE|FE}_DevPlan.md` §6「开发注意事项」防止后续版本重犯。
- 没有则删除本节。}
+{List issues of the same type that recur repeatedly. This kind of issue usually means the dev plan is
+ missing a unified convention, and should be written back into
+ `02_DevPlanAndReport/v{version}_{BE|FE}_DevPlan.md` §6 "Development Notes" to prevent it from
+ recurring in future versions. Delete this section if there is none.}
 
-| # | 共性问题 | 出现位置 | 建议沉淀到 |
+| # | Common Issue | Where It Occurred | Suggested Destination |
 |---|---------|---------|-----------|
-| {C-01} | {问题描述} | `{文件1}`、`{文件2}`、`{文件3}` | `v{版本}_{BE\|FE}_DevPlan.md` §6.{n} |
+| {C-01} | {issue description} | `{file1}`, `{file2}`, `{file3}` | `v{version}_{BE\|FE}_DevPlan.md` §6.{n} |

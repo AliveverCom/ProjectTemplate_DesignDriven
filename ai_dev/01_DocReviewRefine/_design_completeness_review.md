@@ -1,222 +1,224 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档。`01_DocReviewRefine` = **文档级** review 与 refine，
-       与 `03_CodeReviewRefine` 的**代码级** review 相区分。
+[Document Level] AI development process document. `01_DocReviewRefine` = **document-level**
+       review and refine, distinct from the **code-level** review in `03_CodeReviewRefine`.
 
-【用途】前后端设计文档**完备性**审查。回答一个二元问题：
-       - AI 能否**仅凭** {component}_tech_design.md 独立开发出全部后端程序？
-       - AI 能否**仅凭** {component}_uiux.md 独立开发出全部前端程序？
-       输出缺口清单和覆盖率评估，是从"文档阶段"进入"开发阶段"的准入检查。
+[Purpose] Frontend/backend design document **completeness** review. Answers a binary question:
+       - Can AI develop **all** backend programs based **solely** on {component}_tech_design.md?
+       - Can AI develop **all** frontend programs based **solely** on {component}_uiux.md?
+       Produces a gap list and coverage assessment — the admission check for moving from the
+       "document phase" into the "development phase".
 
-【与本目录其他审查的区别】
-  - _docs_review.md         查跨文档一致性（有没有互相矛盾）
-  - _tech_design_review.md  查单文档纵深质量（写得对不对）
-  - 本文件                   查文档完备性（够不够开发，缺什么）
-  - _html_review.md         查 HTML 稿与 uiux 文档是否对齐
-  - _uiux_pattern_summary.md 把组件级设计模式提炼上升为平台级规范
+[Difference from other reviews in this directory]
+  - _docs_review.md         checks cross-document consistency (are there contradictions)
+  - _tech_design_review.md  checks single-document depth quality (is it written correctly)
+  - This file                checks document completeness (is it enough to develop from, what's missing)
+  - _html_review.md         checks whether the HTML mockup is aligned with the uiux document
+  - _uiux_pattern_summary.md promotes component-level design patterns to platform-level specs
 
-【本目录收什么】设计文档一致性审查、技术设计审查、前后端设计完备性审查、
-       UI/UX HTML 稿审查、UI/UX 通用模式提炼。
-       判定标准：审查对象是 **.md / .mmd / .html 设计稿** → 放本目录；
-                 审查对象是**源代码** → 放 `03_CodeReviewRefine/`。
+[What this directory holds] Design document consistency review, technical design review,
+       frontend/backend design completeness review, UI/UX HTML mockup review, UI/UX common
+       pattern extraction.
+       Rule of thumb: if the review target is a **.md / .mmd / .html design draft** → put it here;
+                       if the review target is **source code** → put it in `03_CodeReviewRefine/`.
 
-【落盘目录】
-  - 平台级：docs/ai_dev_history/01_DocReviewRefine/
-  - 组件级：docs/components/{component_code_name}/ai_dev_history/01_DocReviewRefine/
+[Output directory]
+  - Platform level: docs/ai_dev_history/01_DocReviewRefine/
+  - Component level: docs/components/{component_code_name}/ai_dev_history/01_DocReviewRefine/
 
-【文件命名】`{类型}_{YYYYMMDD}[-r{轮次}].md`，轮次跨日期**不重置**
-       （例：docs_review_20260310-r6.md → docs_review_20260314-r7.md）。
-  本目录各类型命名：
-    docs_review_{YYYYMMDD}-r{n}.md                — 跨文档一致性审查
-    tech_design_review_{YYYYMMDD}_r{n}.md         — 单文档深度审查
-    design_completeness_review_{YYYYMMDD}-r{n}.md — 前后端设计完备性审查  ← **本文件**
-    html_review_{YYYYMMDD}-r{n}.md                — HTML 稿对照 uiux 文档审查
-    uiux_pattern_summary_{YYYYMMDD}-v{n}.md       — 通用 UI/UX 模式提炼提案
-  历史项目中也用过 FE_BE_review_{YYYYMMDD}_v{n}.md，新文档统一用上面的命名。
+[File naming] `{type}_{YYYYMMDD}[-r{round}].md`, the round number does **not** reset across dates
+       (e.g. docs_review_20260310-r6.md → docs_review_20260314-r7.md).
+  Naming per type in this directory:
+    docs_review_{YYYYMMDD}-r{n}.md                — cross-document consistency review
+    tech_design_review_{YYYYMMDD}_r{n}.md         — single-document deep review
+    design_completeness_review_{YYYYMMDD}-r{n}.md — frontend/backend design completeness review  ← **this file**
+    html_review_{YYYYMMDD}-r{n}.md                — HTML mockup vs. uiux document review
+    uiux_pattern_summary_{YYYYMMDD}-v{n}.md       — common UI/UX pattern extraction proposal
+  Older projects also used FE_BE_review_{YYYYMMDD}_v{n}.md; new documents should use the naming above uniformly.
 
-【模板文件名】前导 `_` 只是模板标记。复制到 ai_dev_history/ 时按上面的规则重新命名，
-       不保留下划线。
+[Template file name] The leading `_` is only a template marker. When copying into ai_dev_history/,
+       rename it per the rules above and drop the underscore.
 
-【Review 迭代协议】见 templates/ai_dev/readme.md：
-  - 「工程师的答复」列 AI 生成时一律留空
-  - 第 N 轮报告首章为上轮落实确认表，不是新问题
-  - 已修复问题不再复述，且不区分新老问题
-  - 问题 ID 全局唯一、永不复用
-  - 架构分歧必须给出方案 A/B 并标注推荐项
+[Review Iteration Protocol] See templates/ai_dev/readme.md:
+  - The "Engineer's Response" column is always left empty when AI generates the report
+  - Round N's report opens with the previous-round remediation confirmation table, not new issues
+  - Fixed issues are not restated, and no distinction is drawn between old and new issues
+  - Issue IDs are globally unique and never reused
+  - Architectural disagreements must present Option A/B with the recommended one marked
 -->
 
-# {ComponentDisplayName} 前后端设计文档完备性 Review
+# {ComponentDisplayName} Frontend/Backend Design Document Completeness Review
 
-> **文档标题**：{组件中文名}（{component}）前后端设计文档完备性审查报告
-> **审查日期**：{YYYY-MM-DD}
-> **审查目标**：确认 AI 能否仅凭 `{component}_tech_design.md` 独立开发所有后端程序；能否仅凭 `{component}_uiux.md` 独立开发所有前端程序
-> **审查基准**：`{component}_tech_design.md` v{x.y.z}、`{component}_uiux.md` v{x.y.z}、`technical_overview.md`、`uiux_design_specification.md` v{x.y.z}、`{component}_business_desc.md`、`{component}_db_schema.mmd`
-> **版本**：v{n}
+> **Document Title**: {ComponentName} ({component}) Frontend/Backend Design Document Completeness Review Report
+> **Review Date**: {YYYY-MM-DD}
+> **Review Objective**: Confirm whether AI can develop all backend programs based solely on `{component}_tech_design.md`, and all frontend programs based solely on `{component}_uiux.md`
+> **Review Baseline**: `{component}_tech_design.md` v{x.y.z}, `{component}_uiux.md` v{x.y.z}, `technical_overview.md`, `uiux_design_specification.md` v{x.y.z}, `{component}_business_desc.md`, `{component}_db_schema.mmd`
+> **Version**: v{n}
 
 ---
 
-## 审查结论
+## Review Conclusion
 
-| 维度 | 能否独立开发？ | 覆盖率 | 主要缺口 |
+| Dimension | Can it be built independently? | Coverage | Main Gaps |
 |------|-------------|--------|---------|
-| **后端**（tech_design.md） | {❌ 尚不能 / ✅ 可以} | ~{nn}% | {Web 框架未确定、错误处理策略、环境配置、输入验证规则、日志规范、测试策略} |
-| **前端**（uiux.md） | {❌ 尚不能 / ✅ 可以} | ~{nn}% | {状态管理、路由架构、组件层级、API 客户端配置、认证集成、测试策略} |
+| **Backend** (tech_design.md) | {❌ Not yet / ✅ Yes} | ~{nn}% | {Web framework not decided, error-handling strategy, environment configuration, input validation rules, logging conventions, test strategy} |
+| **Frontend** (uiux.md) | {❌ Not yet / ✅ Yes} | ~{nn}% | {State management, routing architecture, component hierarchy, API client configuration, auth integration, test strategy} |
 
-> 覆盖率 = 可直接编码的规格条目数 / 独立开发所需的规格条目总数（估算值）。
-
----
-
-## 一、后端（tech_design.md）缺失项
-
-### 1.1 架构与基础设施
-
-| # | 缺失内容 | 严重性 | 说明 | 工程师的答复 | 执行状态 |
-|---|---------|--------|------|-------------|---------|
-| BE-01 | {Web 框架与版本未确定} | 🔴 | {文档只说"REST API"，未指定框架，AI 无法决定路由注册方式与中间件写法} | | |
-| BE-02 | {服务启动入口与配置加载方式未定义} | 🟠 | {未说明配置来源（文件/环境变量）、加载优先级、必填项清单} | | |
-| BE-03 | {依赖注入与分层组装方式未定义} | 🟡 | {handler→service→repository 的实例装配位置未说明} | | |
-
-### 1.2 API 设计
-
-| # | 缺失内容 | 严重性 | 说明 | 工程师的答复 | 执行状态 |
-|---|---------|--------|------|-------------|---------|
-| BE-04 | {统一响应结构未定义} | 🔴 | {各端点响应示例结构不一致，缺少全局 `{code,message,data}` 约定} | | |
-| BE-05 | {错误码表缺失} | 🔴 | {仅有 HTTP 状态码，无业务错误码，前端无法区分错误类型} | | |
-| BE-06 | {分页参数与分页响应格式未统一} | 🟠 | {不同端点的 page/page_size 命名与默认值不一致} | | |
-| BE-07 | {认证与鉴权在端点级的要求未标注} | 🟠 | {未标明哪些端点需要 Token} | | |
-
-### 1.3 数据层
-
-| # | 缺失内容 | 严重性 | 说明 | 工程师的答复 | 执行状态 |
-|---|---------|--------|------|-------------|---------|
-| BE-08 | {建库/建表脚本与迁移方案未定义} | 🔴 | {无 DDL 脚本路径、无迁移工具选型} | | |
-| BE-09 | {索引缺失或未标注} | 🟠 | {§{x} 中出现在 WHERE/ORDER BY 的字段无索引标注} | | |
-| BE-10 | {软删除语义与查询过滤规则未统一} | 🟠 | {未说明列表查询默认是否过滤已删除记录} | | |
-| BE-11 | {动态表/分表的创建时机与命名校验规则未定义} | 🔴 | {表名由用户输入拼接，未定义白名单正则，存在注入风险} | | |
-| BE-12 | {样例数据脚本缺失} | 🟡 | {无法本地起服务验证} | | |
-
-### 1.4 业务逻辑
-
-| # | 缺失内容 | 严重性 | 说明 | 工程师的答复 | 执行状态 |
-|---|---------|--------|------|-------------|---------|
-| BE-13 | {创建/更新的可写字段范围未明确} | 🟠 | {未排除系统计算字段，用户可任意改写统计值} | | |
-| BE-14 | {级联删除/更新规则未定义} | 🟠 | {删除主对象时关联表如何处理未说明} | | |
-| BE-15 | {并发与幂等要求未定义} | 🟡 | {批量操作是否幂等未说明} | | |
-| BE-16 | {失败重试与超时策略未定义} | 🟠 | {daemon 类程序缺少重试次数与退避策略} | | |
-
-### 1.5 横切关注点
-
-| # | 缺失内容 | 严重性 | 说明 | 工程师的答复 | 执行状态 |
-|---|---------|--------|------|-------------|---------|
-| BE-17 | {输入验证规则未定义} | 🔴 | {字段长度、格式正则、枚举取值范围未给出} | | |
-| BE-18 | {日志规范未定义} | 🟠 | {级别使用场景、必含字段、敏感信息脱敏规则缺失} | | |
-| BE-19 | {环境变量清单缺失} | 🟠 | {无法编写部署配置} | | |
-| BE-20 | {构建与运行命令缺失} | 🟡 | {无 build/run 说明} | | |
-
-### 1.6 测试
-
-| # | 缺失内容 | 严重性 | 说明 | 工程师的答复 | 执行状态 |
-|---|---------|--------|------|-------------|---------|
-| BE-21 | {测试策略未定义} | 🟠 | {未说明是否要求单元测试、覆盖哪一层、用什么框架} | | |
-| BE-22 | {测试数据来源未定义} | 🟡 | {mock 还是真实库未说明} | | |
+> Coverage = number of spec items that can be coded directly / total number of spec items required for independent development (estimated).
 
 ---
 
-## 二、前端（uiux.md）缺失项
+## 1. Backend (tech_design.md) Gaps
 
-### 2.1 架构与项目设置
+### 1.1 Architecture & Infrastructure
 
-| # | 缺失内容 | 严重性 | 说明 | 工程师的答复 | 执行状态 |
+| # | Missing Item | Severity | Description | Engineer's Response | Execution Status |
 |---|---------|--------|------|-------------|---------|
-| FE-01 | {前端框架与构建工具版本未锁定} | 🔴 | {未指定框架版本，无法初始化包} | | |
-| FE-02 | {包目录结构与文件命名规则未定义} | 🟠 | {pages/components/services/models/stores 的划分未说明} | | |
-| FE-03 | {路由架构未定义} | 🔴 | {缺少完整路由表（path → 页面 → 参数）} | | |
-| FE-04 | {与 Portal 框架的集成方式未定义} | 🟠 | {菜单挂载点、路由前缀、布局继承关系未说明} | | |
+| BE-01 | {Web framework and version not decided} | 🔴 | {The document only says "REST API" without specifying a framework, so AI cannot decide how to register routes or write middleware} | | |
+| BE-02 | {Service startup entry point and config loading method not defined} | 🟠 | {Configuration source (file/env var), load priority, and required-item list are not stated} | | |
+| BE-03 | {Dependency injection and layer assembly method not defined} | 🟡 | {Where the handler→service→repository instance wiring happens is not explained} | | |
 
-### 2.2 数据流与 API 集成
+### 1.2 API Design
 
-| # | 缺失内容 | 严重性 | 说明 | 工程师的答复 | 执行状态 |
+| # | Missing Item | Severity | Description | Engineer's Response | Execution Status |
 |---|---------|--------|------|-------------|---------|
-| FE-05 | {状态管理方案未定义} | 🔴 | {未指定状态库与 store 划分粒度} | | |
-| FE-06 | {API 客户端封装方式未定义} | 🔴 | {baseURL、拦截器、错误统一处理未说明} | | |
-| FE-07 | {页面与 API 的映射不完整} | 🟠 | {§2.3 Page-Object-API Mapping 存在 *(待补充)*} | | |
-| FE-08 | {认证 Token 的存取与失效处理未定义} | 🟠 | {未说明 401 后的跳转行为} | | |
-| FE-09 | {数据格式化规则未定义} | 🟡 | {日期、数字、空值的展示格式未统一} | | |
+| BE-04 | {Unified response structure not defined} | 🔴 | {Response example structures are inconsistent across endpoints, missing a global `{code,message,data}` convention} | | |
+| BE-05 | {Error code table missing} | 🔴 | {Only HTTP status codes exist, no business error codes, so the frontend cannot distinguish error types} | | |
+| BE-06 | {Pagination parameter and response format not unified} | 🟠 | {The page/page_size naming and defaults differ across endpoints} | | |
+| BE-07 | {Authentication and authorization requirements not labeled at the endpoint level} | 🟠 | {Which endpoints require a token is not indicated} | | |
 
-### 2.3 用户体验模式
+### 1.3 Data Layer
 
-| # | 缺失内容 | 严重性 | 说明 | 工程师的答复 | 执行状态 |
+| # | Missing Item | Severity | Description | Engineer's Response | Execution Status |
 |---|---------|--------|------|-------------|---------|
-| FE-10 | {Loading 状态表现未定义} | 🟠 | {骨架屏/转圈/禁用按钮未统一} | | |
-| FE-11 | {空表格与空数据状态未定义} | 🟡 | {无数据时显示什么未说明} | | |
-| FE-12 | {错误提示的展示方式未定义} | 🟠 | {Toast / 内联 / 弹窗未统一} | | |
-| FE-13 | {列表选中、多选、右键菜单交互未完整定义} | 🟠 | {§3.x.3 缺少行交互表} | | |
-| FE-14 | {表单校验时机与提示位置未定义} | 🟠 | {blur 校验还是提交校验未说明} | | |
-| FE-15 | {实时刷新与轮询策略未定义} | 🟡 | {监控类页面刷新间隔未说明} | | |
+| BE-08 | {Database/table creation scripts and migration plan not defined} | 🔴 | {No DDL script path, no migration tool chosen} | | |
+| BE-09 | {Indexes missing or not annotated} | 🟠 | {Fields appearing in WHERE/ORDER BY in §{x} are not annotated with indexes} | | |
+| BE-10 | {Soft-delete semantics and query filtering rules not unified} | 🟠 | {Whether list queries filter out deleted records by default is not stated} | | |
+| BE-11 | {Creation timing and naming validation rules for dynamic/sharded tables not defined} | 🔴 | {Table names are concatenated from user input, no whitelist regex defined, injection risk exists} | | |
+| BE-12 | {Sample data script missing} | 🟡 | {Cannot start the service locally for verification} | | |
 
-### 2.4 横切关注点
+### 1.4 Business Logic
 
-| # | 缺失内容 | 严重性 | 说明 | 工程师的答复 | 执行状态 |
+| # | Missing Item | Severity | Description | Engineer's Response | Execution Status |
 |---|---------|--------|------|-------------|---------|
-| FE-16 | {配色与主题未引用平台规范} | 🟠 | {未声明遵循 uiux_design_specification.md §{n}} | | |
-| FE-17 | {响应式与浏览器支持范围未声明} | 🟡 | {是否需要适配移动端未说明} | | |
-| FE-18 | {国际化方案未定义} | 🟡 | {多语言由谁指定、如何切换未说明} | | |
-| FE-19 | {性能优化要求未声明} | 🟡 | {是否需要懒加载/代码分割未说明} | | |
+| BE-13 | {Writable field scope for create/update not clear} | 🟠 | {System-computed fields are not excluded; users can arbitrarily overwrite statistical values} | | |
+| BE-14 | {Cascade delete/update rules not defined} | 🟠 | {How related tables are handled when the primary object is deleted is not explained} | | |
+| BE-15 | {Concurrency and idempotency requirements not defined} | 🟡 | {Whether batch operations are idempotent is not stated} | | |
+| BE-16 | {Failure retry and timeout strategy not defined} | 🟠 | {Daemon-type programs lack retry counts and backoff strategy} | | |
 
-### 2.5 测试
+### 1.5 Cross-Cutting Concerns
 
-| # | 缺失内容 | 严重性 | 说明 | 工程师的答复 | 执行状态 |
+| # | Missing Item | Severity | Description | Engineer's Response | Execution Status |
 |---|---------|--------|------|-------------|---------|
-| FE-20 | {前端测试策略未定义} | 🟡 | {是否要求自动化测试未说明} | | |
-| FE-21 | {Mock 数据来源未定义} | 🟠 | {纯前端版本的硬编码数据从哪来未说明} | | |
+| BE-17 | {Input validation rules not defined} | 🔴 | {Field length, format regex, and enum value ranges are not given} | | |
+| BE-18 | {Logging conventions not defined} | 🟠 | {Log-level usage scenarios, required fields, and sensitive-data masking rules are missing} | | |
+| BE-19 | {Environment variable list missing} | 🟠 | {Deployment configuration cannot be written} | | |
+| BE-20 | {Build and run commands missing} | 🟡 | {No build/run instructions} | | |
 
-> 以上所有表格中的「工程师的答复」和「执行状态」两列由工程师人工填写，AI 生成时一律留空。
-> 「执行状态」取值：🟢 已完成 / 🟡 部分完成 / 🔴 未开始 / ⚪ 不予修改。
+### 1.6 Testing
+
+| # | Missing Item | Severity | Description | Engineer's Response | Execution Status |
+|---|---------|--------|------|-------------|---------|
+| BE-21 | {Test strategy not defined} | 🟠 | {Whether unit tests are required, which layer to cover, and which framework to use are not stated} | | |
+| BE-22 | {Test data source not defined} | 🟡 | {Whether to use mocks or a real database is not stated} | | |
 
 ---
 
-## 汇总
+## 2. Frontend (uiux.md) Gaps
 
-### 后端（tech_design.md）
+### 2.1 Architecture & Project Setup
 
-| 分类 | 🔴 | 🟠 | 🟡 | 小计 |
+| # | Missing Item | Severity | Description | Engineer's Response | Execution Status |
+|---|---------|--------|------|-------------|---------|
+| FE-01 | {Frontend framework and build tool version not locked} | 🔴 | {No framework version specified, so packages cannot be initialized} | | |
+| FE-02 | {Package directory structure and file naming rules not defined} | 🟠 | {The division among pages/components/services/models/stores is not explained} | | |
+| FE-03 | {Routing architecture not defined} | 🔴 | {Missing a complete route table (path → page → params)} | | |
+| FE-04 | {Integration method with the Portal framework not defined} | 🟠 | {Menu mount point, route prefix, and layout inheritance are not explained} | | |
+
+### 2.2 Data Flow & API Integration
+
+| # | Missing Item | Severity | Description | Engineer's Response | Execution Status |
+|---|---------|--------|------|-------------|---------|
+| FE-05 | {State management approach not defined} | 🔴 | {No state library or store division granularity specified} | | |
+| FE-06 | {API client wrapping method not defined} | 🔴 | {baseURL, interceptors, and unified error handling are not explained} | | |
+| FE-07 | {Page-to-API mapping incomplete} | 🟠 | {§2.3 Page-Object-API Mapping still has *(to be filled in)* entries} | | |
+| FE-08 | {Auth token storage and expiry handling not defined} | 🟠 | {The redirect behavior after a 401 is not explained} | | |
+| FE-09 | {Data formatting rules not defined} | 🟡 | {Display formats for dates, numbers, and empty values are not unified} | | |
+
+### 2.3 UX Patterns
+
+| # | Missing Item | Severity | Description | Engineer's Response | Execution Status |
+|---|---------|--------|------|-------------|---------|
+| FE-10 | {Loading state presentation not defined} | 🟠 | {Skeleton screen / spinner / disabled button not unified} | | |
+| FE-11 | {Empty table and empty data states not defined} | 🟡 | {What to show when there is no data is not stated} | | |
+| FE-12 | {Error message presentation not defined} | 🟠 | {Toast / inline / dialog not unified} | | |
+| FE-13 | {List selection, multi-select, and right-click menu interactions incompletely defined} | 🟠 | {§3.x.3 is missing a row-interaction table} | | |
+| FE-14 | {Form validation timing and message placement not defined} | 🟠 | {Whether validation happens on blur or on submit is not stated} | | |
+| FE-15 | {Real-time refresh and polling strategy not defined} | 🟡 | {Refresh interval for monitoring-type pages is not stated} | | |
+
+### 2.4 Cross-Cutting Concerns
+
+| # | Missing Item | Severity | Description | Engineer's Response | Execution Status |
+|---|---------|--------|------|-------------|---------|
+| FE-16 | {Color scheme and theme do not reference the platform spec} | 🟠 | {Does not declare compliance with uiux_design_specification.md §{n}} | | |
+| FE-17 | {Responsive design and browser support range not declared} | 🟡 | {Whether mobile adaptation is required is not stated} | | |
+| FE-18 | {Internationalization approach not defined} | 🟡 | {Who specifies multiple languages and how switching works is not stated} | | |
+| FE-19 | {Performance optimization requirements not declared} | 🟡 | {Whether lazy loading/code splitting is required is not stated} | | |
+
+### 2.5 Testing
+
+| # | Missing Item | Severity | Description | Engineer's Response | Execution Status |
+|---|---------|--------|------|-------------|---------|
+| FE-20 | {Frontend test strategy not defined} | 🟡 | {Whether automated testing is required is not stated} | | |
+| FE-21 | {Mock data source not defined} | 🟠 | {Where the hardcoded data for a frontend-only version comes from is not stated} | | |
+
+> The "Engineer's Response" and "Execution Status" columns in all tables above are filled in by the engineer manually. AI must always leave them empty, never guess, and never write a placeholder like "TBD".
+> "Execution Status" values: 🟢 Done / 🟡 Partial / 🔴 Not Started / ⚪ Not to be changed.
+
+---
+
+## Summary
+
+### Backend (tech_design.md)
+
+| Category | 🔴 | 🟠 | 🟡 | Subtotal |
 |------|----|----|----|------|
-| 架构与基础设施 | {n} | {n} | {n} | {n} |
-| API 设计 | {n} | {n} | {n} | {n} |
-| 数据层 | {n} | {n} | {n} | {n} |
-| 业务逻辑 | {n} | {n} | {n} | {n} |
-| 横切关注点 | {n} | {n} | {n} | {n} |
-| 测试 | {n} | {n} | {n} | {n} |
-| **小计** | **{N}** | **{N}** | **{N}** | **{N}** |
+| Architecture & Infrastructure | {n} | {n} | {n} | {n} |
+| API Design | {n} | {n} | {n} | {n} |
+| Data Layer | {n} | {n} | {n} | {n} |
+| Business Logic | {n} | {n} | {n} | {n} |
+| Cross-Cutting Concerns | {n} | {n} | {n} | {n} |
+| Testing | {n} | {n} | {n} | {n} |
+| **Subtotal** | **{N}** | **{N}** | **{N}** | **{N}** |
 
-### 前端（uiux.md）
+### Frontend (uiux.md)
 
-| 分类 | 🔴 | 🟠 | 🟡 | 小计 |
+| Category | 🔴 | 🟠 | 🟡 | Subtotal |
 |------|----|----|----|------|
-| 架构与项目设置 | {n} | {n} | {n} | {n} |
-| 数据流与 API 集成 | {n} | {n} | {n} | {n} |
-| 用户体验模式 | {n} | {n} | {n} | {n} |
-| 横切关注点 | {n} | {n} | {n} | {n} |
-| 测试 | {n} | {n} | {n} | {n} |
-| **小计** | **{N}** | **{N}** | **{N}** | **{N}** |
+| Architecture & Project Setup | {n} | {n} | {n} | {n} |
+| Data Flow & API Integration | {n} | {n} | {n} | {n} |
+| UX Patterns | {n} | {n} | {n} | {n} |
+| Cross-Cutting Concerns | {n} | {n} | {n} | {n} |
+| Testing | {n} | {n} | {n} | {n} |
+| **Subtotal** | **{N}** | **{N}** | **{N}** | **{N}** |
 
-### 总计
+### Total
 
-| 维度 | 🔴 | 🟠 | 🟡 | 合计 |
+| Dimension | 🔴 | 🟠 | 🟡 | Total |
 |------|----|----|----|------|
-| 后端 | {N} | {N} | {N} | {N} |
-| 前端 | {N} | {N} | {N} | {N} |
-| **总计** | **{N}** | **{N}** | **{N}** | **{N}** |
+| Backend | {N} | {N} | {N} | {N} |
+| Frontend | {N} | {N} | {N} | {N} |
+| **Total** | **{N}** | **{N}** | **{N}** | **{N}** |
 
 ---
 
-## 准入判定
+## Admission Decision
 
-| 条件 | 状态 |
+| Condition | Status |
 |------|------|
-| 后端 🔴 项全部关闭 | {是 / 否} |
-| 前端 🔴 项全部关闭 | {是 / 否} |
-| **可否进入开发阶段** | **{可以 / 不可以}** |
+| All backend 🔴 items closed | {Yes / No} |
+| All frontend 🔴 items closed | {Yes / No} |
+| **Can development phase begin** | **{Yes / No}** |
 
-{若不可以，列出必须先关闭的 🔴 项 ID 清单。}
+{If not, list the IDs of the 🔴 items that must be closed first.}

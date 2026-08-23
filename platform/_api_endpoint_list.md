@@ -1,63 +1,63 @@
-# API Endpoint 汇总
+# API Endpoint Summary
 
 <!--
-模板说明（使用时删除本注释块）
-- 层级：**平台级 API 汇总**。放在 `docs/APIs/` 目录，文件名去掉前导下划线 → `api_endpoint_list.md`。
-- 与组件级 `{component}_tech_design.md` §5 的区别（务必守住边界）：
+TEMPLATE NOTES (delete this comment block when using)
+- Layer: **platform-level API summary**. Place in the `docs/APIs/` directory, drop the leading underscore in the filename → `api_endpoint_list.md`.
+- Distinction from component-level `{component}_tech_design.md` §5 (this boundary must be kept):
 
-  | 维度 | 本文（平台级 api_endpoint_list.md） | 组件级 tech_design.md §5 |
+  | Dimension | This document (platform-level api_endpoint_list.md) | Component-level tech_design.md §5 |
   |------|-----------------------------------|-------------------------|
-  | 内容 | 全平台端点的**一行式清单** | 每个端点的**完整定义**（参数、示例、响应、错误码） |
-  | 用途 | 查重、查冲突、看全局；给前端/网关做路由总览 | 给 AI 开发者写代码 |
-  | 权威性 | **派生文档** —— 从组件文档汇总而来 | **权威定义** |
-  | 更新时机 | 组件端点增删改之后同步 | 端点设计时 |
+  | Content | A **one-line-per-endpoint list** of all platform endpoints | The **complete definition** of each endpoint (parameters, examples, responses, error codes) |
+  | Purpose | Duplicate/conflict checking, global view; a routing overview for frontend/gateway | Source for AI developers to write code from |
+  | Authority | **Derived document** — compiled from component documents | **Authoritative definition** |
+  | Update timing | Synced after component endpoints are added/removed/changed | At endpoint design time |
 
-- 本文是派生文档：出现不一致时**以组件 tech_design.md 为准**，并立即修正本文。
-- 每次组件 API 变更后，必须同步更新本文，并在 review 中把"端点总数一致性"列为检查项。
-- 建议同时核对第三处：`src/api/{component}/openapi.yaml` 与组件的 API 调试页端点分组。
+- This document is a derived document: on any inconsistency, **the component's tech_design.md takes precedence**, and this document must be corrected immediately.
+- After every component API change, this document must be updated in sync, and "endpoint count consistency" must be included as a review checklist item.
+- It is also recommended to cross-check a third location: `src/api/{component}/openapi.yaml` and the component's API debug page endpoint groupings.
 -->
 
-本文件汇总「{平台中文名}」各产品组件后端服务对外暴露的**全部 REST API**。
+This document summarizes **all REST APIs** exposed by the backend services of every product component in "{PlatformName}".
 
-| 项目 | 说明 |
+| Item | Description |
 |------|------|
-| **文档层级** | 平台级（派生文档） |
-| **文档版本** | {x.y.z} |
-| **部署形态** | 每个组件独立部署、独立监听端口 |
-| **统一前缀** | `/api/v{n}/` |
-| **权威来源** | 各组件的 `{component_code_name}_tech_design.md` §5 |
-| **同步要求** | 组件端点增删改后**必须**同步本文；不一致时以组件文档为准 |
+| **Document Layer** | Platform-level (derived document) |
+| **Document Version** | {x.y.z} |
+| **Deployment Form** | Each component deployed independently, listening on its own port |
+| **Unified Prefix** | `/api/v{n}/` |
+| **Authoritative Source** | Each component's `{component_code_name}_tech_design.md` §5 |
+| **Sync Requirement** | This document **must** be synced after component endpoints are added/removed/changed; on inconsistency, the component document takes precedence |
 
-> 各接口的详细请求/响应定义请参阅对应组件的 `tech_design.md`。
-> 通用响应格式、分页格式和全局错误码见
-> [technical_overview.md](../technical_overview.md) §4.1。
+> For the detailed request/response definitions of each API, refer to the corresponding component's `tech_design.md`.
+> For the unified response format, pagination format, and global error codes, see
+> [technical_overview.md](../technical_overview.md) §4.1.
 
 ---
 
-## 0 端点总览
+## 0 Endpoint Overview
 
-| # | 组件 | 端口 | 端点数 | tech_design 章节 | OpenAPI 契约 |
+| # | Component | Port | Endpoint Count | tech_design Section | OpenAPI Contract |
 |---|------|------|--------|-----------------|-------------|
 | 1 | `{component_code_name_1}` | {8080} | {n} | [§5](../components/{component_code_name_1}/{component_code_name_1}_tech_design.md) | `src/api/{component_code_name_1}/openapi.yaml` |
 | 2 | `{component_code_name_2}` | {8081} | {n} | [§5](../components/{component_code_name_2}/{component_code_name_2}_tech_design.md) | `src/api/{component_code_name_2}/openapi.yaml` |
-| | **合计** | | **{N}** | | |
+| | **Total** | | **{N}** | | |
 
-**跨模块调用登记**（一个组件调用另一个组件端点的情况，必须在此登记）：
+**Cross-module call registry** (cases where one component calls another component's endpoint must be registered here):
 
-| # | 调用方组件 | 被调用组件 | 被调用端点 | 用途 |
+| # | Calling Component | Called Component | Called Endpoint | Purpose |
 |---|-----------|-----------|-----------|------|
-| 1 | `{caller_component}` | `{owner_component}` | `{METHOD} /api/v1/{path}` | {用途} |
+| 1 | `{caller_component}` | `{owner_component}` | `{METHOD} /api/v1/{path}` | {Purpose} |
 
-> 跨模块端点在**双方**的组件文档中都要出现：拥有方定义它，调用方在 UiUx 的
-> Page-Object-API Mapping 和 API 调试页中以「跨模块调用」分组展示。
+> A cross-module endpoint must appear in **both parties'** component documents: the owner defines it, and the caller shows it
+> as a "cross-module call" group in both the UiUx Page-Object-API Mapping and its API debug page.
 
 ---
 
-## 1 {component_code_name_1}（port {8080}）
+## 1 {component_code_name_1} (port {8080})
 
-> 权威定义：[{component_code_name_1}_tech_design.md §5](../components/{component_code_name_1}/{component_code_name_1}_tech_design.md)
+> Authoritative definition: [{component_code_name_1}_tech_design.md §5](../components/{component_code_name_1}/{component_code_name_1}_tech_design.md)
 
-### 1.1 {资源组名称，如 SourceMedia CRUD}
+### 1.1 {Resource group name, e.g. SourceMedia CRUD}
 
 | Method | Endpoint | Description | tech_design |
 |--------|----------|-------------|-------------|
@@ -67,7 +67,7 @@
 | PUT | `/api/v1/{resource}/:{id}` | {Update {resource}} | §5.1.4 |
 | DELETE | `/api/v1/{resource}/:{id}` | {Soft delete {resource}} | §5.1.5 |
 
-### 1.2 {资源组名称，如 Material Record 查询}
+### 1.2 {Resource group name, e.g. Material Record Query}
 
 | Method | Endpoint | Description | tech_design |
 |--------|----------|-------------|-------------|
@@ -75,40 +75,40 @@
 | DELETE | `/api/v1/{resource}/{path_param}/:{id}` | {Delete one} | §5.2.3 |
 | POST | `/api/v1/{resource}/{path_param}/batch-delete` | {Batch delete} | §5.2.4 |
 
-> 按资源组数量重复 1.x 小节。**批量操作**统一以子资源动词表达
-> （`batch-delete` / `batch-cancel`），不使用查询参数区分。
+> Repeat section 1.x for each resource group. **Batch operations** are always expressed as sub-resource verbs
+> (`batch-delete` / `batch-cancel`), not distinguished via query parameters.
 
 ---
 
-## 2 {component_code_name_2}（port {8081}）
+## 2 {component_code_name_2} (port {8081})
 
-> 权威定义：[{component_code_name_2}_tech_design.md §5](../components/{component_code_name_2}/{component_code_name_2}_tech_design.md)
+> Authoritative definition: [{component_code_name_2}_tech_design.md §5](../components/{component_code_name_2}/{component_code_name_2}_tech_design.md)
 
-### 2.1 {资源组名称}
+### 2.1 {Resource group name}
 
 | Method | Endpoint | Description | tech_design |
 |--------|----------|-------------|-------------|
-| GET | `/api/v1/{resource}` | {描述} | §5.1.1 |
+| GET | `/api/v1/{resource}` | {Description} | §5.1.1 |
 
-> 按组件数量重复第 2、3、4… 章。
+> Repeat for chapters 2, 3, 4… per component.
 
 ---
 
-## {n} 一致性检查清单
+## {n} Consistency Checklist
 
-每次修改本文或任一组件的 API 定义后，按下表逐项核对（结果记入
-`ai_dev_history/01_DocReviewRefine/` 的 review 报告）：
+After every change to this document or any component's API definitions, check each item in the table below (record the result in
+the review report under `ai_dev_history/01_DocReviewRefine/`):
 
-| # | 检查项 | 通过标准 |
+| # | Check Item | Passing Criteria |
 |---|--------|---------|
-| 1 | 端点总数一致 | 本文 = 组件 tech_design §5 = openapi.yaml = API 调试页 |
-| 2 | 端点路径一致 | 四处路径逐字相同（含路径参数名） |
-| 3 | HTTP 方法一致 | 四处方法相同 |
-| 4 | 端口无冲突 | 各组件监听端口两两不同 |
-| 5 | 前缀规范 | 全部为 `/api/v{n}/`，资源名为复数 kebab-case |
-| 6 | 跨模块端点双向登记 | 拥有方与调用方文档都有记录 |
-| 7 | UiUx 引用一致 | 组件 uiux 的 Page-Object-API Mapping 中所有端点都能在本文找到 |
-| 8 | 无残留占位 | 本文无 `{待补充}` / `(TBD)` 标记 |
+| 1 | Endpoint count consistent | This document = component tech_design §5 = openapi.yaml = API debug page |
+| 2 | Endpoint paths consistent | Identical paths across all four locations (including path parameter names) |
+| 3 | HTTP methods consistent | Identical methods across all four locations |
+| 4 | No port conflicts | Each component's listening port is pairwise distinct |
+| 5 | Prefix convention | All are `/api/v{n}/`, resource names are plural kebab-case |
+| 6 | Cross-module endpoints bidirectionally registered | Recorded in both the owner's and the caller's documents |
+| 7 | UiUx reference consistency | Every endpoint in the component's UiUx Page-Object-API Mapping can be found in this document |
+| 8 | No leftover placeholders | This document contains no `{TBD}` / `(TBD)` markers |
 
 ---
 
@@ -116,4 +116,4 @@
 
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
-| {x.y.z} | {YYYY-MM-DD} | {Author} | {变更说明} |
+| {x.y.z} | {YYYY-MM-DD} | {Author} | {Description of change} |
