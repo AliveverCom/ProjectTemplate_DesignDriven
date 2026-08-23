@@ -1,385 +1,385 @@
-# UI/UX 设计规范（UI/UX Design Specification）
+# UI/UX Design Specification
 
 **Document Version**: {x.y.z}
 
 <!--
-模板说明（使用时删除本注释块）
-- 层级：**平台级 UI/UX 规范**。放在 `docs/` 根目录，文件名去掉前导下划线 → `uiux_design_specification.md`。
-- 与组件级 `{component}_uiux.md` 的区别（务必守住边界）：
+TEMPLATE NOTES (delete this comment block when using)
+- Level: **Platform-level UI/UX specification**. Place at the `docs/` root; drop the leading underscore from the filename → `uiux_design_specification.md`.
+- Distinction from component-level `{component}_uiux.md` (this boundary must be maintained):
 
-  | 维度 | 本文（平台级 uiux_design_specification.md） | 组件级 {component}_uiux.md |
+  | Dimension | This document (platform-level uiux_design_specification.md) | Component-level {component}_uiux.md |
   |------|-------------------------------------------|---------------------------|
-  | 描述对象 | **页面模式**（列表页/详情页/弹出框）与**通用控件** | **具体页面**（P01、P02…）的逐页设计 |
-  | 内容 | 通用规则、交互约定、配色、技术栈 | 页面清单、页面流转图、每页元素表与行为表 |
-  | 引用方向 | 被组件文档引用 | 在每页开头声明"遵循本文 §2.x.x 某模式" |
-  | 冲突时 | **以本文为准** | 组件如需破例，必须在该页显式写出并说明理由 |
+  | What it describes | **Page patterns** (list pages / detail pages / dialogs) and **common controls** | Page-by-page design for **specific pages** (P01, P02, …) |
+  | Content | Common rules, interaction conventions, color scheme, tech stack | Page inventory, page flow diagrams, per-page element and behavior tables |
+  | Reference direction | Referenced by component docs | Each page states "follows §2.x.x of this document" at the top |
+  | On conflict | **This document takes precedence** | If a component needs an exception, it must be explicitly stated and justified on that page |
 
-- 组件文档**不得重复定义**本文已有的模式和控件，只能引用章节号。
-- 若某组件提炼出了新的通用模式，走 `ai_dev_history/01_DocReviewRefine/_uiux_pattern_summary.md`
-  流程，经工程师确认后**上收进本文**，再从组件文档中删除重复定义。
-- 建议为每个章节加锚点 `<a id="211-单列表页"></a>`，便于组件文档精确引用。
-- 本文用 `# 一级标题` 做章节，首节为 Table of Contents（不编号）。
+- Component docs **must not redefine** patterns and controls already defined here — they may only reference the section number.
+- If a component distills a new common pattern, follow the `ai_dev_history/01_DocReviewRefine/_uiux_pattern_summary.md`
+  process; once confirmed by an engineer, **fold it into this document** and remove the duplicate definition from the component doc.
+- It is recommended to add an anchor to each section, e.g. `<a id="211-single-list-page"></a>`, so component docs can reference it precisely.
+- This document uses `# level-1 headings` for sections; the first section is the Table of Contents (unnumbered).
 -->
 
 ---
 
 ## Table of Contents
 
-- [1 文档介绍](#1-文档介绍)
-- [2 功能页设计模式](#2-功能页设计模式)
-  - [2.1 列表页](#21-列表页)
-    - [2.1.1 单列表页](#211-单列表页)
-    - [2.1.2 双列表页](#212-双列表页)
-    - [2.1.3 树状单列表页](#213-树状单列表页)
-    - [2.1.4 树状双列表页](#214-树状双列表页)
-  - [2.2 业务对象详情页](#22-业务对象详情页)
-    - [2.2.1 业务对象创建页](#221-业务对象创建页)
-    - [2.2.2 业务对象预览或只读页](#222-业务对象预览或只读页)
-    - [2.2.3 业务对象编辑页](#223-业务对象编辑页)
-  - [2.3 弹出框](#23-弹出框)
-    - [2.3.1 快速信息展示框](#231-快速信息展示框)
-    - [2.3.2 阻塞信息提示窗口](#232-阻塞信息提示窗口)
-- [3 常用 UI 控件和样式](#3-常用-ui-控件和样式)
+- [1 Document Overview](#1-document-overview)
+- [2 Functional Page Design Patterns](#2-functional-page-design-patterns)
+  - [2.1 List Pages](#21-list-pages)
+    - [2.1.1 Single-List Page](#211-single-list-page)
+    - [2.1.2 Dual-List Page](#212-dual-list-page)
+    - [2.1.3 Tree Single-List Page](#213-tree-single-list-page)
+    - [2.1.4 Tree Dual-List Page](#214-tree-dual-list-page)
+  - [2.2 Business Object Detail Page](#22-business-object-detail-page)
+    - [2.2.1 Business Object Create Page](#221-business-object-create-page)
+    - [2.2.2 Business Object Read-Only Page](#222-business-object-read-only-page)
+    - [2.2.3 Business Object Edit Page](#223-business-object-edit-page)
+  - [2.3 Dialogs](#23-dialogs)
+    - [2.3.1 Quick Info Popover](#231-quick-info-popover)
+    - [2.3.2 Blocking Message Dialog](#232-blocking-message-dialog)
+- [3 Common UI Controls and Styles](#3-common-ui-controls-and-styles)
   - [3.1 Multi Tags](#31-multi-tags)
-    - [3.1.1 Multi Tags 编辑控件](#311-multi-tags-编辑控件)
-    - [3.1.2 Multi Tags 在列表中的样式](#312-multi-tags-在列表中的样式)
-    - [3.1.3 Tag Cloud 只读展示](#313-tag-cloud-只读展示)
+    - [3.1.1 Multi Tags Edit Control](#311-multi-tags-edit-control)
+    - [3.1.2 Multi Tags Style in Lists](#312-multi-tags-style-in-lists)
+    - [3.1.3 Tag Cloud Read-Only Display](#313-tag-cloud-read-only-display)
   - [3.2 Active and IsDeleted](#32-active-and-isdeleted)
-    - [3.2.1 Inactive 状态的列表样式](#321-inactive-状态的列表样式)
-    - [3.2.2 Soft Deleted 状态的列表样式](#322-soft-deleted-状态的列表样式)
-  - [3.3 Slider + Number Input 联动控件](#33-slider--number-input-联动控件)
-  - [3.4 动态多选按钮（Dynamic Chip Selector）](#34-动态多选按钮dynamic-chip-selector)
-  - [3.5 Tag-style Time Input 时间标签输入控件](#35-tag-style-time-input-时间标签输入控件)
-  - [3.6 外键搜索选择控件（Autocomplete）](#36-外键搜索选择控件autocomplete)
-- [4 用户交互](#4-用户交互)
-- [5 前端配色](#5-前端配色)
-- [6 前端与 API 交互](#6-前端与-api-交互)
-- [7 技术栈](#7-技术栈)
-- [8 状态管理](#8-状态管理)
-- [9 数据格式化规则](#9-数据格式化规则)
-- [10 实时刷新策略](#10-实时刷新策略)
-- [11 客户端缓存策略](#11-客户端缓存策略)
-- [12 Loading 状态](#12-loading-状态)
-- [13 空表格状态](#13-空表格状态)
-- [14 响应式设计与浏览器支持](#14-响应式设计与浏览器支持)
-- [15 性能优化](#15-性能优化)
-- [16 错误处理与展示](#16-错误处理与展示)
-- [17 前端测试策略](#17-前端测试策略)
-- [18 目录和文件命名规则](#18-目录和文件命名规则)
-  - [18.1 命名风格](#181-命名风格)
-  - [18.2 页面 ID 编号规则（迁移场景）](#182-页面-id-编号规则迁移场景)
+    - [3.2.1 List Style for Inactive State](#321-list-style-for-inactive-state)
+    - [3.2.2 List Style for Soft-Deleted State](#322-list-style-for-soft-deleted-state)
+  - [3.3 Slider + Number Input Linked Control](#33-slider--number-input-linked-control)
+  - [3.4 Dynamic Chip Selector](#34-dynamic-chip-selector)
+  - [3.5 Tag-style Time Input Control](#35-tag-style-time-input-control)
+  - [3.6 Foreign-Key Search Select Control (Autocomplete)](#36-foreign-key-search-select-control-autocomplete)
+- [4 User Interaction](#4-user-interaction)
+- [5 Frontend Color Scheme](#5-frontend-color-scheme)
+- [6 Frontend and API Interaction](#6-frontend-and-api-interaction)
+- [7 Tech Stack](#7-tech-stack)
+- [8 State Management](#8-state-management)
+- [9 Data Formatting Rules](#9-data-formatting-rules)
+- [10 Real-Time Refresh Strategy](#10-real-time-refresh-strategy)
+- [11 Client-Side Caching Strategy](#11-client-side-caching-strategy)
+- [12 Loading State](#12-loading-state)
+- [13 Empty Table State](#13-empty-table-state)
+- [14 Responsive Design and Browser Support](#14-responsive-design-and-browser-support)
+- [15 Performance Optimization](#15-performance-optimization)
+- [16 Error Handling and Display](#16-error-handling-and-display)
+- [17 Frontend Testing Strategy](#17-frontend-testing-strategy)
+- [18 Directory and File Naming Conventions](#18-directory-and-file-naming-conventions)
+  - [18.1 Naming Style](#181-naming-style)
+  - [18.2 Page ID Numbering Rules (Migration Scenarios)](#182-page-id-numbering-rules-migration-scenarios)
 - [Change Log](#change-log)
 
 ---
 
-<a id="1-文档介绍"></a>
+<a id="1-document-overview"></a>
 
-# 1 文档介绍
+# 1 Document Overview
 
-本文档用于为所有功能页面提供**页面功能布局、配色和交互**的设计规范。平台内所有前端设计都必须遵循本规范。
+This document provides the design specification for **page layout, color scheme, and interaction** across all functional pages. All frontend design within the platform must follow this specification.
 
-各产品组件的 UiUx 设计文档（如 `{component_code_name}_uiux.md`）描述的是**具体页面的细节设计**；
-本文定义的是这些具体设计**必须遵循的通用规则和模式**。
+The UI/UX design documents for individual product components (e.g. `{component_code_name}_uiux.md`) describe the **detailed design of specific pages**;
+this document defines the **common rules and patterns that those specific designs must follow**.
 
-**使用方式**：组件 UiUx 文档在每个页面章节开头写一行设计模式声明，例如：
+**How to use**: At the top of each page section, the component UI/UX document should include a one-line design pattern declaration, for example:
 
-> **设计模式**：遵循 [uiux_design_specification.md](./uiux_design_specification.md) §2.1.2 双列表页。
+> **Design pattern**: Follows [uiux_design_specification.md](./uiux_design_specification.md) §2.1.2 Dual-List Page.
 
-之后只描述该页面**区别于模式默认值**的部分，不重复抄写模式本身。
+After that, only describe the parts of the page that **differ from the pattern's defaults** — do not re-copy the pattern itself.
 
 ---
 
-<a id="2-功能页设计模式"></a>
+<a id="2-functional-page-design-patterns"></a>
 
-# 2 功能页设计模式
+# 2 Functional Page Design Patterns
 
-> 本章每个模式统一按以下骨架描述：**说明 / 适用场景 → 布局 → 区域构成（查询条件区域、
-> 功能按钮区域、列表区域、行交互）→ 元素表 → 交互表 → 硬性规则**。
-> 组件文档中的每个页面必须能对应到本章的某一个模式编号。
+> Each pattern in this chapter is described using the following consistent skeleton: **Description / Applicable Scenarios → Layout → Area Composition (Filter Area,
+> Action Button Area, List Area, Row Interaction) → Element Table → Interaction Table → Hard Rules**.
+> Every page in a component document must map to one of the pattern numbers in this chapter.
 
-<a id="21-列表页"></a>
+<a id="21-list-pages"></a>
 
-## 2.1 列表页
+## 2.1 List Pages
 
-列表页用于对某个主要业务对象进行**批量浏览与查询**，同时为该对象的**创建、修改、删除**提供功能入口。
+List pages are used for **bulk browsing and querying** of a primary business object, while also providing functional entry points for **creating, modifying, and deleting** that object.
 
-| 模式 | 编号 | 适用场景 |
+| Pattern | Section | Applicable Scenarios |
 |------|------|---------|
-| 单列表页 | §2.1.1 | {单一业务对象的默认列表；其它变体的基础} |
-| 双列表页 | §2.1.2 | {上层对象 + 其下属对象的联动浏览} |
-| 树状单列表页 | §2.1.3 | {业务对象自身存在层级关系} |
-| 树状双列表页 | §2.1.4 | {上层对象存在层级关系 + 下层对象列表} |
+| Single-List Page | §2.1.1 | {Default list for a single business object; the basis for other variants} |
+| Dual-List Page | §2.1.2 | {Linked browsing of a parent object + its child objects} |
+| Tree Single-List Page | §2.1.3 | {The business object itself has a hierarchical relationship} |
+| Tree Dual-List Page | §2.1.4 | {The parent object is hierarchical + a child object list} |
 
 ---
 
-<a id="211-单列表页"></a>
+<a id="211-single-list-page"></a>
 
-### 2.1.1 单列表页
+### 2.1.1 Single-List Page
 
-**说明**：仅针对一个业务对象的默认列表页模式，也是各种列表页变体的基础设定。
+**Description**: The default list page pattern for a single business object; also the foundational setup for all other list page variants.
 
-**布局（从上到下）**：标题区域 → 查询条件区域 → 功能按钮区域 → 列表区域。
+**Layout (top to bottom)**: Title Area → Filter Area → Action Button Area → List Area.
 
-#### 1. 查询条件区域
+#### 1. Filter Area
 
-| # | 规则 | 说明 |
+| # | Rule | Notes |
 |---|------|------|
-| a | 条件选取 | 提供该对象**最重要的几个属性**作为查询条件 |
-| b | 默认条件 | 通常默认提供 **id** 和**日期范围** |
-| c | 日期范围两种设计 | **方式一**：日历控件选起止日期；**方式二**：日历控件 + 快捷下拉（{当天 / 最近 3 天 / 最近 1 周 / 最近 1 月}）。两种方式默认值都是**{当天}** |
-| d | 触发方式 | 每**离开一个控件**（blur / 值变更）自动触发一次筛选，**不需要**搜索按钮；仅提供一个"清空筛选条件"入口 |
-| e | 页面初始化 | 首次进入：除日期范围外条件为空，日期范围为{当天}，自动按此筛选。**若页面无日期条件**，则首次进入不带任何条件展示 **{50}** 条记录 |
+| a | Criteria selection | Provide the **most important attributes** of the object as filter criteria |
+| b | Default criteria | Typically provide **id** and a **date range** by default |
+| c | Two date-range designs | **Option 1**: a calendar control for selecting start/end dates; **Option 2**: a calendar control + a quick-select dropdown ({Today / Last 3 Days / Last Week / Last Month}). The default value for both options is **{Today}** |
+| d | Trigger method | Filtering is triggered automatically every time a control **loses focus** (blur / value change) — **no** search button is needed; only provide a single "Clear Filters" entry point |
+| e | Page initialization | On first entry: all criteria other than the date range are empty, the date range is {Today}, and filtering is applied automatically. **If the page has no date criterion**, the first entry displays **{50}** records with no criteria applied |
 
-#### 2. 功能按钮区域
+#### 2. Action Button Area
 
-用户选中数据后通过这些按钮执行统一操作。默认按钮：
+After the user selects data, these buttons perform standardized operations on it. Default buttons:
 
-| # | 按钮 | 前置条件 | 行为 |
+| # | Button | Precondition | Behavior |
 |---|------|---------|------|
-| 1 | **创建** | 不需要选中数据 | 进入一个**空白的创建详情页** |
-| 2 | **删除** | 必须已选中数据，否则提示报错 | 先弹确认框"是否确认删除选中的 n 条记录"；选"是"执行删除；选"否"关闭对话框并**保持选中状态** |
-| 3 | **查看** | 必须已选中数据，否则提示报错 | 进入**第一个**被选中对象的**只读详情页** |
-| 4 | **编辑** | 必须已选中数据，否则提示报错 | 进入**第一个**被选中对象的**编辑详情页** |
+| 1 | **Create** | No selection required | Navigate to a **blank create detail page** |
+| 2 | **Delete** | Data must be selected, otherwise show an error | First show a confirmation dialog "Are you sure you want to delete the selected n record(s)?"; choosing "Yes" performs the deletion; choosing "No" closes the dialog and **keeps the current selection** |
+| 3 | **View** | Data must be selected, otherwise show an error | Navigate to the **read-only detail page** of the **first** selected object |
+| 4 | **Edit** | Data must be selected, otherwise show an error | Navigate to the **edit detail page** of the **first** selected object |
 
-> 组件可增删按钮，但增删必须在组件文档中说明理由（例如"素材记录由 daemon 自动采集，不提供创建/编辑"）。
+> Components may add or remove buttons, but any addition or removal must be justified in the component document (e.g. "material records are collected automatically by a daemon, so no create/edit is provided").
 
-#### 3. 排序规则
+#### 3. Sorting Rules
 
-| # | 规则 | 说明 |
+| # | Rule | Notes |
 |---|------|------|
-| a | 默认排序 | 按**创建时间倒序**；无创建时间时按 **id 倒序** |
-| b | 表头排序 | 点击表头切换排序列；反复点同一列在**正序/倒序**之间切换 |
-| c | 方向指示 | 表头显示**小箭头**指示当前排序列与方向 |
-| d | 多列排序 | **不支持**，仅单列排序 |
-| e | 特殊排序控件 | 有特殊排序需求时提供下拉排序控件，放在**功能按钮行最左边**，与功能按钮之间有**分割线**；选择后**立即重新查询** |
-| f | 排序执行位置 | 所有排序都向**后端 API** 发请求，**禁止前端本地排序**（有翻页时会造成逻辑混乱） |
-| g | 继承规则 | 所有派生列表页默认继承本节排序规范。一列中有多个属性行时，点表头相当于按该列**第一属性行**排序。树状单列表页除外（§2.1.3 无排序） |
+| a | Default sort | Sorted by **creation time descending**; if there is no creation time, sorted by **id descending** |
+| b | Header sort | Clicking a column header switches the sort column; repeatedly clicking the same column toggles between **ascending/descending** |
+| c | Direction indicator | The header shows a **small arrow** indicating the current sort column and direction |
+| d | Multi-column sort | **Not supported** — single-column sort only |
+| e | Special sort control | When there is a special sorting need, provide a sort dropdown control placed at the **far left of the action button row**, separated from the action buttons by a **divider**; selecting a value **immediately re-queries** |
+| f | Where sorting executes | All sorting sends a request to the **backend API**; **frontend local sorting is prohibited** (it causes logical inconsistencies when pagination is involved) |
+| g | Inheritance rule | All derived list pages inherit this section's sorting rules by default. When a column contains multiple attribute rows, clicking the header sorts by the column's **first attribute row**. The Tree Single-List Page is the exception (§2.1.3 has no sorting) |
 
-#### 4. 列表区域
+#### 4. List Area
 
-| # | 规则 | 说明 |
+| # | Rule | Notes |
 |---|------|------|
-| a | 列数 | 默认不超过 **{7}** 列；第一列是 **id**，最后一列是**日期** |
-| b | 功能按钮列 | **不设置**；统一用功能按钮区域或右键菜单 |
-| c | 底部信息 | **统计信息**统一格式 `Selected {int} / Total {int}`（如 `Selected 3 / Total 128`）+ **翻页控件**；**不提供**每页条数选择器，固定 **{50}** 条/页 |
-| d | 单选 | 鼠标单击某行选中 |
-| e | 多选 | **Ctrl / Shift + 单击** |
-| f | 双击 | 进入该记录的**只读详情页** |
-| g | 整数 ID 显示 | 整数型 ID **仅显示数字本身**，**不加 `#` 前缀**（`10293` 而非 `#10293`） |
-| h | 复合列格式 | 一列内紧凑展示多字段时用「前缀标记 + 斜杠分隔」，如 `c{v}/p{v}/e{v}` → `c80/p-10/e20`，`{days}d/{count}n` → `120d/35n`。需配合数值配色（§5）与 Tooltip |
-| i | Tooltip | 复合列各数值段悬浮显示字段全名与当前值（如 `80` → "Content Credibility: 80"）。具体文案在组件文档定义 |
-| j | 详情页返回后刷新 | 详情页返回**对象 ID**（创建/编辑成功）→ 列表刷新并**高亮该行**；返回 **`null`**（无变更/取消）→ 保持当前状态不动 |
+| a | Column count | No more than **{7}** columns by default; the first column is **id**, the last column is the **date** |
+| b | Action button column | **Not provided**; use the Action Button Area or right-click menu instead |
+| c | Footer info | **Summary info** uses the uniform format `Selected {int} / Total {int}` (e.g. `Selected 3 / Total 128`) + **pagination controls**; a page-size selector is **not provided** — fixed at **{50}** records per page |
+| d | Single select | Click a row with the mouse to select it |
+| e | Multi-select | **Ctrl / Shift + click** |
+| f | Double-click | Navigate to the record's **read-only detail page** |
+| g | Integer ID display | Integer IDs **display only the number itself**, with **no `#` prefix** (`10293`, not `#10293`) |
+| h | Compact column format | When multiple fields are compactly displayed in one column, use "prefix marker + slash separator", e.g. `c{v}/p{v}/e{v}` → `c80/p-10/e20`, `{days}d/{count}n` → `120d/35n`. Must be paired with value-based coloring (§5) and a Tooltip |
+| i | Tooltip | Hovering over each numeric segment of a compact column shows the field's full name and current value (e.g. `80` → "Content Credibility: 80"). Exact wording is defined in the component document |
+| j | Refresh after returning from detail page | Detail page returns an **object ID** (create/edit succeeded) → the list refreshes and **highlights that row**; returns **`null`** (no change/cancelled) → the current state is left unchanged |
 
-#### 5. 右键菜单
+#### 5. Right-Click Menu
 
-右键菜单内容与"功能按钮区域"**完全一致**。
+The right-click menu content is **identical** to the Action Button Area.
 
-#### 6. 滚动轴
+#### 6. Scrollbars
 
-横向和纵向滚动轴都针对**整个页面**，不针对子区域。页面 header 和 footer **不使用** `sticky` / `fixed`，
-整页随用户滚动。此规则同样适用于业务对象详情页。**双列表页除外**（见 §2.1.2 §3）。
+Both horizontal and vertical scrollbars apply to the **entire page**, not to sub-areas. The page header and footer **do not use** `sticky` / `fixed`;
+the whole page scrolls with the user. This rule also applies to Business Object Detail Pages. **The Dual-List Page is the exception** (see §2.1.2 §3).
 
 ---
 
-<a id="212-双列表页"></a>
+<a id="212-dual-list-page"></a>
 
-### 2.1.2 双列表页
+### 2.1.2 Dual-List Page
 
-**说明**：适用于同时列出一个上层对象，以及某个被选中上层对象的所有下属对象列表。
+**Description**: Applies when a parent object list and the full list of child objects belonging to a selected parent object need to be shown together.
 
-**布局**：最上面标题区域，左下为上层对象列表区域，右下为下层对象列表区域。
+**Layout**: Title area at the top; the parent object list area at the bottom left; the child object list area at the bottom right.
 
-#### 1. 上层对象列表区域（简化版单列表页）
+#### 1. Parent Object List Area (Simplified Single-List Page)
 
-| # | 规则 | 说明 |
+| # | Rule | Notes |
 |---|------|------|
-| a | 列数 | 默认 **1** 列，最多 **3** 列 |
-| b | 折行显示 | 重要属性折行显示在同一列中，一列最多 **3** 行；**第一行必须是最重要的信息**，其它行用更小或更浅的字体 |
-| c | 筛选条件 | 通常只提供 **1–3** 个；**按关键字搜索**是默认必备条件 |
-| d | 功能按钮 | 空间有限，默认使用**图标按钮**而非文字按钮 |
-| e | 底部信息 | **不需要**总记录数和已选记录数；翻页控件仅提供**上一页/下一页 + 当前页码** |
-| f | 联动规则 | 单选或多选某行时，右侧区域自动**清空所有查询条件**，并按被选中的**第一个**上层对象刷新数据 |
-| g | 操作对象 | 本区域功能按钮操作的是**上层对象** |
+| a | Column count | **1** column by default, **3** columns maximum |
+| b | Wrapped display | Important attributes wrap within the same column, up to **3** lines per column; **the first line must be the most important information**, other lines use a smaller or lighter font |
+| c | Filter criteria | Typically only **1–3** are provided; **keyword search** is a default required criterion |
+| d | Action buttons | Due to limited space, **icon buttons** are used by default instead of text buttons |
+| e | Footer info | Total record count and selected count are **not needed**; pagination controls provide only **Previous/Next + current page number** |
+| f | Linking rule | When a row is single- or multi-selected, the right-hand area automatically **clears all filter criteria** and refreshes its data based on the **first** selected parent object |
+| g | Operates on | The action buttons in this area operate on the **parent object** |
 
-#### 2. 下层对象列表区域（标准单列表页）
+#### 2. Child Object List Area (Standard Single-List Page)
 
-| # | 规则 | 说明 |
+| # | Rule | Notes |
 |---|------|------|
-| a | 隐含查询条件 | 上层对象的 id 作为**隐含查询条件**保存在本区域，所有查询必须携带 |
-| b | 可见查询条件 | 通常 **1–3** 个 |
-| c | 列数 | 最多不超过 **5** 列 |
+| a | Implicit filter criterion | The parent object's id is stored in this area as an **implicit filter criterion**, which every query must include |
+| b | Visible filter criteria | Typically **1–3** |
+| c | Column count | No more than **5** columns |
 
-#### 3. 滚动轴
+#### 3. Scrollbars
 
-左右两侧**各自独立滚动**，**没有主视图滚动条**，也没有列表控件自身的滚动条，
-而是在各自页面区域内整体滚动。
+The left and right sides **scroll independently of each other**; there is **no main-view scrollbar**, and no scrollbar on the list control itself —
+instead, each scrolls as a whole within its own page area.
 
 ---
 
-<a id="213-树状单列表页"></a>
+<a id="213-tree-single-list-page"></a>
 
-### 2.1.3 树状单列表页
+### 2.1.3 Tree Single-List Page
 
-**说明**：单列表页的变体，区别在于业务对象具有自我层级关系。
+**Description**: A variant of the Single-List Page, differing in that the business object has a self-referencing hierarchical relationship.
 
-| # | 规则 | 说明 |
+| # | Rule | Notes |
 |---|------|------|
-| a | 第一列为树 | 第一列按层级显示为可展开的树，默认只显示**第一层** |
-| b | 排序 | **没有排序功能**，顺序取决于树结构 |
-| c | 配置类对象 | 默认**没有筛选功能**，直接加载并显示全部对象 |
-| d | 业务数据类对象 | 可正常提供筛选，但筛选仅针对**最上层节点对象** |
-| e | 层级字段 | 对象通常有 `parent_id` 属性；`parent_id = null` 表示根节点 |
-| f | 节点图标 | 为 **root / branch / leaf** 提供不同图标，便于识别层级 |
+| a | First column is a tree | The first column displays the hierarchy as an expandable tree; only the **first level** is shown by default |
+| b | Sorting | **No sorting feature**; order is determined by the tree structure |
+| c | Configuration-type objects | **No filtering feature** by default; all objects are loaded and displayed directly |
+| d | Business-data-type objects | Filtering may be provided normally, but it applies only to the **top-level node objects** |
+| e | Hierarchy field | The object typically has a `parent_id` attribute; `parent_id = null` denotes a root node |
+| f | Node icons | Provide distinct icons for **root / branch / leaf** to make the hierarchy easy to recognize |
 
 ---
 
-<a id="214-树状双列表页"></a>
+<a id="214-tree-dual-list-page"></a>
 
-### 2.1.4 树状双列表页
+### 2.1.4 Tree Dual-List Page
 
-**说明**：双列表页的变体，区别在于上层业务对象具有自我层级关系。
+**Description**: A variant of the Dual-List Page, differing in that the parent business object has a self-referencing hierarchical relationship.
 
-| # | 规则 | 说明 |
+| # | Rule | Notes |
 |---|------|------|
-| a | 上层区域 | 上层列表改为**树状单列表**（见 §2.1.3），其余完全遵循 §2.1.2 |
+| a | Parent area | The parent list becomes a **Tree Single-List** (see §2.1.3); everything else fully follows §2.1.2 |
 
 ---
 
-<a id="22-业务对象详情页"></a>
+<a id="22-business-object-detail-page"></a>
 
-## 2.2 业务对象详情页
+## 2.2 Business Object Detail Page
 
-**说明**：针对某个具体业务对象实例的页面，用于显示或编辑该实例的全部相关属性。
+**Description**: A page for a specific business object instance, used to display or edit all of that instance's relevant attributes.
 
-**通用布局（从上到下）**：页面标题 → 对象属性区域 → 功能按钮区域 → 子对象列表区域（可选）。
+**Common layout (top to bottom)**: Page Title → Object Attribute Area → Action Button Area → Child Object List Area (optional).
 
-| # | 项目 | 规则 |
+| # | Item | Rule |
 |---|------|------|
-| a | 页面标题 | `{对象类型} - {id}` |
-| b | 对象属性区域 | 按属性多少设计为单列或双列布局，每格一个属性，显示属性名 + 值控件 |
-| c | 功能按钮区域 | 默认提供**预览、编辑、保存、删除、退出**；其中预览和编辑按当前页面业务特点**二选一** |
-| d | 子对象列表区域 | 存在下级对象列表时，此区域放一个标准单列表页，隐含查询条件为当前对象。若有**多个不同类型**的子对象列表，则在区域顶部提供 **Tab 页夹**，每个 Tab 内是完整的标准单列表页（独立查询条件、功能按钮、分页）；Tab 切换时**按需加载** |
-| e | 呈现形式 | 默认是**单独页面**，占用平台框架主视图区域；属性极少时可表现为**弹出框** |
+| a | Page title | `{ObjectType} - {id}` |
+| b | Object attribute area | Designed as a single- or two-column layout depending on the number of attributes; each cell holds one attribute, showing the attribute name + value control |
+| c | Action button area | Provides **Preview, Edit, Save, Delete, Exit** by default; Preview and Edit are **mutually exclusive**, chosen based on the current page's business characteristics |
+| d | Child object list area | When a child object list exists, this area contains a standard Single-List Page whose implicit filter criterion is the current object. If there are **multiple different types** of child object lists, provide **tabs** at the top of the area, each tab containing a complete standard Single-List Page (independent filter criteria, action buttons, pagination); tabs are **loaded on demand** when switched |
+| e | Presentation form | By default a **standalone page** occupying the platform frame's main view area; when there are very few attributes it may appear as a **dialog** |
 
-**特别注意事项**：
+**Special notes**:
 
-| # | 场景 | 规则 |
+| # | Scenario | Rule |
 |---|------|------|
-| 1 | tags 属性 | tags **不是**子对象列表，应表现为 **Multi Tags 控件**（§3.1） |
-| 2 | 外键 id 编辑 | 默认显示外键对应的**对象名称**；编辑时用下拉选择，或输入关键字搜索并提示前 **{7}** 个结果（§3.6） |
-| 3 | 父对象引用只读 | 若当前对象从属于某父对象，父对象引用字段（如 `{parent}_id`）在**所有模式**（创建/只读/编辑）下**始终只读**，显示父对象的 `display_name` 而非 ID。子对象**不能跨父对象移动** |
-| 4 | 多对多关联管理 | 子对象列表表示**多对多关联**（而非从属）时，按钮用"**添加**/**移除**"而非"创建/删除"。"添加"弹出简化选择框从已有对象中选择；"移除"仅解除关联，**不删除对象本身** |
-| 5 | `created_at` / `updated_at` 样式 | 两字段显示在**同一行**、两列布局；标签文本为 "Created At" / "Updated At"，**不加** "(Read-only)" 后缀；标签与值的具体样式类：{标签样式} / {值样式} |
+| 1 | tags attribute | tags are **not** a child object list; they should be represented as a **Multi Tags control** (§3.1) |
+| 2 | Foreign-key id editing | By default, display the **object name** corresponding to the foreign key; when editing, use a dropdown selector, or type a keyword to search and show the top **{7}** results (§3.6) |
+| 3 | Parent object reference is read-only | If the current object belongs to a parent object, the parent reference field (e.g. `{parent}_id`) is **always read-only** in **all modes** (create/read-only/edit), and shows the parent object's `display_name` rather than its ID. A child object **cannot be moved to a different parent** |
+| 4 | Many-to-many relationship management | When a child object list represents a **many-to-many relationship** (rather than ownership), the buttons are "**Add**/**Remove**" instead of "Create/Delete". "Add" opens a simplified selection dialog to choose from existing objects; "Remove" only breaks the relationship — it **does not delete the object itself** |
+| 5 | `created_at` / `updated_at` styling | The two fields are shown on the **same row**, in a two-column layout; label text is "Created At" / "Updated At", with **no** "(Read-only)" suffix appended; specific style classes for label and value: {label style} / {value style} |
 
 ---
 
-<a id="221-业务对象创建页"></a>
+<a id="221-business-object-create-page"></a>
 
-### 2.2.1 业务对象创建页
+### 2.2.1 Business Object Create Page
 
-**说明**：用于创建一个新业务对象。布局遵循 §2.2 默认规范。
+**Description**: Used to create a new business object. Layout follows the §2.2 default specification.
 
-| # | 特殊之处 | 规则 |
+| # | Special characteristic | Rule |
 |---|---------|------|
-| a | 空且不可编辑的属性 | id/主键、创建时间、最后修改时间、创建用户、最后修改用户 |
-| b | 子对象列表区域 | **不提供**（主对象尚未创建，不允许编辑其下属列表） |
-| c | 功能按钮 | 只提供"**创建**"和"**取消**"。点创建 → 调后端创建并取回新对象 id；点取消 → 关闭或退回上一页 |
-| d | 创建成功 | 自动关闭当前页/弹框，跳回上一页，并将新对象 id **返回给上一个页面** |
-| e | 创建失败 | **停留在当前页**，显示错误提示，**保留用户已填内容**，直到创建成功或用户点取消 |
+| a | Empty and non-editable attributes | id/primary key, creation time, last modified time, created-by user, last-modified-by user |
+| b | Child object list area | **Not provided** (the parent object does not yet exist, so its child list cannot be edited) |
+| c | Action buttons | Only "**Create**" and "**Cancel**" are provided. Clicking Create → calls the backend to create the object and retrieves the new object id; clicking Cancel → closes or returns to the previous page |
+| d | On successful creation | The current page/dialog closes automatically, returns to the previous page, and the new object id is **returned to the previous page** |
+| e | On creation failure | **Stays on the current page**, shows an error message, and **retains what the user has already entered** until creation succeeds or the user clicks Cancel |
 
 ---
 
-<a id="222-业务对象预览或只读页"></a>
+<a id="222-business-object-read-only-page"></a>
 
-### 2.2.2 业务对象预览或只读页
+### 2.2.2 Business Object Read-Only Page
 
-**说明**：以只读模式显示一个业务对象。布局遵循 §2.2 默认规范。
+**Description**: Displays a business object in read-only mode. Layout follows the §2.2 default specification.
 
-| # | 特殊之处 | 规则 |
+| # | Special characteristic | Rule |
 |---|---------|------|
-| a | 控件状态 | 页面内所有控件**只读** |
-| b | 功能按钮 | 默认提供"**编辑**""**删除**""**退出**"；删除按钮仅在当前用户有删除权限时显示 |
-| c | 按钮行为 | 点编辑 → 关闭当前页跳转到**编辑页**；点退出 → 关闭或退回上一页 |
-| d | 删除结果 | **成功**：关闭当前页，返回 **`null`**。**失败**：**停留在当前页不退出**，直到再次删除成功或经其它按钮离开 |
-| e | 子对象列表区域 | 该区域内可正常提供查询、预览、编辑、创建等面向**子对象**的完整功能（除非无权限） |
+| a | Control state | All controls on the page are **read-only** |
+| b | Action buttons | Provides "**Edit**", "**Delete**", "**Exit**" by default; the Delete button is shown only if the current user has delete permission |
+| c | Button behavior | Clicking Edit → closes the current page and navigates to the **edit page**; clicking Exit → closes or returns to the previous page |
+| d | Delete result | **Success**: closes the current page and returns **`null`**. **Failure**: **stays on the current page without exiting**, until deletion succeeds on a retry or the user leaves via another button |
+| e | Child object list area | This area may normally provide full query, preview, edit, create functionality targeting the **child objects** (unless permission is lacking) |
 
 ---
 
-<a id="223-业务对象编辑页"></a>
+<a id="223-business-object-edit-page"></a>
 
-### 2.2.3 业务对象编辑页
+### 2.2.3 Business Object Edit Page
 
-**说明**：编辑一个已存在业务对象的全部可编辑属性。布局遵循 §2.2 默认规范。
+**Description**: Edits all editable attributes of an existing business object. Layout follows the §2.2 default specification.
 
-| # | 特殊之处 | 规则 |
+| # | Special characteristic | Rule |
 |---|---------|------|
-| a | 只读属性 | id/主键、创建时间、最后修改时间、创建用户、最后修改用户 |
-| b | 其余属性 | 均为对应的可编辑属性控件 |
-| c | 离开页面提示 | 遵循 §4 第 1 条通用"修改与保存状态监控"规则 |
-| d | 子对象列表区域 | 可正常提供面向子对象的完整功能（除非无权限） |
+| a | Read-only attributes | id/primary key, creation time, last modified time, created-by user, last-modified-by user |
+| b | Remaining attributes | All rendered as corresponding editable attribute controls |
+| c | Leave-page prompt | Follows the general "Modification and Save-State Monitoring" rule in §4 item 1 |
+| d | Child object list area | May normally provide full functionality targeting child objects (unless permission is lacking) |
 
-**功能按钮**：
+**Action buttons**:
 
-| 按钮 | 可用状态 | 行为 |
+| Button | Availability | Behavior |
 |------|---------|------|
-| **保存** | 未修改任何内容时**可见但不可点击** | 保存后**不自动退出**，用户可继续编辑 |
-| **删除** | 始终可用 | 若已修改未保存，先提示"内容已修改但未保存，是否直接删除"；选"是"进入删除确认流程，选"否"回到编辑状态。若未修改或已保存，直接进入删除确认流程。删除成功 → 关闭页面返回 **`null`**；失败 → 停留在当前页 |
-| **退出** | 始终可用 | 见下方返回值规则 |
-| **预览** | 仅在**未修改或已保存**状态可点击，否则可见但不可点击 | 切换到只读页 |
+| **Save** | **Visible but not clickable** when nothing has been modified | Does **not** automatically exit after saving — the user can continue editing |
+| **Delete** | Always available | If there are unsaved changes, first prompt "Content has been modified but not saved — delete anyway?"; choosing "Yes" proceeds to the delete confirmation flow, choosing "No" returns to the editing state. If there are no changes, or changes are already saved, go directly to the delete confirmation flow. On successful deletion → closes the page and returns **`null`**; on failure → stays on the current page |
+| **Exit** | Always available | See the return-value rules below |
+| **Preview** | Clickable only when **unmodified or already saved**; otherwise visible but not clickable | Switches to the read-only page |
 
-**退出时的返回值**：
+**Return value on exit**:
 
-| 情况 | 返回值 |
+| Situation | Return value |
 |------|--------|
-| 被编辑并保存过 | 业务对象 **id** |
-| 未被修改过 | **`null`** |
-| 已修改未保存（按 §4 规则处理后） | **`null`** |
+| Edited and saved at least once | The business object's **id** |
+| Never modified | **`null`** |
+| Modified but not saved (after being handled per the §4 rule) | **`null`** |
 
 ---
 
-<a id="23-弹出框"></a>
+<a id="23-dialogs"></a>
 
-## 2.3 弹出框
+## 2.3 Dialogs
 
-**说明**：在不切换当前页面的情况下，于当前页面上弹出的小窗口。
+**Description**: A small window that pops up on top of the current page without navigating away from it.
 
 ---
 
-<a id="231-快速信息展示框"></a>
+<a id="231-quick-info-popover"></a>
 
-### 2.3.1 快速信息展示框
+### 2.3.1 Quick Info Popover
 
-**适用场景**：仅用于展示简短的成功信息提示（如"保存成功"）或 **3 行以内**的简短信息。
+**Applicable scenario**: Used only to show brief success messages (e.g. "Saved successfully") or short messages of **3 lines or fewer**.
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| a | 出现在**屏幕正中间**，持续 **{3}** 秒后自动消失 |
-| b | **没有**任何按钮和图标，仅显示文字信息 |
-| c | 出现时用户**仍可正常操作**主视图和平台框架，**不阻塞** |
+| a | Appears in the **exact center of the screen** and disappears automatically after **{3}** seconds |
+| b | Has **no** buttons or icons of any kind — only text is shown |
+| c | While it is shown, the user **can still interact normally** with the main view and the platform frame — it is **non-blocking** |
 
 ---
 
-<a id="232-阻塞信息提示窗口"></a>
+<a id="232-blocking-message-dialog"></a>
 
-### 2.3.2 阻塞信息提示窗口
+### 2.3.2 Blocking Message Dialog
 
-**适用场景**：与操作系统 MessageDialog 完全一致的窗口与交互形式，也是其它变体弹出框的基础。
+**Applicable scenario**: A window and interaction form identical to an OS-level MessageDialog; also the foundation for other dialog variants.
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| a | 出现时平台框架和主视图都被**阻塞**，用户只能操作该窗口 |
-| b | 拥有可选的**图标**、**按钮**以及**返回值** |
+| a | While shown, both the platform frame and the main view are **blocked** — the user can only interact with this window |
+| b | Has optional **icons**, **buttons**, and a **return value** |
 
 ---
 
-<a id="3-常用-ui-控件和样式"></a>
+<a id="3-common-ui-controls-and-styles"></a>
 
-# 3 常用 UI 控件和样式
+# 3 Common UI Controls and Styles
 
-**说明**：本章描述常用的复杂 UI 控件及其样式规范。组件 UiUx 文档在描述具体页面时**直接引用本章编号**，
-不重复定义。
+**Description**: This chapter describes commonly used complex UI controls and their styling specifications. When describing specific pages, component UI/UX documents should **reference this chapter's section numbers directly**,
+rather than redefining them.
 
-> 每个控件按统一骨架描述：**适用场景 → 外观 → 交互 → 数据约束 → 只读态**。
+> Each control is described using a consistent skeleton: **Applicable Scenario → Appearance → Interaction → Data Constraints → Read-Only State**.
 
 ---
 
@@ -387,50 +387,50 @@
 
 ## 3.1 Multi Tags
 
-Multi Tags（多标签控件）用于显示或编辑一组标签值。在详情页中以**编辑控件**形式出现，
-在列表页中以**只读紧凑样式**出现。
+Multi Tags is a control for displaying or editing a set of tag values. It appears as an **editable control** on detail pages,
+and as a **read-only compact style** on list pages.
 
 ---
 
-<a id="311-multi-tags-编辑控件"></a>
+<a id="311-multi-tags-edit-control"></a>
 
-### 3.1.1 Multi Tags 编辑控件
+### 3.1.1 Multi Tags Edit Control
 
-| 项目 | 规范 |
+| Item | Specification |
 |------|------|
-| **适用场景** | 详情页中类型为 `Tag Input` 的属性（如 `{prog_tags}`、`{aud_tags}`） |
-| **外观** | {每个 tag 一个圆角徽章，徽章内含文字 + 删除 `×`；末尾是输入框} |
-| **添加 tag** | {输入文字后按 {Enter} 或 {逗号} 提交；重复值自动忽略} |
-| **删除 tag** | {点击徽章上的 `×`；或输入框为空时按 Backspace 删除最后一个} |
-| **配色** | 明亮配色；**同一 tag 名称在全平台使用相同配色**（由名称哈希决定） |
-| **数据约束** | {大小写处理、最大长度、最大个数、允许字符} |
-| **只读态** | {仅显示徽章，无 `×`，无输入框} |
+| **Applicable scenario** | Attributes of type `Tag Input` on detail pages (e.g. `{prog_tags}`, `{aud_tags}`) |
+| **Appearance** | {Each tag is a rounded badge containing text + a `×` remove icon; an input box follows at the end} |
+| **Adding a tag** | {Type text and press {Enter} or {comma} to submit; duplicate values are ignored automatically} |
+| **Removing a tag** | {Click the `×` on the badge; or press Backspace with an empty input box to remove the last tag} |
+| **Color** | Bright colors; **the same tag name uses the same color platform-wide** (determined by a hash of the name) |
+| **Data constraints** | {case handling, max length, max count, allowed characters} |
+| **Read-only state** | {Only badges are shown, with no `×` and no input box} |
 
 ---
 
-<a id="312-multi-tags-在列表中的样式"></a>
+<a id="312-multi-tags-style-in-lists"></a>
 
-### 3.1.2 Multi Tags 在列表中的样式
+### 3.1.2 Multi Tags Style in Lists
 
-| 项目 | 规范 |
+| Item | Specification |
 |------|------|
-| **适用场景** | 列表页某列需展示 tags |
-| **外观** | {紧凑小号徽章，字号 {12px}} |
-| **溢出处理** | {最多显示 {n} 个，其余折叠为 `+{m}`，悬浮 Tooltip 显示全部} |
-| **配色** | 与 §3.1.1 同一套名称→配色映射 |
-| **交互** | {列表中 tags 只读，不可编辑} |
+| **Applicable scenario** | A list page column needs to display tags |
+| **Appearance** | {Compact small badges, font size {12px}} |
+| **Overflow handling** | {Show at most {n}, collapse the rest into `+{m}`, hover Tooltip shows all} |
+| **Color** | Uses the same name→color mapping as §3.1.1 |
+| **Interaction** | {Tags in the list are read-only and cannot be edited} |
 
 ---
 
-<a id="313-tag-cloud-只读展示"></a>
+<a id="313-tag-cloud-read-only-display"></a>
 
-### 3.1.3 Tag Cloud 只读展示
+### 3.1.3 Tag Cloud Read-Only Display
 
-| 项目 | 规范 |
+| Item | Specification |
 |------|------|
-| **适用场景** | {只读详情页或 Dashboard 中展示一组标签的整体分布} |
-| **外观** | {自动换行铺排的徽章群；可选按权重/频次调整字号} |
-| **交互** | {只读；可选点击跳转到按该 tag 筛选的列表页} |
+| **Applicable scenario** | {Displaying the overall distribution of a group of tags on a read-only detail page or dashboard} |
+| **Appearance** | {A group of badges laid out with automatic wrapping; optionally sized by weight/frequency} |
+| **Interaction** | {Read-only; optionally clicking navigates to a list page filtered by that tag} |
 
 ---
 
@@ -438,360 +438,360 @@ Multi Tags（多标签控件）用于显示或编辑一组标签值。在详情�
 
 ## 3.2 Active and IsDeleted
 
-平台统一用 `is_active`（启用标志）与 `deleted_at`（软删除时刻）两个正交状态描述记录可用性。
-两者的列表样式必须可一眼区分。
+The platform uniformly uses two orthogonal states, `is_active` (enabled flag) and `deleted_at` (soft-delete timestamp), to describe record availability.
+The list styles for the two must be distinguishable at a glance.
 
-| 状态组合 | 含义 | 样式 |
+| State combination | Meaning | Style |
 |---------|------|------|
-| `is_active = true`，`deleted_at = null` | 正常 | {默认样式} |
-| `is_active = false`，`deleted_at = null` | 已停用 | 见 §3.2.1 |
-| `deleted_at != null` | 已软删除 | 见 §3.2.2 |
+| `is_active = true`, `deleted_at = null` | Normal | {Default style} |
+| `is_active = false`, `deleted_at = null` | Deactivated | See §3.2.1 |
+| `deleted_at != null` | Soft-deleted | See §3.2.2 |
 
 ---
 
-<a id="321-inactive-状态的列表样式"></a>
+<a id="321-list-style-for-inactive-state"></a>
 
-### 3.2.1 Inactive 状态的列表样式
+### 3.2.1 List Style for Inactive State
 
-| 项目 | 规范 |
+| Item | Specification |
 |------|------|
-| **适用场景** | 列表行对应记录 `is_active = false` |
-| **外观** | {整行文字变{灰色}；可选在名称列后追加一个 `Inactive` 徽章} |
-| **交互** | {仍可选中、查看、编辑；具体是否允许操作由组件文档定义} |
+| **Applicable scenario** | The list row's record has `is_active = false` |
+| **Appearance** | {The entire row's text turns {gray}; optionally append an `Inactive` badge after the name column} |
+| **Interaction** | {Can still be selected, viewed, edited; whether specific operations are allowed is defined in the component document} |
 
 ---
 
-<a id="322-soft-deleted-状态的列表样式"></a>
+<a id="322-list-style-for-soft-deleted-state"></a>
 
-### 3.2.2 Soft Deleted 状态的列表样式
+### 3.2.2 List Style for Soft-Deleted State
 
-| 项目 | 规范 |
+| Item | Specification |
 |------|------|
-| **适用场景** | 列表行对应记录 `deleted_at != null` |
-| **外观** | {整行{灰色 + 删除线}；名称列后追加 `Deleted` 徽章；可显示 `deleted_at` 时间} |
-| **是否默认展示** | {由各列表页的查询参数 `include_deleted` 决定，默认 {false}} |
-| **交互** | {只读，不允许编辑；是否允许恢复由组件文档定义} |
+| **Applicable scenario** | The list row's record has `deleted_at != null` |
+| **Appearance** | {The entire row is {gray + strikethrough}; a `Deleted` badge is appended after the name column; the `deleted_at` time may be shown} |
+| **Shown by default** | {Determined by each list page's `include_deleted` query parameter, default {false}} |
+| **Interaction** | {Read-only, editing not allowed; whether restoration is allowed is defined in the component document} |
 
-> **重要**：软删除记录在列表中**不消失**，而是以本样式呈现。组件文档描述删除行为时
-> 必须写清"调用 DELETE API 后记录不消失，而是 `deleted_at` 变为非 null 并以灰色样式显示"。
+> **Important**: Soft-deleted records **do not disappear** from the list — they are shown in this style instead. When component documents describe delete behavior,
+> they must state clearly that "after calling the DELETE API the record does not disappear; instead `deleted_at` becomes non-null and it is shown in the gray style."
 
 ---
 
-<a id="33-slider--number-input-联动控件"></a>
+<a id="33-slider--number-input-linked-control"></a>
 
-## 3.3 Slider + Number Input 联动控件
+## 3.3 Slider + Number Input Linked Control
 
-| 项目 | 规范 |
+| Item | Specification |
 |------|------|
-| **适用场景** | 有明确取值范围的数值属性（如各类评分、权重） |
-| **外观** | {左侧滑块 + 右侧数字输入框} |
-| **交互** | **双向联动**：拖动滑块实时更新数字；直接输入数字实时更新滑块位置 |
-| **数据约束** | {min / max / step；越界时钳制到边界并提示} |
-| **配色** | 数值配色遵循 §5 数值阈值配色规则 |
-| **只读态** | **仅显示数字**，不显示滑块 |
+| **Applicable scenario** | Numeric attributes with a clearly defined value range (e.g. various scores, weights) |
+| **Appearance** | {Slider on the left + number input box on the right} |
+| **Interaction** | **Two-way binding**: dragging the slider updates the number in real time; typing a number directly updates the slider position in real time |
+| **Data constraints** | {min / max / step; values are clamped to the boundary and a warning is shown when out of range} |
+| **Color** | Value coloring follows the §5 value-threshold coloring rules |
+| **Read-only state** | **Shows only the number**, without the slider |
 
 ---
 
-<a id="34-动态多选按钮dynamic-chip-selector"></a>
+<a id="34-dynamic-chip-selector"></a>
 
-## 3.4 动态多选按钮（Dynamic Chip Selector）
+## 3.4 Dynamic Chip Selector
 
-| 项目 | 规范 |
+| Item | Specification |
 |------|------|
-| **适用场景** | 从一组**有限且已知**的候选项中多选（如星期、频次、类别） |
-| **外观** | {一排可点击的 chip 按钮；选中态与未选中态用不同配色区分} |
-| **交互** | {点击切换选中/未选中；可选"全选/清空"快捷项} |
-| **数据约束** | {最少/最多选中数量；候选项来源（枚举 or API）} |
-| **只读态** | {仅显示已选中的 chip，未选中项不显示} |
+| **Applicable scenario** | Multi-selecting from a **finite, known** set of candidate options (e.g. days of the week, frequency, category) |
+| **Appearance** | {A row of clickable chip buttons; selected and unselected states are distinguished by different colors} |
+| **Interaction** | {Clicking toggles selected/unselected; optional "Select All / Clear" shortcut} |
+| **Data constraints** | {min/max number of selections; source of candidate options (enum or API)} |
+| **Read-only state** | {Only selected chips are shown; unselected items are not shown} |
 
 ---
 
-<a id="35-tag-style-time-input-时间标签输入控件"></a>
+<a id="35-tag-style-time-input-control"></a>
 
-## 3.5 Tag-style Time Input 时间标签输入控件
+## 3.5 Tag-style Time Input Control
 
-| 项目 | 规范 |
+| Item | Specification |
 |------|------|
-| **适用场景** | 需要录入**一组时间点**的属性（如每日定时触发时刻列表） |
-| **外观** | {已录入的时间以徽章形式排列，末尾是时间输入框} |
-| **交互** | {输入 `HH:mm` 后按 {Enter} 添加；点击徽章 `×` 删除；自动去重并按时间升序排列} |
-| **数据约束** | {格式 `HH:mm`（24 小时制）；非法输入即时提示；最大个数 {n}} |
-| **只读态** | {仅显示徽章，无输入框} |
+| **Applicable scenario** | Attributes requiring entry of a **set of time points** (e.g. a list of daily scheduled trigger times) |
+| **Appearance** | {Entered times are arranged as badges, with a time input box at the end} |
+| **Interaction** | {Type `HH:mm` and press {Enter} to add; click a badge's `×` to remove it; duplicates are removed automatically and entries are sorted ascending by time} |
+| **Data constraints** | {Format `HH:mm` (24-hour); invalid input is flagged immediately; maximum count {n}} |
+| **Read-only state** | {Only badges are shown, with no input box} |
 
 ---
 
-<a id="36-外键搜索选择控件autocomplete"></a>
+<a id="36-foreign-key-search-select-control-autocomplete"></a>
 
-## 3.6 外键搜索选择控件（Autocomplete）
+## 3.6 Foreign-Key Search Select Control (Autocomplete)
 
-| 项目 | 规范 |
+| Item | Specification |
 |------|------|
-| **适用场景** | 详情页中编辑外键 id 属性（见 §2.2 特别注意事项第 2 条） |
-| **外观** | {单行输入框；聚焦时下方浮出候选列表} |
-| **交互** | {输入关键字 → 调后端搜索 → 提示前 **{7}** 个结果的名称 → 用户点选其一} |
-| **显示值 vs 存储值** | 显示外键对象的 **`display_name`**，存储其 **id** |
-| **数据约束** | {是否允许为空；搜索最小字符数；防抖间隔} |
-| **只读态** | 仅显示外键对象的 `display_name`（不显示 id） |
+| **Applicable scenario** | Editing a foreign-key id attribute on a detail page (see §2.2 Special Notes item 2) |
+| **Appearance** | {A single-line input box; a candidate list floats below it on focus} |
+| **Interaction** | {Type a keyword → calls the backend search → shows the names of the top **{7}** results → the user clicks to select one} |
+| **Displayed value vs. stored value** | Displays the foreign-key object's **`display_name`**, stores its **id** |
+| **Data constraints** | {whether empty is allowed; minimum character count to search; debounce interval} |
+| **Read-only state** | Shows only the foreign-key object's `display_name` (not the id) |
 
 ---
 
-<a id="4-用户交互"></a>
+<a id="4-user-interaction"></a>
 
-# 4 用户交互
+# 4 User Interaction
 
-**说明**：本章定义通用的用户交互设计规范。
+**Description**: This chapter defines common user interaction design specifications.
 
-| # | 规则 | 说明 |
+| # | Rule | Notes |
 |---|------|------|
-| 1 | **修改与保存状态监控** | 所有带编辑功能的页面默认拥有修改/保存状态监控。用户编辑后未保存就要离开时，**必须立即提示**"当前页面的修改尚未保存，是否在退出前保存"。选"是"→**先保存再退出**；选"否"→**放弃修改直接退出**。此为平台通用规则，§2.2.3 等页面一律遵循本条 |
-| 2 | **列表控件行为** | 所有列表控件采用与 {Windows / macOS} 一致的单选、多选（Ctrl / Shift）、双击、右键行为 |
-| 3 | **文件上传** | 默认为从其它应用**拖拽到页面内**的模式。拖入后显示该文件的**地址和文件大小**；是否已有文件拖入应以**不同配色**表示 |
-| 4 | **长耗时反馈** | 可能等待超过 **{3}** 秒的功能，须提供处理中的**鼠标光标变化**；超过 **{10}** 秒仍未结束，改为"快速信息展示框"（§2.3.1），告知用户处理时间较长请稍后查看结果 |
+| 1 | **Modification and save-state monitoring** | Every page with editing functionality has modification/save-state monitoring by default. If the user tries to leave after editing without saving, the page **must immediately prompt**: "This page has unsaved changes — save before exiting?" Choosing "Yes" → **saves first, then exits**; choosing "No" → **discards changes and exits directly**. This is a platform-wide rule; §2.2.3 and other pages all follow this item |
+| 2 | **List control behavior** | All list controls use single-select, multi-select (Ctrl / Shift), double-click, and right-click behavior consistent with {Windows / macOS} |
+| 3 | **File upload** | Defaults to **drag-and-drop from another application into the page**. After dropping, show the file's **path and size**; whether a file has already been dropped should be indicated with a **different color** |
+| 4 | **Feedback for long-running operations** | For operations that may take longer than **{3}** seconds, a **cursor change** indicating processing must be shown; if it still has not finished after **{10}** seconds, switch to a "Quick Info Popover" (§2.3.1) informing the user that processing is taking longer than usual and to check back later for the result |
 
 ---
 
-<a id="5-前端配色"></a>
+<a id="5-frontend-color-scheme"></a>
 
-# 5 前端配色
+# 5 Frontend Color Scheme
 
-**1. 主题**：默认为 **{Light}** 配色风格。
+**1. Theme**: Defaults to the **{Light}** color style.
 
-**2. CRUD 按钮配色规则**（所有页面的文字按钮和图标按钮统一遵循）：
+**2. CRUD button color rules** (followed uniformly by text buttons and icon buttons on all pages):
 
-| 操作类型 | 颜色 | 适用按钮 |
+| Action type | Color | Applicable buttons |
 |---------|------|---------|
-| 删除 / 取消 | 🔴 {红色} | Delete、Cancel、Remove |
-| 保存 | 🟢 {绿色} | Save、Save Changes |
-| 查看 / 退出 | ⬜ {灰色} | View、Preview、Exit、Close |
-| 创建 / 添加 / 编辑 | 🟦 {蓝色} | Create、Add、Edit |
+| Delete / Cancel | 🔴 {Red} | Delete, Cancel, Remove |
+| Save | 🟢 {Green} | Save, Save Changes |
+| View / Exit | ⬜ {Gray} | View, Preview, Exit, Close |
+| Create / Add / Edit | 🟦 {Blue} | Create, Add, Edit |
 
-**3. tags 配色**：采用较**明亮**的配色，且**同一 tag 名称拥有相同配色**（详见 §3.1）。
+**3. tags color**: Uses relatively **bright** colors, and **the same tag name always has the same color** (see §3.1 for details).
 
-**4. 禁用态**：所有不可编辑或不可点击的控件必须显示为**特殊配色风格**，让用户一眼看出不可操作。
+**4. Disabled state**: All non-editable or non-clickable controls must be displayed in a **distinct color style** so users can tell at a glance that they are not interactive.
 
-**5. 数值阈值配色规则**（四色阈值模型）：
+**5. Value-threshold coloring rules** (four-color threshold model):
 
-| 颜色 | 含义 | 适用场景 |
+| Color | Meaning | Applicable scenario |
 |------|------|---------|
-| 🟢 {绿色} | 优秀 / 健康 | 数值处于最佳范围 |
-| 🔵 {蓝色} | 良好 / 正常 | 数值处于可接受范围 |
-| 🟠 {橙色} | 警告 / 偏低 | 数值接近风险区域 |
-| 🔴 {红色} | 危险 / 异常 | 数值处于不良范围 |
+| 🟢 {Green} | Excellent / Healthy | Value is in the optimal range |
+| 🔵 {Blue} | Good / Normal | Value is in an acceptable range |
+| 🟠 {Orange} | Warning / Low | Value is approaching a risk zone |
+| 🔴 {Red} | Danger / Abnormal | Value is in a poor range |
 
-> **具体阈值区间由各组件的 UiUx 文档根据业务定义**；本文只定义四色含义和使用规范。
-> 数值配色适用于列表和详情页中的数字显示，通常与**复合列格式**（§2.1.1 §4.h）和 **Tooltip**（§2.1.1 §4.i）配合使用。
-
----
-
-<a id="6-前端与-api-交互"></a>
-
-# 6 前端与 API 交互
-
-| # | 规则 |
-|---|------|
-| 1 | 所有前后端交互必须通过**后端 API** 进行 |
-| 2 | **严禁**前端直接访问后端数据库和文件系统 |
-| 3 | 所有页面（含列表页）仅通过**标准 API 接口**获取业务对象或对象列表。若某属性是外键 id，前端继续通过 API **单个或批量**按 id 取外键对象，再展示其名称 |
-| 4 | 无特殊设计说明（如统计报表页）时，**禁止**为每个页面单独提供专用 API。所有增删改查必须**以业务对象为单位**操作 API，而非以页面为单位。定制化 API 越多，后期可维护性越差 |
-
-> 与 [technical_overview.md](./technical_overview.md) §4.1 第 11 条同源，两处必须一致。
+> **The specific threshold ranges are defined by each component's UI/UX document based on its business needs**; this document only defines the meaning and usage of the four colors.
+> Value-based coloring applies to numeric displays in list and detail pages, and is typically used together with the **compact column format** (§2.1.1 §4.h) and **Tooltip** (§2.1.1 §4.i).
 
 ---
 
-<a id="7-技术栈"></a>
+<a id="6-frontend-and-api-interaction"></a>
 
-# 7 技术栈
+# 6 Frontend and API Interaction
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| 1 | **Web 应用**默认使用 **{React}** 开发 |
-| 2 | **桌面应用**默认使用该操作系统的**原生开发框架**；应避免跨平台前端框架 |
+| 1 | All frontend-backend interaction must go through the **backend API** |
+| 2 | The frontend is **strictly prohibited** from directly accessing the backend database or file system |
+| 3 | All pages (including list pages) obtain business objects or object lists only through **standard API endpoints**. If an attribute is a foreign-key id, the frontend fetches the foreign-key object(s) by id via the API — **individually or in batch** — and then displays its name |
+| 4 | Unless there is a special design note (e.g. a statistics/report page), providing a dedicated API for each individual page is **prohibited**. All create/read/update/delete operations must operate on the API **per business object**, not per page. The more custom APIs there are, the worse the long-term maintainability |
 
-**前端技术栈固定版本**（所有 Web 应用统一遵循）：
+> Shares the same source as [technical_overview.md](./technical_overview.md) §4.1 item 11 — the two must remain consistent.
 
-| 依赖 | 版本 | 说明 |
+---
+
+<a id="7-tech-stack"></a>
+
+# 7 Tech Stack
+
+| # | Rule |
+|---|------|
+| 1 | **Web applications** are developed using **{React}** by default |
+| 2 | **Desktop applications** default to the operating system's **native development framework**; cross-platform frontend frameworks should be avoided |
+
+**Fixed frontend tech stack versions** (followed uniformly by all Web applications):
+
+| Dependency | Version | Notes |
 |------|------|------|
-| {React} | **{19.0.0}** | UI 框架 |
-| {Vite} | **{6.2.0}** | 构建工具 |
-| {TypeScript} | **{5.7.3}** | {strict 模式} |
-| {React Router} | **{7.x}**（latest） | 路由管理 |
-| {UI 组件库} | **{5.x}**（latest） | UI 组件库 |
-| {Zustand} | **{5.x}**（latest） | 轻量级状态管理 |
-| {Axios} | **{1.x}**（latest） | HTTP 客户端 |
-| {pnpm} | **{9.x}**（latest） | 包管理器（Monorepo workspace） |
+| {React} | **{19.0.0}** | UI framework |
+| {Vite} | **{6.2.0}** | Build tool |
+| {TypeScript} | **{5.7.3}** | {strict mode} |
+| {React Router} | **{7.x}** (latest) | Routing |
+| {UI component library} | **{5.x}** (latest) | UI component library |
+| {Zustand} | **{5.x}** (latest) | Lightweight state management |
+| {Axios} | **{1.x}** (latest) | HTTP client |
+| {pnpm} | **{9.x}** (latest) | Package manager (Monorepo workspace) |
 
-> 以上为项目锁定版本：{React、Vite、TypeScript 锁定到 patch 级别；其余锁定到 major 级别，
-> 使用该 major 下的最新 patch}。本表须与 [technical_overview.md](./technical_overview.md) §5.2 保持一致。
+> The above are the project's locked versions: {React, Vite, and TypeScript are locked to the patch level; the rest are locked to the major level,
+> using the latest patch under that major}. This table must remain consistent with [technical_overview.md](./technical_overview.md) §5.2.
 
 ---
 
-<a id="8-状态管理"></a>
+<a id="8-state-management"></a>
 
-# 8 状态管理
+# 8 State Management
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| 1 | 所有 Web 应用统一使用 **{Zustand}** 管理前端状态 |
-| 2 | **Store 拆分策略**：按业务实体拆分。每个主要业务对象对应一个独立 Store 文件 |
-| 3 | **Store 内容**：该实体的列表数据、分页参数、筛选条件、当前选中项，以及对应的 action（fetch / create / update / delete） |
-| 4 | **全局 UI Store**：额外创建一个 `uiStore` 管理全局 UI 状态（如侧边栏展开/折叠、当前系统语言） |
-| 5 | **局部状态**：表单编辑中的临时状态使用组件内 `useState`，**不放入**全局 Store |
+| 1 | All Web applications uniformly use **{Zustand}** to manage frontend state |
+| 2 | **Store-splitting strategy**: Split by business entity. Each primary business object corresponds to its own independent Store file |
+| 3 | **Store content**: The entity's list data, pagination parameters, filter criteria, current selection, and the corresponding actions (fetch / create / update / delete) |
+| 4 | **Global UI Store**: An additional `uiStore` is created to manage global UI state (e.g. sidebar expanded/collapsed, current system language) |
+| 5 | **Local state**: Temporary state during form editing uses component-local `useState` and is **not placed** in a global Store |
 
 ---
 
-<a id="9-数据格式化规则"></a>
+<a id="9-data-formatting-rules"></a>
 
-# 9 数据格式化规则
+# 9 Data Formatting Rules
 
-> 所有数据格式化转换均在**前端**完成，后端 API 返回原始值。
+> All data formatting conversion is done on the **frontend**; the backend API returns raw values.
 
-| 数据类型 | 格式化规则 |
+| Data type | Formatting rule |
 |---------|-----------|
-| **浮点数** | 默认显示 **{1}** 位小数（如 `3.1`、`0.0`） |
-| **日期时间** | 统一使用 `{yyyy-MM-dd HH:mm:ss}` 格式（如 `2026-03-08 14:30:05`） |
-| **日期（仅日）** | 统一使用 `{yyyy-MM-dd}` 格式 |
-| **枚举值** | 直接显示枚举值的**名称**（如 `NEWS_FEED`），**不做**中文翻译或标签映射 |
-| **布尔值** | 显示为对应 UI 控件状态（Switch 开关、Active/Deleted 徽章），**不显示** true/false 文字 |
-| **整数** | 直接显示原始数字，**不加**千分位分隔符 |
-| **空值** | {统一显示为灰色 `—`} |
+| **Floating-point number** | Shows **{1}** decimal place by default (e.g. `3.1`, `0.0`) |
+| **Date-time** | Uniformly uses the `{yyyy-MM-dd HH:mm:ss}` format (e.g. `2026-03-08 14:30:05`) |
+| **Date (date only)** | Uniformly uses the `{yyyy-MM-dd}` format |
+| **Enum value** | Displays the enum value's **name** directly (e.g. `NEWS_FEED`); **no** translation or label mapping is applied |
+| **Boolean** | Shown as the corresponding UI control state (Switch toggle, Active/Deleted badge); the words true/false are **not shown** |
+| **Integer** | Shows the raw number directly, with **no** thousands separator |
+| **Empty value** | {Uniformly displayed as a gray `—`} |
 
 ---
 
-<a id="10-实时刷新策略"></a>
+<a id="10-real-time-refresh-strategy"></a>
 
-# 10 实时刷新策略
+# 10 Real-Time Refresh Strategy
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| 1 | {**不提供**自动实时刷新功能} |
-| 2 | {所有列表页和详情页的数据更新完全依赖用户手动操作：点刷新按钮、重新进入页面、提交表单后自动重载当前页} |
-| 3 | {**不使用** WebSocket、轮询或 Server-Sent Events} |
+| 1 | {Automatic real-time refresh is **not provided**} |
+| 2 | {All data updates on list and detail pages rely entirely on manual user action: clicking a refresh button, re-entering the page, or the current page auto-reloading after a form submission} |
+| 3 | {WebSocket, polling, and Server-Sent Events are **not used**} |
 
 ---
 
-<a id="11-客户端缓存策略"></a>
+<a id="11-client-side-caching-strategy"></a>
 
-# 11 客户端缓存策略
+# 11 Client-Side Caching Strategy
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| 1 | {客户端**不做**任何 API 响应缓存} |
-| 2 | {每次页面加载、页面切换、列表刷新都完整地向后端请求最新数据} |
-| 3 | {页面间导航（列表页 → 详情页 → 返回）不缓存之前的列表数据，返回时重新请求} |
+| 1 | {The client does **not** perform any API response caching} |
+| 2 | {Every page load, page switch, and list refresh fully requests the latest data from the backend} |
+| 3 | {Navigation between pages (list page → detail page → back) does not cache the previous list data; the data is re-requested on return} |
 
 ---
 
-<a id="12-loading-状态"></a>
+<a id="12-loading-state"></a>
 
-# 12 Loading 状态
+# 12 Loading State
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| 1 | {仅在**列表查询**操作时显示 Loading 状态} |
-| 2 | {实现方式：在列表数据区域显示一个简单的 **Spinner**，不使用骨架屏} |
-| 3 | {其它操作（表单提交、详情页加载、删除）**不提供**额外 Loading UI} |
+| 1 | {A Loading state is shown only during **list query** operations} |
+| 2 | {Implementation: show a simple **Spinner** in the list data area; skeleton screens are not used} |
+| 3 | {Other operations (form submission, detail page loading, deletion) are **not given** additional Loading UI} |
 
 ---
 
-<a id="13-空表格状态"></a>
+<a id="13-empty-table-state"></a>
 
-# 13 空表格状态
+# 13 Empty Table State
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| 1 | 列表无数据时仍正常显示**表头**和空白行区域 |
-| 2 | 空表格默认高度为 **{10}** 行 |
-| 3 | 数据超过默认高度时，表格高度随实际行数增长（**不限制**最大高度） |
-| 4 | **不提供**表格内部纵向滚动条；表格始终完整显示所有行，页面整体滚动 |
-| 5 | {**不显示**"暂无数据"图标、提示文字或"创建"快捷按钮} |
+| 1 | When the list has no data, the **header** and an empty row area are still shown normally |
+| 2 | The default height of an empty table is **{10}** rows |
+| 3 | When the data exceeds the default height, the table's height grows with the actual row count (**no** maximum height limit) |
+| 4 | An internal vertical scrollbar for the table is **not provided**; the table always displays all rows in full, and the page scrolls as a whole |
+| 5 | {No "No data" icon, message text, or "Create" shortcut button is **shown**} |
 
 ---
 
-<a id="14-响应式设计与浏览器支持"></a>
+<a id="14-responsive-design-and-browser-support"></a>
 
-# 14 响应式设计与浏览器支持
+# 14 Responsive Design and Browser Support
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| 1 | {本系统为 Web 应用，仅支持**桌面浏览器**，不涉及移动端布局和交互} |
-| 2 | {仅支持 **{Chrome}**（最新稳定版），不保证其它浏览器兼容性} |
-| 3 | {**不要求**可访问性（WCAG）合规，不强制 ARIA 标签、键盘导航或屏幕阅读器支持} |
-| 4 | {前端代码中**不使用**响应式断点，所有页面仅按桌面宽度设计} |
+| 1 | {This system is a Web application that supports only **desktop browsers**; mobile layout and interaction are out of scope} |
+| 2 | {Only **{Chrome}** (latest stable version) is supported; compatibility with other browsers is not guaranteed} |
+| 3 | {Accessibility (WCAG) compliance is **not required**; ARIA labels, keyboard navigation, and screen-reader support are not mandated} |
+| 4 | {Responsive breakpoints are **not used** in the frontend code; all pages are designed only for desktop width} |
 
 ---
 
-<a id="15-性能优化"></a>
+<a id="15-performance-optimization"></a>
 
-# 15 性能优化
+# 15 Performance Optimization
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| 1 | {当前版本**不需要**任何性能优化措施，极简实现} |
-| 2 | {**不使用**路由级懒加载} |
-| 3 | {**不使用** memo 类优化，除非遇到明显性能问题} |
-| 4 | {**不做**代码分割或 bundle 大小优化} |
+| 1 | {The current version **does not require** any performance optimization measures — implement it as simply as possible} |
+| 2 | {Route-level lazy loading is **not used**} |
+| 3 | {memo-style optimizations are **not used**, unless an obvious performance problem is encountered} |
+| 4 | {Code splitting or bundle-size optimization is **not done**} |
 
-> 本章是**明确的减法声明**。写清"不做什么"与写清"做什么"同等重要——
-> 否则 AI 开发者会自作主张引入 lazy load、memo 和 code split。
+> This chapter is an **explicit statement of what is deliberately left out**. Stating clearly what is **not** done is just as important as stating what **is** done —
+> otherwise an AI developer will introduce lazy loading, memoization, and code splitting on their own initiative.
 
 ---
 
-<a id="16-错误处理与展示"></a>
+<a id="16-error-handling-and-display"></a>
 
-# 16 错误处理与展示
+# 16 Error Handling and Display
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| 1 | 所有后端 API 返回的错误统一通过**阻塞弹出框**展示（§2.3.2） |
-| 2 | 使用方式：在平台框架正中间弹出错误框，阻塞背后所有视图，直到用户点「确认」后关闭 |
-| 3 | 弹出框内容显示后端返回的 `message` 字段；标题为「{系统错误}」 |
-| 4 | {**不需要**按错误码显示不同 UI 样式，所有错误统一同一种阻塞弹出框} |
+| 1 | All errors returned by the backend API are uniformly shown through a **Blocking Message Dialog** (§2.3.2) |
+| 2 | Usage: an error dialog pops up in the exact center of the platform frame, blocking all views behind it, and closes only after the user clicks "Confirm" |
+| 3 | The dialog content displays the backend's returned `message` field; the title is "{System Error}" |
+| 4 | {Displaying different UI styles by error code is **not needed** — all errors use the same Blocking Message Dialog} |
 
 ---
 
-<a id="17-前端测试策略"></a>
+<a id="17-frontend-testing-strategy"></a>
 
-# 17 前端测试策略
+# 17 Frontend Testing Strategy
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| 1 | {前端**不需要**自动化测试（无单元测试、无集成测试、无 E2E 测试）} |
-| 2 | {所有前端功能由**工程师手工点击测试**} |
-| 3 | {**不引入**测试框架} |
+| 1 | {The frontend **does not require** automated testing (no unit tests, no integration tests, no E2E tests)} |
+| 2 | {All frontend functionality is tested by **engineers manually clicking through it**} |
+| 3 | {A testing framework is **not introduced**} |
 
 ---
 
-<a id="18-目录和文件命名规则"></a>
+<a id="18-directory-and-file-naming-conventions"></a>
 
-# 18 目录和文件命名规则
+# 18 Directory and File Naming Conventions
 
-<a id="181-命名风格"></a>
+<a id="181-naming-style"></a>
 
-## 18.1 命名风格
+## 18.1 Naming Style
 
-| 范围 | 命名风格 | 示例 |
+| Scope | Naming style | Example |
 |------|---------|------|
-| 所有 `docs/` 目录和文件 | **snake_case** | `{component_code_name}/`、`{component_code_name}_uiux.md` |
-| 所有后端代码（`src/backend/`） | **snake_case** | `{component_code_name}/`、`source_media_handler.go` |
-| 所有前端代码（`src/frontend/`） | **kebab-case** | `{component-code-name}/`、`source-media-list.tsx` |
-| `ui_page_design/` 子目录 | 自由格式 | `P{nn}  {页面中文名}/`（第三方工具生成，不强制 snake_case） |
+| All `docs/` directories and files | **snake_case** | `{component_code_name}/`, `{component_code_name}_uiux.md` |
+| All backend code (`src/backend/`) | **snake_case** | `{component_code_name}/`, `source_media_handler.go` |
+| All frontend code (`src/frontend/`) | **kebab-case** | `{component-code-name}/`, `source-media-list.tsx` |
+| `ui_page_design/` subdirectory | Free format | `P{nn}  {PageName}/` (generated by a third-party tool, snake_case not enforced) |
 
-> **例外**：`VERSION`、`README.md`、`.gitkeep` 等通用文件名保持原样。
+> **Exception**: common filenames such as `VERSION`, `README.md`, `.gitkeep` remain unchanged.
 
-<a id="182-页面-id-编号规则迁移场景"></a>
+<a id="182-page-id-numbering-rules-migration-scenarios"></a>
 
-## 18.2 页面 ID 编号规则（迁移场景）
+## 18.2 Page ID Numbering Rules (Migration Scenarios)
 
-当某 UI 页面的所有权从一个模块迁移至另一个模块时，遵循以下编号原则：
+When ownership of a UI page migrates from one module to another, follow these numbering principles:
 
-| # | 规则 |
+| # | Rule |
 |---|------|
-| 1 | **原模块**：原页面 ID（如 P01、P02）**保持不变**，不重新编号，也**不把后续页面前移补位**。该页面的内容章节替换为指向目标模块的迁移说明引用，但**保留页面标题和链接**以维持文档可读性 |
-| 2 | **目标模块**：迁移来的页面分配**新的页面 ID**，接在目标模块当前最大页号之后 |
-| 3 | **全局一致性**：同一页面在两个模块中使用不同 ID，各自文档自成体系；跨模块引用时需**同时注明**原模块 ID 和目标模块 ID |
+| 1 | **Source module**: The original page ID (e.g. P01, P02) **remains unchanged** — it is not renumbered, and subsequent pages are **never shifted down to fill the gap**. The page's content section is replaced with a reference to the migration note pointing to the target module, but **the page title and link are retained** to keep the document readable |
+| 2 | **Target module**: The migrated page is assigned a **new page ID**, following immediately after the target module's current highest page number |
+| 3 | **Global consistency**: The same page uses different IDs in the two modules, each document being self-consistent; a cross-module reference must **cite both** the source-module ID and the target-module ID |
 
-> **示例**：`{模块A}` 的 P01/P02 迁移至 `{模块B}`（原有 P01–P05），则在 `{模块B}` 中编号为 P06/P07；
-> `{模块A}` 中 §3.1/§3.2 内容替换为迁移说明，标题和章节索引保留，P03–P08 不前移补位。
+> **Example**: If P01/P02 of `{ModuleA}` migrate to `{ModuleB}` (which already has P01–P05), they are numbered P06/P07 in `{ModuleB}`;
+> in `{ModuleA}`, the content of §3.1/§3.2 is replaced with a migration note, the title and section index are retained, and P03–P08 are not shifted down to fill the gap.
 
 ---
 
@@ -801,4 +801,4 @@ Multi Tags（多标签控件）用于显示或编辑一组标签值。在详情�
 
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
-| {x.y.z} | {YYYY-MM-DD} | {Author} | {变更说明} |
+| {x.y.z} | {YYYY-MM-DD} | {Author} | {Description of change} |

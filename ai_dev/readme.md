@@ -1,62 +1,67 @@
-# AI 开发过程文档模板（ai_dev）
+# AI Development Process Documentation Templates (ai_dev)
 
-本目录是 **AI 开发过程文档**（`ai_dev_history/`）的模板集合。
-编号目录代表 **AI 开发生命周期的阶段**，落盘时按同名编号目录建在 `ai_dev_history/` 下。
+This directory is a collection of templates for **AI development process documentation**
+(`ai_dev_history/`). The numbered directories represent **stages of the AI development
+lifecycle**; when materialized, they are created under `ai_dev_history/` using directories with
+the same numbers/names.
 
 ---
 
 ## 1 Table of Contents
 
 - [1 Table of Contents](#1-table-of-contents)
-- [2 目录结构与收录边界](#2-目录结构与收录边界)
-- [3 落盘位置](#3-落盘位置)
-- [4 文件命名规则](#4-文件命名规则)
-- [5 统一色标](#5-统一色标)
-- [6 Review 迭代协议](#6-review-迭代协议)
-- [7 模板清单](#7-模板清单)
-- [8 阶段流转](#8-阶段流转)
+- [2 Directory Structure and Scope Boundaries](#2-directory-structure-and-scope-boundaries)
+- [3 Target Locations](#3-target-locations)
+- [4 File Naming Rules](#4-file-naming-rules)
+- [5 Unified Marker Sets](#5-unified-marker-sets)
+- [6 Review Iteration Protocol](#6-review-iteration-protocol)
+- [7 Template Inventory](#7-template-inventory)
+- [8 Lifecycle Flow](#8-lifecycle-flow)
 
 ---
 
-## 2 目录结构与收录边界
+## 2 Directory Structure and Scope Boundaries
 
 ```
 ai_dev/
-├── readme.md                   # 本文件
-├── _prompt_history.md          # → ai_dev_history/prompt_history.md（根目录，不进子目录）
+├── readme.md                   # this file
+├── _prompt_history.md          # → ai_dev_history/prompt_history.md (root directory, not inside a numbered subdirectory)
 │
-├── 01_DocReviewRefine/         # 文档级 review 与 refine
-├── 02_DevPlanAndReport/        # 开发计划 / 开发报告 / 保存现场 / AI 交接 / 改进计划
-├── 03_CodeReviewRefine/        # 代码级 review 与 refine
-├── 04_DebugFix/                # 调试与缺陷修复
-└── 99_Prompts/                 # 可复用 Prompt 库
+├── 01_DocReviewRefine/         # document-level review and refine
+├── 02_DevPlanAndReport/        # dev plan / dev report / snapshot / AI handover / improve plan
+├── 03_CodeReviewRefine/        # code-level review and refine
+├── 04_DebugFix/                # debugging and defect fixes
+└── 99_Prompts/                 # reusable prompt library
 ```
 
-**收录边界**（决定一份新文档该放哪个目录的唯一判据）：
+**Scope boundaries** (the sole criterion for deciding which directory a new document belongs in):
 
-| 目录 | 审查/工作对象 | 收录什么 | 不收什么 |
-|------|-------------|---------|---------|
-| `01_DocReviewRefine` | **设计文档**（`.md` / `.mmd` / HTML 设计稿） | 跨文档一致性审查、技术设计审查、前后端设计完备性审查、HTML 稿对照 uiux 审查、通用 UI/UX 模式提炼 | 源代码审查 → `03` |
-| `02_DevPlanAndReport` | **一个版本的交付过程** | 开发计划（总纲 / BE / FE）、开发报告、保存现场、AI 交接、改进计划、命名规范化与目录整理计划 | 审查报告 → `01`/`03` |
-| `03_CodeReviewRefine` | **源代码** | 前端/后端代码审查、代码与设计文档的偏差审查、重构建议 | 单个缺陷的排查过程 → `04` |
-| `04_DebugFix` | **单个/一批缺陷** | 缺陷排查记录、联调故障记录、批量修复汇总报告 | 成体系的代码审查 → `03` |
-| `99_Prompts` | **Prompt 本身** | 可复用的标准 Prompt 模板 | 真实发生过的原始 prompt → `prompt_history.md` |
+| Directory | Review/Work Target | What It Collects | What It Does NOT Collect |
+|-----------|---------------------|-------------------|----------------------------|
+| `01_DocReviewRefine` | **Design documents** (`.md` / `.mmd` / HTML design mockups) | Cross-document consistency review, technical design review, front-end/back-end design completeness review, HTML mockup vs. uiux doc review, general UI/UX pattern extraction | Source code review → `03` |
+| `02_DevPlanAndReport` | **The delivery process of one version** | Dev Plan (overall / BE / FE), Dev Report, Snapshot, AI Handover, Improve Plan, naming-normalization and directory-reorganization plans | Review reports → `01`/`03` |
+| `03_CodeReviewRefine` | **Source code** | Front-end/back-end code review, code-vs-design-document deviation review, refactoring suggestions | Investigation of a single defect → `04` |
+| `04_DebugFix` | **A single defect / a batch of defects** | Defect investigation records, integration-debugging failure records, batch fix summary reports | Systematic code review → `03` |
+| `99_Prompts` | **The prompts themselves** | Reusable standard prompt templates | Raw prompts that actually occurred → `prompt_history.md` |
 
-`99_Prompts` 编号为 99 是因为它不属于生命周期的任何阶段，是横跨全程的工具箱。
+`99_Prompts` is numbered 99 because it does not belong to any single stage of the lifecycle — it
+is a toolbox that spans the whole process.
 
-`prompt_history.md` 放在 `ai_dev_history/` **根目录**，不进任何编号子目录——
-它是贯穿整个开发周期的单一累积文件，每个组件（及平台）各一份，只追加不新建。
+`prompt_history.md` sits in the **root** of `ai_dev_history/`, not inside any numbered
+subdirectory — it is a single accumulating file that spans the entire development lifecycle, one
+per component (and one for the platform), appended to and never recreated.
 
 ---
 
-## 3 落盘位置
+## 3 Target Locations
 
-模板复制到实际项目时，编号目录名**原样保留**：
+When the templates are copied into an actual project, the numbered directory names are **kept
+exactly as they are**:
 
-| 层级 | 落盘路径 |
-|------|---------|
-| 平台级 | `docs/ai_dev_history/{编号目录}/` |
-| 组件级 | `docs/components/{component_code_name}/ai_dev_history/{编号目录}/` |
+| Level | Target Path |
+|-------|--------------|
+| Platform-level | `docs/ai_dev_history/{numbered_dir}/` |
+| Component-level | `docs/components/{component_code_name}/ai_dev_history/{numbered_dir}/` |
 
 ```
 docs/components/{component_code_name}/ai_dev_history/
@@ -65,192 +70,214 @@ docs/components/{component_code_name}/ai_dev_history/
 ├── 02_DevPlanAndReport/
 ├── 03_CodeReviewRefine/
 ├── 04_DebugFix/
-└── 99_Prompts/                 # 组件通常不建，直接用平台级的
+└── 99_Prompts/                 # components typically don't create this; they use the platform-level one directly
 ```
 
 ---
 
-## 4 文件命名规则
+## 4 File Naming Rules
 
-模板文件名的前导 `_` 只是**模板标记**，复制时按下表重新命名。
+The leading `_` in template file names is only a **template marker**; rename per the table below
+when copying.
 
-### 4.1 `02_DevPlanAndReport/` —— 版本号开头（硬规则）
+### 4.1 `02_DevPlanAndReport/` — Starts with the Version Number (Hard Rule)
 
-**本目录所有文档一律以所在版本号开头**：
-
-```
-v{版本号}_{DocType}[_{YYYYMMDD}].md
-```
-
-| 文档类型 | 文件名示例 |
-|---------|-----------|
-| 版本总体开发计划 | `v0.3_DevPlan.md` |
-| 后端开发计划 | `v0.3_BE_DevPlan.md` |
-| 前端开发计划 | `v0.3_FE_DevPlan.md` |
-| 开发报告 / 进度审查 | `v0.3_DevReport.md` |
-| 保存现场 | `v0.3_Snapshot.md` |
-| AI 之间交接 | `v0.3_Handover.md` |
-| 改进计划 | `v0.3_ImprovePlan.md` |
-| 命名规范化计划 | `v0.3_RenamePlan.md` |
-| 目录整理计划 | `v0.3_ReorganizePlan.md` |
-
-- 同一版本内同类型有多份时，追加日期后缀：`v0.3_Snapshot_20260320.md`。
-- 版本号取自组件的 `{component}_version_plan.md`；跨版本的整理类计划取**发起时的当前版本号**。
-- 版本号写到实际使用的段数即可（`v0.3` / `v1.2.3` / `v1.2.3.4` 都合法）。
-
-### 4.2 其它目录 —— 类型 + 日期 + 轮次
+**Every document in this directory is named starting with its version number, without
+exception**:
 
 ```
-{类型}_{YYYYMMDD}[-r{轮次}].md
+v{version}_{DocType}[_{YYYYMMDD}].md
 ```
 
-| 目录 | 文件名示例 |
-|------|-----------|
+| Document Type | File Name Example |
+|-----------------|----------------------|
+| Overall version dev plan | `v0.3_DevPlan.md` |
+| Backend dev plan | `v0.3_BE_DevPlan.md` |
+| Frontend dev plan | `v0.3_FE_DevPlan.md` |
+| Dev report / progress review | `v0.3_DevReport.md` |
+| Snapshot | `v0.3_Snapshot.md` |
+| AI-to-AI handover | `v0.3_Handover.md` |
+| Improve plan | `v0.3_ImprovePlan.md` |
+| Naming-normalization plan | `v0.3_RenamePlan.md` |
+| Directory-reorganization plan | `v0.3_ReorganizePlan.md` |
+
+- When there are multiple documents of the same type within one version, append a date suffix:
+  `v0.3_Snapshot_20260320.md`.
+- The version number is taken from the component's `{component}_version_plan.md`; cross-version
+  reorganization-type plans use the **current version number at the time the plan is
+  initiated**.
+- Write the version number to however many segments are actually in use (`v0.3` / `v1.2.3` /
+  `v1.2.3.4` are all valid).
+
+### 4.2 Other Directories — Type + Date + Round
+
+```
+{type}_{YYYYMMDD}[-r{round}].md
+```
+
+| Directory | File Name Example |
+|-----------|----------------------|
 | `01_DocReviewRefine` | `docs_review_20260314-r10.md`<br>`tech_design_review_20260315_r3.md`<br>`design_completeness_review_20260308-r1.md`<br>`html_review_20260308-r2.md`<br>`uiux_pattern_summary_20260309-v1.md` |
-| `03_CodeReviewRefine` | `FE_code_review_20260314-r1.md`<br>`BE_code_review_20260320-r2.md`<br>`code_review_20260314-r1.md`（前后端合并审查） |
+| `03_CodeReviewRefine` | `FE_code_review_20260314-r1.md`<br>`BE_code_review_20260320-r2.md`<br>`code_review_20260314-r1.md` (combined front-end/back-end review) |
 | `04_DebugFix` | `debug_FE_API_20260316-r1.md`<br>`debug_daemon_crash_20260402.md`<br>`fix_report_20260318-r1.md` |
-| `99_Prompts` | `prompt_library.md`（单一文件，只追加） |
-| 根目录 | `prompt_history.md`（单一文件，只追加） |
+| `99_Prompts` | `prompt_library.md` (single file, append-only) |
+| Root directory | `prompt_history.md` (single file, append-only) |
 
-> **轮次跨日期不重置。** 例：`docs_review_20260310-r6.md` → `docs_review_20260314-r7.md`。
-> 轮次反映的是**同一审查线索的第几轮**，不是当天的第几次。
-
----
-
-## 5 统一色标
-
-| 类别 | 色标 |
-|------|------|
-| **严重度** | 🔴 致命 / 高 · 🟠 高 / 中 · 🟡 中 · 🔵 低 |
-| **进度** | 🟢 已完成 · 🟡 部分完成 · 🔴 未实现 · ⚪ 计划外 |
-| **验证** | ✅ 通过 · ❌ 不通过 |
-| **阅读优先级** | 🔴 必读 · 🟠 重要 · 🟡 参考 |
-| **遗留问题分档** | P1 阻塞性 · P2 重要改进 · P3 维护建议 |
+> **Round numbers never reset across dates.** Example: `docs_review_20260310-r6.md` →
+> `docs_review_20260314-r7.md`.
+> The round number reflects **which round of the same review thread this is**, not how many
+> times it happened that day.
 
 ---
 
-## 6 Review 迭代协议
+## 5 Unified Marker Sets
 
-这是本项目最核心的人机协作方式，`01_DocReviewRefine` 与 `03_CodeReviewRefine` 的所有报告都遵守。
+| Category | Markers |
+|----------|---------|
+| **Severity** | 🔴 Critical / High · 🟠 High / Medium · 🟡 Medium · 🔵 Low |
+| **Progress** | 🟢 Done · 🟡 Partial · 🔴 Not Implemented · ⚪ Out of Scope |
+| **Verification** | ✅ Pass · ❌ Fail |
+| **Reading Priority** | 🔴 Must Read · 🟠 Important · 🟡 Reference |
+| **Outstanding Issue Tiers** | P1 Blocking · P2 Important · P3 Maintenance |
 
-### 6.1 「工程师的答复」列是协议核心
+---
 
-每份审查报告的问题表**最后一列固定为「工程师的答复 / 工程师回复」**。
-AI 生成报告时该列**一律留空**，不得代填、不得推测、不得写"待确认"之类的占位文字。
-由工程师逐行人工填写，典型回复形如：
+## 6 Review Iteration Protocol
 
-- `按你的建议改`
-- `不予修改，理由：禁止纠结变量命名，只需属性自身命名一致即可`
-- `按方案 A 修改`
-- `明确注明。这两个字段以后会由其它 daemon 定期刷新，在此之前所有 review 忽略它们`
+This is the most central human-AI collaboration mechanism in this project; every report in
+`01_DocReviewRefine` and `03_CodeReviewRefine` follows it.
 
-### 6.2 第 N 轮报告的第一章是「上轮落实确认表」
+### 6.1 The "Engineer's Response" Column Is the Core of the Protocol
 
-不是新问题。验证结果只有三种取值：
+The **last column of every issue table in every review report is fixed as "Engineer's
+Response"**.
+When an AI generates the report, this column **must always be left empty** — it must not be
+filled in on the engineer's behalf, guessed at, or given placeholder text like "pending
+confirmation". It is filled in manually by the engineer, row by row. Typical responses look
+like:
 
-| 取值 | 含义 | 后续动作 |
-|------|------|---------|
-| ✅ 已完成 | 上轮问题已按答复修复并验证 | 不再出现在后续报告 |
-| 🟡 部分完成 | 修了一部分 | **保留原 ID** 在本轮问题列表中重新列出 |
-| 🔴 未落实 | 没改 | **保留原 ID** 在本轮问题列表中重新列出 |
+- `Changed per your suggestion`
+- `Not changing this. Reason: bikeshedding over variable names is not allowed — only the
+  property's own naming needs to be self-consistent`
+- `Changed per Option A`
+- `Noted explicitly. These two fields will be periodically refreshed by another daemon in the
+  future; until then, all reviews should ignore them`
 
-### 6.3 已修复的问题不再复述，且不区分新老问题
+### 6.2 The First Chapter of Round N's Report Is the "Previous-Round Verification" Table
 
-> 工程师不关心到底是老问题还是新问题，总之他必须完全解决或答复这些问题。
+These are not new issues. The verification result has only three possible values:
 
-报告头部的「说明」blockquote 必须显式声明本轮的**过滤规则**，例如：
+| Value | Meaning | Follow-up Action |
+|-------|---------|---------------------|
+| ✅ Done | The previous round's issue has been fixed per the response and verified | Does not appear in subsequent reports |
+| 🟡 Partial | Partially fixed | Re-listed in this round's issue list, **keeping the original ID** |
+| 🔴 Not Addressed | Not changed | Re-listed in this round's issue list, **keeping the original ID** |
 
-> 本报告仅报告 🔴 高 和 🟡 中 级别的问题，忽略所有 🔵 低级别问题。
-> 本报告仅列出 R1/R2 未覆盖的**新发现**问题。
+### 6.3 Fixed Issues Are Not Restated, and New vs. Old Issues Are Not Distinguished
 
-### 6.4 问题 ID 全局唯一、永不复用
+> The engineer does not care whether an issue is old or new — either way, it must be fully
+> resolved or answered.
 
-两种编号体系，一份报告内只用一种：
+The "Note" blockquote at the top of the report must explicitly state this round's **filter
+rule**, for example:
 
-| 体系 | 规则 | 适用 |
-|------|------|------|
-| `R{轮次}-{序号}` | 每轮内从 01 重计，靠轮次号保证全局唯一 | 跨文档一致性审查、HTML 审查 |
-| `{前缀}-{序号}` | 跨轮次连续递增（r2 止于 TD-18，r3 从 TD-19 起） | 单文档深度审查（`TD-` 技术设计、`UP-` 某组件专项） |
+> This report only covers issues at 🔴 High and 🟡 Medium severity; all 🔵 Low-severity issues
+> are ignored.
+> This report only lists **newly discovered** issues not covered by R1/R2.
 
-问题 ID 会被**写回设计文档正文**作为可追溯标注，例如：
+### 6.4 Issue IDs Are Globally Unique and Never Reused
+
+There are two numbering schemes; only one is used within a given report:
+
+| Scheme | Rule | Applies To |
+|--------|------|------------|
+| `R{round}-{seq}` | Recounted from 01 within each round; global uniqueness is guaranteed by the round number | Cross-document consistency review, HTML review |
+| `{prefix}-{seq}` | Continuously increments across rounds (e.g. r2 ends at TD-18, r3 starts at TD-19) | Deep single-document review (`TD-` for technical design, `UP-` for a component-specific topic) |
+
+Issue IDs get **written back into the body of the design document** as traceable annotations,
+for example:
 
 ```markdown
-> **⚠️ 待完善（R7-04）**：本页面的完整 UI/UX 设计规格将由工程师在对应版本开发前补充完善。
+> **⚠️ To Be Completed (R7-04)**: The complete UI/UX design spec for this page will be filled in
+> by the engineer before development of the corresponding version.
 ```
 
-因此 ID 一旦发出即冻结，不得复用或重排。
+Therefore, once an ID is issued it is frozen — it must not be reused or renumbered.
 
-### 6.5 架构分歧必须给方案 A/B 并标注推荐项
+### 6.5 Architectural Disagreements Must Offer Options A/B with a Recommendation Marked
 
-对于需要工程师做决策（而非单纯改错）的问题，报告中必须写成：
+For issues that require the engineer to make a decision (rather than simply fix an error), the
+report must be written as:
 
-> **方案 A**（推荐）：{做法}，{代价}
-> **方案 B**：{做法}，{代价}
+> **Option A** (recommended): {approach}, {trade-off}
+> **Option B**: {approach}, {trade-off}
 
-让工程师回一句「按方案 A」即可闭环，而不是只描述问题让工程师自己想办法。
+This lets the engineer close the loop with a single reply like "go with Option A", instead of
+just describing the problem and leaving the engineer to figure out a solution.
 
 ---
 
-## 7 模板清单
+## 7 Template Inventory
 
-| 目录 | 模板文件 | 用途 |
-|------|---------|------|
-| 根 | `_prompt_history.md` | 原始 prompt 历史归档（倒序累积，单一文件） |
-| `01_DocReviewRefine` | `_docs_review.md` | 跨文档一致性审查报告 |
-| | `_tech_design_review.md` | 单文档深度审查报告 |
-| | `_design_completeness_review.md` | 前后端设计文档完备性审查（能否仅凭文档独立开发） |
-| | `_html_review.md` | HTML 设计稿对照 uiux 文档的逐页审查 |
-| | `_uiux_pattern_summary.md` | 通用 UI/UX 模式提炼提案（是否上升为平台规范） |
-| `02_DevPlanAndReport` | `_DevPlan.md` | 版本总体开发计划 |
-| | `_BE_DevPlan.md` | 后端开发计划 |
-| | `_FE_DevPlan.md` | 前端开发计划 |
-| | `_DevReport.md` | 开发报告 / 进度审查 |
-| | `_Snapshot.md` | 保存现场（session 被动中断时的快照） |
-| | `_Handover.md` | AI 之间交接（主动移交时的任务说明书） |
-| | `_ImprovePlan.md` | 改进计划（待工程师确认或补充的清单） |
-| | `_RenamePlan.md` | 目录与文件命名规范化执行计划 |
-| | `_ReorganizePlan.md` | 目录整理计划 |
-| `03_CodeReviewRefine` | `_CodeReview.md` | 前端/后端代码审查报告 |
-| `04_DebugFix` | `_DebugRecord.md` | 单个缺陷的排查与修复记录 |
-| | `_FixReport.md` | 一批缺陷的修复汇总报告 |
-| `99_Prompts` | `_PromptLibrary.md` | 可复用标准 Prompt 库 |
+| Directory | Template File | Purpose |
+|-----------|-----------------|---------|
+| Root | `_prompt_history.md` | Raw prompt history archive (reverse-chronological, single accumulating file) |
+| `01_DocReviewRefine` | `_docs_review.md` | Cross-document consistency review report |
+| | `_tech_design_review.md` | Deep single-document review report |
+| | `_design_completeness_review.md` | Front-end/back-end design document completeness review (whether development can proceed independently from the docs alone) |
+| | `_html_review.md` | Page-by-page review of HTML mockups against the uiux document |
+| | `_uiux_pattern_summary.md` | Proposal for extracting a general UI/UX pattern (whether to promote it to a platform-wide standard) |
+| `02_DevPlanAndReport` | `_DevPlan.md` | Overall version dev plan |
+| | `_BE_DevPlan.md` | Backend dev plan |
+| | `_FE_DevPlan.md` | Frontend dev plan |
+| | `_DevReport.md` | Dev report / progress review |
+| | `_Snapshot.md` | Snapshot (a snapshot taken when a session is passively interrupted) |
+| | `_Handover.md` | AI-to-AI handover (a task brief for an active handoff) |
+| | `_ImprovePlan.md` | Improve plan (a checklist pending engineer confirmation or additions) |
+| | `_RenamePlan.md` | Directory and file naming normalization execution plan |
+| | `_ReorganizePlan.md` | Directory reorganization plan |
+| `03_CodeReviewRefine` | `_CodeReview.md` | Front-end/back-end code review report |
+| `04_DebugFix` | `_DebugRecord.md` | Investigation and fix record for a single defect |
+| | `_FixReport.md` | Summary fix report for a batch of defects |
+| `99_Prompts` | `_PromptLibrary.md` | Reusable standard prompt library |
 
 ---
 
-## 8 阶段流转
+## 8 Lifecycle Flow
 
 ```
-       {component}_business_desc / tech_design / uiux 写成
+       {component}_business_desc / tech_design / uiux written
                         │
                         ▼
-        ① 01_DocReviewRefine   ──►  文档 review → 工程师答复 → refine → 再 review
-                        │            （直到 design_completeness_review 判定"可独立开发"）
+        ① 01_DocReviewRefine   ──►  doc review → Engineer's Response → refine → review again
+                        │            (until design_completeness_review judges it "independently developable")
                         ▼
         ② 02_DevPlanAndReport  ──►  v{x}_DevPlan / BE / FE
-                        │            ├─ 中途中断 → v{x}_Snapshot
-                        │            └─ 移交他人 → v{x}_Handover
+                        │            ├─ interrupted midway → v{x}_Snapshot
+                        │            └─ handed off to someone else → v{x}_Handover
                         ▼
-                     编码实现
+                     coding implementation
                         │
                         ▼
-        ③ 03_CodeReviewRefine  ──►  代码 review → 工程师答复 → 修改
-                        │            （若判定为"文档错" → 退回 ①）
+        ③ 03_CodeReviewRefine  ──►  code review → Engineer's Response → fix
+                        │            (if judged to be "the doc's fault" → sent back to ①)
                         ▼
-        ④ 04_DebugFix          ──►  debug_*.md 排查 → fix_report_*.md 汇总
+        ④ 04_DebugFix          ──►  debug_*.md investigation → fix_report_*.md summary
                         │
                         ▼
-        ② 02_DevPlanAndReport  ──►  v{x}_DevReport 回填交付结论
-                        │            └─ 未尽事项 → v{x}_ImprovePlan
+        ② 02_DevPlanAndReport  ──►  v{x}_DevReport filled in with delivery conclusions
+                        │            └─ outstanding items → v{x}_ImprovePlan
                         ▼
-                   进入下一版本
+                   proceed to the next version
 ```
 
-全程：实质性 prompt → `prompt_history.md`；沉淀出的可复用 prompt → `99_Prompts/_PromptLibrary.md`。
+Throughout: substantive prompts → `prompt_history.md`; prompts that prove reusable and get
+distilled → `99_Prompts/_PromptLibrary.md`.
 
 ---
 
 ## Change Log
 
-| 版本 | 日期 | 变更内容 |
-|------|------|---------|
-| 1.0.0 | 2026-08-23 | 首版：5 个编号目录（01/02/03/04/99）+ 根目录 `prompt_history.md`，共 18 份模板 |
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2026-08-23 | Initial version: 5 numbered directories (01/02/03/04/99) + root-level `prompt_history.md`, 18 templates total |

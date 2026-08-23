@@ -1,40 +1,40 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】组件级（Component-level）UI/UX 设计文档。
+[Document Level] Component-level UI/UX design document.
 
-【存放位置】docs/components/{component_code_name}/{component_code_name}_uiux.md
-  - 文件名把前导 `_` 换成组件代码名，例如 `material_collector_uiux.md`。
-  - 配套目录：docs/components/{component_code_name}/ui_page_design/
-      ├── {component_code_name}_page_flow.mmd     # 页面流转图源文件
-      ├── {component_code_name}_page_flow.png     # 页面流转图渲染结果
-      ├── P01  {页面中文名}/
-      │   ├── code.html                            # UI 设计稿（Stitch / 手写 HTML）
-      │   └── screen.png                           # 设计稿截图
-      └── P02  {页面中文名}/ ...
+[Storage Location] docs/components/{component_code_name}/{component_code_name}_uiux.md
+  - The filename replaces the leading `_` with the component code name, e.g. `material_collector_uiux.md`.
+  - Companion directory: docs/components/{component_code_name}/ui_page_design/
+      ├── {component_code_name}_page_flow.mmd     # Page flow diagram source file
+      ├── {component_code_name}_page_flow.png     # Page flow diagram rendered output
+      ├── P01  {PageName}/
+      │   ├── code.html                            # UI design draft (Stitch / hand-written HTML)
+      │   └── screen.png                           # Design draft screenshot
+      └── P02  {PageName}/ ...
 
-【与平台级文档的边界 —— 非常重要】
-  - 平台级 docs/uiux_design_specification.md 定义**设计模式与全局 UI 规范**：
-    页面设计模式（单列表页/双列表页/树状列表页/业务对象详情页/弹出框…）、
-    通用 UI 控件（Multi Tags、Slider+Number Input、Autocomplete、Tag-style Time Input…）、
-    配色、状态管理、数据格式化、Loading/空态、实时刷新、错误处理、命名规则等。
-  - 本组件级文档**只描述本组件自己的页面**，并通过 `§x.x.x` 章节号引用平台规范。
-    **不得重复定义**任何通用控件规范、配色规范、交互总则。
-    若发现某个模式具有跨组件通用性，走 ai_dev/01_DocReviewRefine 的
-    _uiux_pattern_summary（UI/UX 通用设计模式提炼）流程，讨论后上收到平台规范，本文只留引用。
-  - 业务对象的字段语义以 {component_code_name}_business_desc.md 为准；
-    API 端点与请求/响应结构以 {component_code_name}_tech_design.md §5 为准。
-    本文只写"页面用到了哪些字段、调用了哪些端点"，不重复定义字段类型与响应体。
+[Boundary with Platform-Level Documents — very important]
+  - The platform-level docs/uiux_design_specification.md defines **design patterns and global UI conventions**:
+    page design patterns (Single-List Page / Dual-List Page / Tree Single-List Page / Business Object Detail Page / popup dialogs…),
+    common UI controls (Multi Tags, Slider+Number Input, Autocomplete, Tag-style Time Input…),
+    color scheme, state management, data formatting, loading/empty states, real-time refresh, error handling, naming rules, etc.
+  - This component-level document **only describes this component's own pages**, and references the platform spec via `§x.x.x` section numbers.
+    It **must not redefine** any common control spec, color spec, or general interaction rule.
+    If a pattern turns out to have cross-component reusability, go through the ai_dev/01_DocReviewRefine
+    _uiux_pattern_summary (UI/UX common design pattern extraction) process; after discussion, promote it to the platform spec, leaving only a reference here.
+  - The semantics of business object fields follow {component_code_name}_business_desc.md;
+    API endpoints and request/response structures follow {component_code_name}_tech_design.md §5.
+    This document only states "which fields a page uses, which endpoints it calls" — it does not redefine field types or response bodies.
 
-【文档约定】
-  - Page Flow Diagram 放在 TOC **之前**（读者先看全局页面关系，再看目录）。
-  - 所有 Dependent APIs / Page Behaviors 中的 API 一律写**完整 REST 端点路径**，
-    禁止使用 `Object.Method` 式逻辑名（历史遗留写法，已在 docs_review R10 统一清除）。
-  - 页面 ID 使用 `P{nn}` 两位编号，一经分配不再复用；页面迁移到其他组件时
-    编号规则见 uiux_design_specification.md §18.2。
+[Document Conventions]
+  - The Page Flow Diagram is placed **before** the TOC (readers see the overall page relationships first, then the table of contents).
+  - All APIs under Dependent APIs / Page Behaviors must be written as **complete REST endpoint paths**;
+    using an `Object.Method`-style logical name is forbidden (a legacy convention, already removed uniformly in docs_review R10).
+  - Page IDs use the two-digit `P{nn}` numbering scheme; once assigned, an ID is never reused. When a page migrates
+    to another component, see the numbering rules in uiux_design_specification.md §18.2.
 -->
 
-# {组件中文名}（{component_code_name}） UI/UX Design
+# {ComponentName} ({component_code_name}) UI/UX Design
 
 **Document Version**: {x.y.z}
 
@@ -46,8 +46,8 @@
 
 > Source: [{component_code_name}_page_flow.mmd](./ui_page_design/{component_code_name}_page_flow.mmd)
 >
-> 绘制规范见 [templates/mermaid/mmd_style_guide.md](../../../templates/mermaid/mmd_style_guide.md)：
-> 白色画布、按页面类型分类着色的浅色系方框、全部文字为黑色。
+> Drawing conventions: see [templates/mermaid/mmd_style_guide.md](../../../templates/mermaid/mmd_style_guide.md):
+> white canvas, light-colored boxes color-coded by page type, all text in black.
 
 ---
 
@@ -59,17 +59,17 @@
   - [2.2 Navigation Menu](#22-navigation-menu)
   - [2.3 Page-Object-API Mapping](#23-page-object-api-mapping)
 - [3 Page Details](#3-page-details)
-  - [3.1 P01 {页面名1}](#31-p01-页面名1)
+  - [3.1 P01 {PageName1}](#31-p01-pagename1)
     - [3.1.1 UI Design](#311-ui-design)
     - [3.1.2 Page Business Functions](#312-page-business-functions)
     - [3.1.3 Page Layout and Elements](#313-page-layout-and-elements)
     - [3.1.4 Page Behaviors](#314-page-behaviors)
-  - [3.2 P02 {页面名2}](#32-p02-页面名2)
+  - [3.2 P02 {PageName2}](#32-p02-pagename2)
     - [3.2.1 UI Design](#321-ui-design)
     - [3.2.2 Page Business Functions](#322-page-business-functions)
     - [3.2.3 Page Layout and Elements](#323-page-layout-and-elements)
     - [3.2.4 Page Behaviors](#324-page-behaviors)
-- [4 路由定义](#4-路由定义)
+- [4 Route Definitions](#4-route-definitions)
 - [5 Frontend Source Code Directory](#5-frontend-source-code-directory)
 - [Change Log](#change-log)
 
@@ -81,71 +81,73 @@
 
 | Page ID | Page Name | Layout Mode | Description |
 |---------|-----------|-------------|-------------|
-| P01 | {页面名1} | 双列表页 | {一句话说明本页面让用户完成什么} |
-| P02 | {页面名2} | 只读详情页 | {一句话说明} |
-| P03 | {页面名3} | 单列表页 | {一句话说明} |
-| P04 | {页面名4} | 业务对象详情页 | {一句话说明}（⚠️ 暂不实现） |
-| P05 | {页面名5} | Dashboard | {一句话说明} |
-| P06 | {页面名6} | 树状双列表页 | {一句话说明} |
-| P07 | API 调试页 | 双栏布局 | 为开发和调试提供快速验证本模块所有 API 的交互控制台 |
+| P01 | {PageName1} | Dual-List Page | {One-sentence description of what this page lets the user accomplish} |
+| P02 | {PageName2} | Read-Only Detail Page | {One-sentence description} |
+| P03 | {PageName3} | Single-List Page | {One-sentence description} |
+| P04 | {PageName4} | Business Object Detail Page | {One-sentence description} (⚠️ Not yet implemented) |
+| P05 | {PageName5} | Dashboard | {One-sentence description} |
+| P06 | {PageName6} | Tree Dual-List Page | {One-sentence description} |
+| P07 | API Debug Page | Two-Column Layout | Provides an interactive console for developers to quickly verify all APIs of this module, for development and debugging |
 
-> **Layout Mode 取值**必须取自 [uiux_design_specification.md](../../uiux_design_specification.md) 中已定义的设计模式名，
-> 不得自造名称：
+> **Layout Mode values** must be taken from the design pattern names already defined in
+> [uiux_design_specification.md](../../uiux_design_specification.md); inventing new names is not allowed:
 >
-> | Layout Mode | 规范章节 |
+> | Layout Mode | Spec Section |
 > |-------------|---------|
-> | 单列表页 | §2.1.1 |
-> | 双列表页 | §2.1.2 |
-> | 树状单列表页 | §2.1.3 |
-> | 树状双列表页 | §2.1.4 |
-> | 业务对象详情页（创建/编辑） | §2.2 / §2.2.1 / §2.2.3 |
-> | 只读详情页（业务对象预览或只读页） | §2.2.2 |
-> | Dashboard | {规范章节或"本组件专用，无通用规范"} |
-> | 双栏布局 | {规范章节或"本组件专用，无通用规范"} |
+> | Single-List Page | §2.1.1 |
+> | Dual-List Page | §2.1.2 |
+> | Tree Single-List Page | §2.1.3 |
+> | Tree Dual-List Page | §2.1.4 |
+> | Business Object Detail Page (Create/Edit) | §2.2 / §2.2.1 / §2.2.3 |
+> | Read-Only Detail Page (business object preview or read-only page) | §2.2.2 |
+> | Dashboard | {spec section, or "component-specific, no general spec"} |
+> | Two-Column Layout | {spec section, or "component-specific, no general spec"} |
 >
-> **页面来源标注**：若页面从其他组件迁移而来，在 Description 中标注来源与 review 条目 ID，
-> 例如"（迁移自 channel_management P01，R4-01）"。
+> **Page Origin Annotation**: if a page was migrated from another component, note the origin and the review item ID
+> in the Description column, e.g. "(migrated from channel_management P01, R4-01)".
 
 ### 2.2 Navigation Menu
 
-{component_code_name} 的页面作为 unified_portal 侧边栏的一个菜单组呈现，菜单结构如下：
+{component_code_name}'s pages are presented as a menu group in the unified_portal sidebar, with the following menu structure:
 
 ```
-{组件中文名}
-├── {菜单项1}       → P05
-├── {菜单项2}       → P01
-├── {菜单项3}       → P03
-├── {菜单项4}       → P06
-└── API 调试        → P07
+{ComponentName}
+├── {MenuItem1}       → P05
+├── {MenuItem2}       → P01
+├── {MenuItem3}       → P03
+├── {MenuItem4}       → P06
+└── API Debug          → P07
 ```
 
-默认进入"{默认菜单项}"（P{nn}）页面。
+By default, lands on the "{DefaultMenuItem}" (P{nn}) page.
 
-> - 只有可从菜单直接进入的页面才出现在菜单树中；详情页（P02/P04/P07 之类）由列表页跳转进入，不出现在菜单里。
-> - 菜单项文案与 unified_portal 的导航菜单 API 返回值必须一致，见
->   [unified_portal_tech_design.md](../unified_portal/unified_portal_tech_design.md) 的导航菜单章节。
+> - Only pages reachable directly from the menu appear in the menu tree; detail pages (such as P02/P04/P07) are reached by navigating from a list page and do not appear in the menu.
+> - The menu item text must match the values returned by unified_portal's navigation menu API; see
+>   the navigation menu section of [unified_portal_tech_design.md](../unified_portal/unified_portal_tech_design.md).
 
 ### 2.3 Page-Object-API Mapping
 
 | Page ID | Page Name | Primary Business Objects | Dependent APIs |
 |---------|-----------|------------------------|----------------|
-| P01 | {页面名1} | {CObject1}, {CObject2} | GET /api/v1/{resource-a}, DELETE /api/v1/{resource-a}/{id}, POST /api/v1/{resource-a}/batch-delete, GET /api/v1/{resource-b} |
-| P02 | {页面名2} | {CObject1} | GET /api/v1/{resource-a}/{id}, DELETE /api/v1/{resource-a}/{id} |
-| P03 | {页面名3} | {CObject3} | GET /api/v1/{resource-c}, POST /api/v1/{resource-c}/{id}/{action} |
-| P04 | {页面名4}（⚠️ 暂不实现） | {CObject3} | GET /api/v1/{resource-c}/{id} |
-| P05 | {页面名5} | — | GET /api/v1/{resource-d}/status, GET /api/v1/stats/summary |
-| P06 | {页面名6} | {CObject2} | GET /api/v1/{resource-b}, POST /api/v1/{resource-b}, PUT /api/v1/{resource-b}/{id}, DELETE /api/v1/{resource-b}/{id} |
-| P07 | API 调试页 | — | 本模块所有 API 端点 |
+| P01 | {PageName1} | {CObject1}, {CObject2} | GET /api/v1/{resource-a}, DELETE /api/v1/{resource-a}/{id}, POST /api/v1/{resource-a}/batch-delete, GET /api/v1/{resource-b} |
+| P02 | {PageName2} | {CObject1} | GET /api/v1/{resource-a}/{id}, DELETE /api/v1/{resource-a}/{id} |
+| P03 | {PageName3} | {CObject3} | GET /api/v1/{resource-c}, POST /api/v1/{resource-c}/{id}/{action} |
+| P04 | {PageName4} (⚠️ Not yet implemented) | {CObject3} | GET /api/v1/{resource-c}/{id} |
+| P05 | {PageName5} | — | GET /api/v1/{resource-d}/status, GET /api/v1/stats/summary |
+| P06 | {PageName6} | {CObject2} | GET /api/v1/{resource-b}, POST /api/v1/{resource-b}, PUT /api/v1/{resource-b}/{id}, DELETE /api/v1/{resource-b}/{id} |
+| P07 | API Debug Page | — | All API endpoints of this module |
 
-> **API 说明**：所有页面的 Dependent APIs 均使用**完整 REST 端点路径**，对应
-> [{component_code_name}_tech_design.md](./{component_code_name}_tech_design.md) §5 中的完整定义。
-> 禁止在本表以及 §3.x.4 Page Behaviors 中使用 `Object.Method` 式逻辑名。
+> **API Notes**: the Dependent APIs for every page must use **complete REST endpoint paths**, matching the
+> full definitions in §5 of [{component_code_name}_tech_design.md](./{component_code_name}_tech_design.md).
+> Using an `Object.Method`-style logical name in this table or in §3.x.4 Page Behaviors is forbidden.
 >
-> **跨模块调用说明（{Rxx-yy}）**：{若本模块的 API 被其他模块调用，或本模块页面调用了其他模块的 API，
-> 必须在此明确说明。例如："本模块的 `GET /api/v1/{resource-b}` 也被 `{other_component}` 跨模块调用：
-> {other_component} P0x 页面在展示 {xxx} 列表 Tab 时调用该接口。依据
-> [technical_overview.md §4.3](../../technical_overview.md) 条目 {n}，这些端点在 {other_component} 的
-> API 调试页中以跨模块调用分组展示。"若无跨模块调用则写"本模块 API 不被其他模块调用，本模块页面也不调用其他模块 API。"}
+> **Cross-Module Call Notes ({Rxx-yy})**: {if this module's API is called by another module, or a page in
+> this module calls another module's API, it must be stated explicitly here. For example: "This module's
+> `GET /api/v1/{resource-b}` is also called cross-module by `{other_component}`:
+> {other_component}'s P0x page calls this endpoint when displaying the {xxx} list tab. Per
+> [technical_overview.md §4.3](../../technical_overview.md) item {n}, these endpoints are shown grouped as
+> cross-module calls on {other_component}'s API debug page." If there is no cross-module call, write "This
+> module's API is not called by other modules, and this module's pages do not call other modules' APIs."}
 
 ---
 
@@ -153,275 +155,279 @@
 
 ---
 
-### 3.1 P01 {页面名1}
+### 3.1 P01 {PageName1}
 
-> **设计模式**：遵循 [uiux_design_specification.md](../../uiux_design_specification.md) §2.1.2 双列表页。
+> **Design Pattern**: follows [uiux_design_specification.md](../../uiux_design_specification.md) §2.1.2 Dual-List Page.
 >
-> **⚠️ 待完善（{Rxx-yy}）**：本页面的完整 UI/UX 设计规格（Page Layout and Elements）将由工程师在对应版本开发前进一步补充完善。
+> **⚠️ To Be Completed ({Rxx-yy})**: the full UI/UX design spec for this page (Page Layout and Elements) will be further completed by the engineer before development of the corresponding version.
 >
-> {以上两条 blockquote 注记的用法：
->  - 第一条 **设计模式** 为必填，用于把页面锚定到平台规范的具体章节，避免重复描述通用交互。
->  - 第二条 **⚠️ 待完善** 为可选，仅当页面规格尚未定稿时保留，括号内填对应的 review 条目 ID，
->    定稿后连同标注一起删除。
->  - 若页面存在版本范围限制，再加一条：`> **版本范围**：本页面属于 v0.x，v0.y 之前不实现。`}
+> {Usage of the two blockquote notes above:
+>  - The first, **Design Pattern**, is required; it anchors the page to a specific section of the platform spec, avoiding repeated description of common interactions.
+>  - The second, **⚠️ To Be Completed**, is optional; keep it only while the page spec is not yet finalized, filling in the corresponding review item ID in parentheses,
+>    and remove it together with the note once finalized.
+>  - If the page has a version scope restriction, add one more line: `> **Version Scope**: this page belongs to v0.x, not implemented before v0.y.`}
 
 #### 3.1.1 UI Design
 
-![P01 {页面名1} UI](./ui_page_design/P01  {页面名1}/screen.png)
+![P01 {PageName1} UI](./ui_page_design/P01  {PageName1}/screen.png)
 
-> Source: [ui_page_design/P01  {页面名1}/code.html](./ui_page_design/P01  {页面名1}/code.html)
+> Source: [ui_page_design/P01  {PageName1}/code.html](./ui_page_design/P01  {PageName1}/code.html)
 
-> {若尚无设计稿，将上面两行替换为：}
-> UI mockup 将在后续版本中提供。
+> {If no design draft exists yet, replace the two lines above with:}
+> UI mockup will be provided in a future version.
 
 #### 3.1.2 Page Business Functions
 
-本页面供{目标角色}{完成什么业务目标}。
+This page allows {TargetRole} to {AccomplishWhatBusinessGoal}.
 
 | # | Function | Description |
 |---|----------|-------------|
-| 1 | {功能1} | {左侧选择 {上层对象}，右侧展示该 {上层对象} 下的 {下层对象} 列表} |
-| 2 | {功能2} | {支持关键字搜索和日期范围筛选} |
-| 3 | {功能3} | {默认按 {字段} 倒序；支持表头点击排序和特殊排序下拉} |
-| 4 | {功能4} | {双击或点击"查看"按钮进入 {下层对象} 只读详情页（P02）} |
-| 5 | {功能5} | {选中一条或多条记录后点击"删除"进行批量删除} |
+| 1 | {Function1} | {Select a {ParentObject} on the left; the right side shows the list of {ChildObject} under that {ParentObject}} |
+| 2 | {Function2} | {Supports keyword search and date range filtering} |
+| 3 | {Function3} | {Sorted by {Field} descending by default; supports sorting by clicking column headers and a special sort dropdown} |
+| 4 | {Function4} | {Double-click or click "View" to enter the {ChildObject} Read-Only Detail Page (P02)} |
+| 5 | {Function5} | {Select one or more records and click "Delete" to perform a batch delete} |
 
 #### 3.1.3 Page Layout and Elements
 
-页面整体布局：**标题区域** → **左右双面板区域**。左右面板各自独立滚动，无主视图滚动条。
+Overall page layout: **Title Area** → **Left/Right Dual-Panel Area**. The left and right panels scroll independently; there is no scrollbar on the main view.
 
-> 布局总述的其他常见写法：
-> - 单列表页：页面整体布局：**标题区域** → **查询条件区域** → **功能按钮区域** → **列表区域** → **底部统计与翻页区域**。整页随用户滚动，header/footer 不使用 sticky/fixed 定位。
-> - 详情页：页面整体布局：**标题区域（含返回/保存/取消按钮）** → **属性分组区域（Tab 或分节）** → **底部操作区域**。
-> - Dashboard：页面整体布局：**标题区域** → **状态卡片行** → **统计卡片网格** → **最近事件列表**。
+> Other common ways to write the layout overview:
+> - Single-List Page: overall page layout: **Title Area** → **Filter Area** → **Action Button Area** → **List Area** → **Footer Statistics and Pagination Area**. The whole page scrolls with the user; header/footer do not use sticky/fixed positioning.
+> - Detail Page: overall page layout: **Title Area (with Back/Save/Cancel buttons)** → **Property Group Area (tabs or sections)** → **Footer Action Area**.
+> - Dashboard: overall page layout: **Title Area** → **Status Card Row** → **Statistics Card Grid** → **Recent Events List**.
 
-##### A. 左侧面板 — {上层对象}列表
+##### A. Left Panel — {ParentObject} List
 
-> 遵循双列表页"上层对象列表区域"规范（[uiux_design_specification.md](../../uiux_design_specification.md) §2.1.2）。
-> {上层对象}数据来自本模块的 `GET /api/v1/{resource-b}` API（传入 `{query_param}={value}` 仅展示 {过滤条件说明}）。
+> Follows the Dual-List Page "parent object list area" spec ([uiux_design_specification.md](../../uiux_design_specification.md) §2.1.2).
+> {ParentObject} data comes from this module's `GET /api/v1/{resource-b}` API (passing `{query_param}={value}` to show only {filter condition description}).
 
-**A-1. 查询条件区域**
+**A-1. Filter Area**
 
 | # | Element | Control Type | Default Value | Description |
 |---|---------|-------------|---------------|-------------|
-| 1 | {关键字搜索} | Text Input | 空 | 按 {字段1} 或 {字段2} 模糊搜索 |
-| 2 | {类型筛选} | Dropdown | 全部 | 选项：全部 / {ENUM_A} / {ENUM_B} |
+| 1 | {KeywordSearch} | Text Input | Empty | Fuzzy search by {Field1} or {Field2} |
+| 2 | {TypeFilter} | Dropdown | All | Options: All / {ENUM_A} / {ENUM_B} |
 
-- 每个控件 blur 或值变更时自动触发筛选（不需要搜索按钮）。
-- 页面初次加载时，所有条件均为默认值，即不带任何过滤地展示全部{上层对象}。
+- Filtering triggers automatically on blur or value change for each control (no search button needed).
+- On first page load, all conditions are at their default values, i.e. all {ParentObject}s are shown without any filter applied.
 
-**A-2. 功能按钮区域**
+**A-2. Action Button Area**
 
-| Position | Element | Type | 前置条件 | Behavior |
+| Position | Element | Type | Precondition | Behavior |
 |----------|---------|------|----------|----------|
-| 右侧 | 刷新 | Icon Button（🔄） | — | 重新从 API 加载{上层对象}列表 |
+| Right | Refresh | Icon Button (🔄) | — | Reload the {ParentObject} list from the API |
 
-> {说明本面板为何不提供某些按钮，例如："P01 专注于{下层对象}浏览，{上层对象}的增删改查由本模块的 P06 负责，此处不重复提供。"}
+> {Explain why this panel does not offer certain buttons, e.g.: "P01 focuses on browsing {ChildObject}; create/update/delete for {ParentObject} is handled by this module's P06 and is not duplicated here."}
 
-**A-3. 列表区域**
+**A-3. List Area**
 
-列表为 **1 列**，采用折行显示：
+The list has **1 column**, displayed with line wrapping:
 
 | Row | Content | Style | Description |
 |-----|---------|-------|-------------|
-| 第 1 行 | {字段1} | 14px，粗体，黑色 | {说明} |
-| 第 2 行 | {字段2} 标签 + {字段3} 标签 | 12px，浅色字体，Tag 徽章 | {说明；条件显示规则} |
-| 第 3 行 | {字段4} + {字段5} | 11px，灰色字体 | 显示格式：`{fmt}`，例如 `120 days / 35 daily` |
+| Row 1 | {Field1} | 14px, bold, black | {Description} |
+| Row 2 | {Field2} tag + {Field3} tag | 12px, light-colored text, Tag badge | {Description; conditional display rule} |
+| Row 3 | {Field4} + {Field5} | 11px, gray text | Display format: `{fmt}`, e.g. `120 days / 35 daily` |
 
-- 排序：按 {字段} 字母升序排列，**不支持用户排序**（配置类数据，参照树状单列表页规范）。
-- 底部仅提供 **上一页** / **下一页** 和 **当前页码**，不显示总记录数与已选记录数。
-- 每页 {50} 条记录。
-- 默认选中列表的**第一条**记录，右侧面板联动加载。
+- Sorting: sorted alphabetically ascending by {Field}, **user sorting is not supported** (configuration-type data, following the Tree Single-List Page spec).
+- The footer provides only **Previous** / **Next** and the **current page number**; it does not show total record count or selected record count.
+- {50} records per page.
+- The **first** record in the list is selected by default, and the right panel loads accordingly.
 
-**A-4. 列表行交互**
+**A-4. Row Interaction**
 
 | Interaction | Behavior |
 |-------------|----------|
-| 单击 | 选中该{上层对象}；右侧面板自动清空所有查询条件，重置日期范围为"{默认值}"，并按新选中的{上层对象}刷新数据列表 |
-| Ctrl/Shift + 单击 | 多选；右侧面板按**第一个**被选中的{上层对象}刷新 |
-| 双击 | 进入该{上层对象}的只读详情页 P{nn} |
-| 右键 | 显示右键菜单，菜单项与功能按钮区域一致 |
+| Click | Selects the {ParentObject}; the right panel automatically clears all filter conditions, resets the date range to "{DefaultValue}", and refreshes the data list for the newly selected {ParentObject} |
+| Ctrl/Shift + Click | Multi-select; the right panel refreshes based on the **first** selected {ParentObject} |
+| Double-click | Enters the Read-Only Detail Page P{nn} for that {ParentObject} |
+| Right-click | Shows a context menu, with the same menu items as the Action Button Area |
 
 ---
 
-##### B. 右侧面板 — {下层对象}列表
+##### B. Right Panel — {ChildObject} List
 
-> 遵循双列表页"下层对象列表区域"规范（即标准单列表页，但列数 ≤ 5）。
+> Follows the Dual-List Page "child object list area" spec (i.e. a standard Single-List Page, but with ≤ 5 columns).
 
-**隐含查询条件**：当前左侧被选中的第一个{上层对象}的 `{key_field}`。所有查询请求均携带此条件。
+**Implicit Filter Condition**: the `{key_field}` of the first {ParentObject} currently selected on the left. Every query request carries this condition.
 
-> **"隐含查询条件"写法说明**：双列表页的下层列表必然带有一个不在查询条件区域展示、
-> 但每次请求都必须携带的父级过滤条件。必须在此显式写出字段名，否则工程师无法确定请求参数。
+> **Notes on writing the "Implicit Filter Condition"**: the lower list of a Dual-List Page always carries a parent-level
+> filter condition that is not shown in the Filter Area but must be included in every request. The field name must be
+> stated explicitly here, otherwise the engineer cannot determine the request parameters.
 
-**B-1. 查询条件区域**
+**B-1. Filter Area**
 
 | # | Element | Control Type | Default Value | Description |
 |---|---------|-------------|---------------|-------------|
-| 1 | 关键字 | Text Input | 空 | 按 {字段1} 和 {字段2} 全文搜索（大小写不敏感） |
-| 2 | 日期范围 | Calendar + Dropdown | {当天} | 筛选 `{date_field}` 字段。采用 uiux_design_specification.md 中的**方式二**：日历控件 + 快捷下拉选项（当天 / 最近 3 天 / 最近 1 周 / 最近 1 月） |
-| 3 | {状态筛选} | Dropdown | 全部 | 选项：全部 / {ENUM_X} / {ENUM_Y} |
+| 1 | Keyword | Text Input | Empty | Full-text search by {Field1} and {Field2} (case-insensitive) |
+| 2 | Date Range | Calendar + Dropdown | {Today} | Filters the `{date_field}` field. Uses **Method 2** from uiux_design_specification.md: a calendar control + quick dropdown options (Today / Last 3 Days / Last 1 Week / Last 1 Month) |
+| 3 | {StatusFilter} | Dropdown | All | Options: All / {ENUM_X} / {ENUM_Y} |
 
-- 每个控件 blur 或值变更时自动触发筛选。
-- 页面初次加载时，日期范围为"{当天}"，其他条件为空/默认，自动执行一次带日期条件的查询。
+- Filtering triggers automatically on blur or value change for each control.
+- On first page load, the date range is "{Today}" and other conditions are empty/default; a query with the date condition is executed automatically once.
 
-**B-2. 功能按钮区域**
+**B-2. Action Button Area**
 
-| Position | Element | Type | 前置条件 | Behavior |
+| Position | Element | Type | Precondition | Behavior |
 |----------|---------|------|----------|----------|
-| 左侧（与按钮间有分割线） | 排序方式 | Dropdown | — | 选项：默认排序（`{field} DESC`）/ {排序2}↓ / {排序3}↓。选择后立即向后端 API 发出重新查询请求 |
-| 右侧 | 查看 | Text Button | 必须已选择记录 | 进入第一个被选中记录的只读详情页 P02 |
-| 右侧 | 创建 | Text Button（{配色见 uiux_design_specification.md §5.2}） | — | 进入创建页 P{nn} |
-| 右侧 | 编辑 | Text Button | 必须已选择**恰好一条**记录 | 进入该记录的编辑页 P{nn} |
-| 右侧 | 删除 | Text Button（红色） | 必须已选择记录 | 弹出确认对话框"是否确认删除选中的 n 条记录？"；确认后执行删除，取消则关闭对话框并保持选中状态 |
+| Left (divider between this and the buttons) | Sort By | Dropdown | — | Options: Default sort (`{field} DESC`) / {Sort2}↓ / {Sort3}↓. Issues a new query request to the backend API immediately upon selection |
+| Right | View | Text Button | A record must be selected | Enters the Read-Only Detail Page P02 for the first selected record |
+| Right | Create | Text Button ({color per uiux_design_specification.md §5.2}) | — | Enters the create page P{nn} |
+| Right | Edit | Text Button | **Exactly one** record must be selected | Enters the edit page P{nn} for that record |
+| Right | Delete | Text Button (red) | A record must be selected | Shows a confirmation dialog "Are you sure you want to delete the selected n records?"; on confirm, performs the delete; on cancel, closes the dialog and keeps the selection |
 
-> {说明本页面不提供的按钮及原因，例如："本页面不提供'创建'和'编辑'按钮。{下层对象}由 Daemon 程序自动采集生成，不支持手动创建或编辑。"}
+> {Explain which buttons this page does not offer and why, e.g.: "This page does not offer 'Create' or 'Edit' buttons. {ChildObject} records are automatically collected and generated by a Daemon process, and manual creation or editing is not supported."}
 
-**B-3. 列表区域**
+**B-3. List Area**
 
-列表包含 **{5}** 列：
+The list contains **{5}** columns:
 
-| # | Column Header | Data Source | Width | Style / Format | Sortable |
+| # | Column Header | Data Source | Width | Style-Format | Sortable |
 |---|--------------|------------|-------|----------------|----------|
-| 1 | ID | `{id_field}` | 60px | 右对齐整数，**不加 `#` 前缀** | 是（列头点击） |
-| 2 | {列2} | `{field2}` + `{field2_sub}` | flex | **第 1 行**：{field2}，黑色 14px，最多 2 行截断；**第 2 行**：{field2_sub}，灰色 12px，1 行截断；若为空则显示灰色斜体 "{占位文案}"；**第 3 行**：{tags} Tag 徽章，12px，相同名称相同配色（见 uiux_design_specification.md §3.1.2） | 是（按 {field2} 排序） |
-| 3 | {列3} | `{field3}` | 80px | Tag 徽章显示（如 `{示例值}`），居中 | 是 |
-| 4 | {列4} | `{field4}` | 120px | **已处理**：绿色 ✓ 图标 + 日期（`yyyy-MM-dd`）；**未处理**：灰色 "—" | 是 |
-| 5 | {列5} | `{field5}` | 160px | `yyyy-MM-dd HH:mm` 格式（见 uiux_design_specification.md §9 数据格式化规则） | 是 |
+| 1 | ID | `{id_field}` | 60px | Right-aligned integer, **no `#` prefix** | Yes (click column header) |
+| 2 | {Column2} | `{field2}` + `{field2_sub}` | flex | **Row 1**: {field2}, black 14px, truncated at 2 lines max; **Row 2**: {field2_sub}, gray 12px, truncated at 1 line; shows gray italic "{PlaceholderText}" if empty; **Row 3**: {tags} Tag badges, 12px, same name gets the same color (see uiux_design_specification.md §3.1.2) | Yes (sorted by {field2}) |
+| 3 | {Column3} | `{field3}` | 80px | Tag badge display (e.g. `{ExampleValue}`), centered | Yes |
+| 4 | {Column4} | `{field4}` | 120px | **Processed**: green ✓ icon + date (`yyyy-MM-dd`); **Unprocessed**: gray "—" | Yes |
+| 5 | {Column5} | `{field5}` | 160px | `yyyy-MM-dd HH:mm` format (see uiux_design_specification.md §9 data formatting rules) | Yes |
 
-- 默认排序：按 **`{field5}` 倒序**。
-- 排序规则：点击表头在正序、倒序之间切换，同时显示小箭头指示方向。不支持多列排序。所有排序均通过**后端 API** 实现（不做前端本地排序）。
-- 底部显示：`Selected {n} / Total {m}` | **翻页控件**。每页 {50} 条记录，不提供"每页条数"选择器。
-- {软删除/非活跃行样式：遵循 uiux_design_specification.md §3.2.1 / §3.2.2。}
+- Default sort: by **`{field5}` descending**.
+- Sorting rule: clicking a column header toggles between ascending and descending, with a small arrow indicating direction. Multi-column sorting is not supported. All sorting is implemented via the **backend API** (no frontend local sorting).
+- Footer shows: `Selected {n} / Total {m}` | **pagination controls**. {50} records per page; no "records per page" selector is provided.
+- {Soft-deleted/inactive row styling: follows uiux_design_specification.md §3.2.1 / §3.2.2.}
 
-**B-4. 列表行交互**
+**B-4. Row Interaction**
 
 | Interaction | Behavior |
 |-------------|----------|
-| 单击 | 选中该记录 |
-| Ctrl/Shift + 单击 | 多选记录 |
-| 双击 | 进入该记录的只读详情页 P02 |
-| 右键 | 显示右键菜单，菜单项与功能按钮区域一致（查看、删除） |
+| Click | Selects the record |
+| Ctrl/Shift + Click | Multi-selects records |
+| Double-click | Enters the Read-Only Detail Page P02 for that record |
+| Right-click | Shows a context menu, with the same menu items as the Action Button Area (View, Delete) |
 
-> **选中行视觉反馈**：本页面右侧列表**不使用复选框列**，通过单击 / Ctrl / Shift 单击高亮整行来表示选中状态
-> （与 P{nn} 使用复选框列的选中方式不同）。选中行以蓝色背景高亮显示，多选时所有被选中行均高亮。
-> "被选中记录数"在底部统计区实时更新。
+> **Row Selection Feedback**: the right-side list on this page **does not use a checkbox column**; selection state is shown by
+> highlighting the whole row on click / Ctrl / Shift click (unlike P{nn}, which uses a checkbox column for selection). Selected
+> rows are highlighted with a blue background; when multiple rows are selected, all selected rows are highlighted. The
+> "selected record count" updates in real time in the footer statistics area.
 >
-> **写法说明**：同一组件内若不同页面采用了不同的选中方式（复选框 vs 整行高亮），
-> 必须在两处都显式标注差异，否则 HTML review 会反复报同一个不一致问题。
+> **Notes on writing this**: if different pages within the same component use different selection methods (checkbox column vs.
+> whole-row highlight), the difference must be explicitly noted in both places, otherwise HTML review will repeatedly flag the
+> same inconsistency.
 
 #### 3.1.4 Page Behaviors
 
 | # | Trigger | Action | Result |
 |---|---------|--------|--------|
-| 1 | 页面首次加载 | 调用 `GET /api/v1/{resource-b}?{filter}=false&is_active=true&sort_by={field}&sort_order=asc` | 左侧面板填充{上层对象}列表，自动选中第一个 |
-| 2 | 左侧{上层对象}被选中（首次或切换） | 清空右侧查询条件，日期范围重置为"{当天}"；调用 `GET /api/v1/{resource-a}/{key_field}`（带日期范围查询参数） | 右侧面板刷新{下层对象}列表 |
-| 3 | 右侧查询条件变更 | 调用 `GET /api/v1/{resource-a}/{key_field}`（带所有当前查询条件） | 右侧列表刷新 |
-| 4 | 右侧排序方式变更 | 调用 `GET /api/v1/{resource-a}/{key_field}?sort_by={field}&sort_order={asc\|desc}` | 右侧列表按新排序刷新 |
-| 5 | 双击记录 / 点击"查看" | 导航至 P02 页面，传递 `{id_field}` 和 `{key_field}` | 进入只读详情页 |
-| 6 | 点击"删除" | 弹出阻塞确认对话框（见 uiux_design_specification.md §2.3.2）；用户确认后调用 `POST /api/v1/{resource-a}/{key_field}/batch-delete`（选中单条时数组含 1 个元素） | 成功则刷新右侧列表；失败则显示错误提示并保持选中状态 |
-| 7 | 从 P02 返回（退出或删除成功） | 刷新右侧列表，保持当前左侧选中的{上层对象} | 列表更新 |
-| 8 | 左侧"刷新"按钮点击 | 重新调用 `GET /api/v1/{resource-b}?...` | 左侧列表刷新，尝试保持当前选中项 |
-| 9 | API 返回错误 | 按 uiux_design_specification.md §16 错误处理展示 | 显示错误提示，页面保持原状态 |
+| 1 | Page first loads | Calls `GET /api/v1/{resource-b}?{filter}=false&is_active=true&sort_by={field}&sort_order=asc` | The left panel is populated with the {ParentObject} list; the first one is selected automatically |
+| 2 | A {ParentObject} is selected on the left (first time or switching) | Clears the right-side filter conditions; the date range resets to "{Today}"; calls `GET /api/v1/{resource-a}/{key_field}` (with date range query parameters) | The right panel refreshes the {ChildObject} list |
+| 3 | Right-side filter condition changes | Calls `GET /api/v1/{resource-a}/{key_field}` (with all current filter conditions) | The right-side list refreshes |
+| 4 | Right-side sort option changes | Calls `GET /api/v1/{resource-a}/{key_field}?sort_by={field}&sort_order={asc\|desc}` | The right-side list refreshes with the new sort order |
+| 5 | Double-click a record / click "View" | Navigates to the P02 page, passing `{id_field}` and `{key_field}` | Enters the Read-Only Detail Page |
+| 6 | Click "Delete" | Shows a blocking confirmation dialog (see uiux_design_specification.md §2.3.2); after user confirmation, calls `POST /api/v1/{resource-a}/{key_field}/batch-delete` (the array contains 1 element when a single record is selected) | On success, refreshes the right-side list; on failure, shows an error message and keeps the selection |
+| 7 | Returning from P02 (exit or successful delete) | Refreshes the right-side list, keeping the currently selected {ParentObject} on the left | List updates |
+| 8 | Left "Refresh" button clicked | Re-calls `GET /api/v1/{resource-b}?...` | The left-side list refreshes, attempting to keep the current selection |
+| 9 | API returns an error | Displayed per uiux_design_specification.md §16 error handling | Shows an error message; the page keeps its previous state |
 
-> **Action 列写法要求**：一律写**具体 REST 端点 + 查询参数**（含关键参数名与取值），
-> 不得写"调用查询 API"这类模糊描述——工程师依据本表直接编码，模糊描述会导致 review 返工。
+> **Requirements for the Action column**: always write the **specific REST endpoint + query parameters** (including key
+> parameter names and values); do not write a vague description like "calls the query API" — the engineer codes directly
+> from this table, and a vague description will cause review rework.
 
 ---
 
-### 3.2 P02 {页面名2}
+### 3.2 P02 {PageName2}
 
-> **设计模式**：遵循 [uiux_design_specification.md](../../uiux_design_specification.md) §2.2.2 业务对象预览或只读页。
+> **Design Pattern**: follows [uiux_design_specification.md](../../uiux_design_specification.md) §2.2.2 Business Object Preview or Read-Only Page.
 
 #### 3.2.1 UI Design
 
-![P02 {页面名2} UI](./ui_page_design/P02  {页面名2}/screen.png)
+![P02 {PageName2} UI](./ui_page_design/P02  {PageName2}/screen.png)
 
-> Source: [ui_page_design/P02  {页面名2}/code.html](./ui_page_design/P02  {页面名2}/code.html)
+> Source: [ui_page_design/P02  {PageName2}/code.html](./ui_page_design/P02  {PageName2}/code.html)
 
 #### 3.2.2 Page Business Functions
 
 | # | Function | Description |
 |---|----------|-------------|
-| 1 | {查看完整信息} | {展示 {CObject} 的全部属性，只读} |
-| 2 | {删除记录} | {点击"删除"按钮删除当前记录并返回列表页} |
+| 1 | {ViewFullInformation} | {Shows all properties of {CObject}, read-only} |
+| 2 | {DeleteRecord} | {Click the "Delete" button to delete the current record and return to the list page} |
 
 #### 3.2.3 Page Layout and Elements
 
-页面整体布局：**标题区域（含"退出"/"删除"按钮）** → **属性分组区域** → {**内容折叠展开区域**}。
+Overall page layout: **Title Area (with "Exit"/"Delete" buttons)** → **Property Group Area** → {**Content Collapse/Expand Area**}.
 
-**A. 标题与功能按钮区域**
+**A. Title and Action Button Area**
 
-| Position | Element | Type | 前置条件 | Behavior |
+| Position | Element | Type | Precondition | Behavior |
 |----------|---------|------|----------|----------|
-| 左侧 | 页面标题 | Text | — | 显示 `{对象名} — {当前记录标识}` |
-| 右侧 | 编辑 | Text Button | {条件} | 切换到编辑模式 / 进入 P{nn} |
-| 右侧 | 删除 | Text Button（红色） | — | 弹出确认对话框；确认后调用 `DELETE /api/v1/{resource-a}/{id}` |
-| 右侧 | 退出 | Text Button | — | 返回来源列表页 P01 |
+| Left | Page Title | Text | — | Shows `{ObjectName} — {CurrentRecordIdentifier}` |
+| Right | Edit | Text Button | {Condition} | Switches to edit mode / enters P{nn} |
+| Right | Delete | Text Button (red) | — | Shows a confirmation dialog; on confirm, calls `DELETE /api/v1/{resource-a}/{id}` |
+| Right | Exit | Text Button | — | Returns to the originating list page P01 |
 
-**B. 属性分组区域**
+**B. Property Group Area**
 
-| # | 分组 | 字段 | 控件 / 展示形式 | 说明 |
+| # | Group | Field | Control / Display Form | Description |
 |---|------|------|----------------|------|
-| 1 | 基本信息 | `{field1}`, `{field2}` | 只读文本 | {说明} |
-| 2 | {分组2} | `{field3}` | Tag Cloud 只读展示（§3.1.3） | {说明} |
-| 3 | {分组3} | `{field4}` | Slider + Number Input 只读（§3.3，只读模式仅显示数字） | {说明} |
-| 4 | 时间信息 | `created_at`, `updated_at`, `deleted_at` | 只读文本，`yyyy-MM-dd HH:mm` | {说明} |
+| 1 | Basic Information | `{field1}`, `{field2}` | Read-only text | {Description} |
+| 2 | {Group2} | `{field3}` | Tag Cloud, read-only display (§3.1.3) | {Description} |
+| 3 | {Group3} | `{field4}` | Slider + Number Input, read-only (§3.3; read-only mode shows only the number) | {Description} |
+| 4 | Time Information | `created_at`, `updated_at`, `deleted_at` | Read-only text, `yyyy-MM-dd HH:mm` | {Description} |
 
-**C. {长文本/媒体资源区域}**
+**C. {Long Text/Media Resource Area}**
 
-{说明折叠展开规则、媒体预览方式、超长文本截断规则。}
+{Describe the collapse/expand rule, media preview method, and truncation rule for overly long text.}
 
 #### 3.2.4 Page Behaviors
 
 | # | Trigger | Action | Result |
 |---|---------|--------|--------|
-| 1 | 页面加载 | 调用 `GET /api/v1/{resource-a}/{key_field}/{id}` | 填充所有属性 |
-| 2 | 点击"删除" | 弹出确认对话框；确认后调用 `DELETE /api/v1/{resource-a}/{key_field}/{id}` | 成功则返回 P01 并刷新列表；失败则显示错误提示 |
-| 3 | 点击"退出" | 返回 P01 | 列表保持原有查询条件与选中项 |
-| 4 | 记录不存在（404） | 按 uiux_design_specification.md §16 展示 | 显示"记录不存在"并提供返回列表按钮 |
+| 1 | Page loads | Calls `GET /api/v1/{resource-a}/{key_field}/{id}` | Populates all properties |
+| 2 | Click "Delete" | Shows a confirmation dialog; on confirm, calls `DELETE /api/v1/{resource-a}/{key_field}/{id}` | On success, returns to P01 and refreshes the list; on failure, shows an error message |
+| 3 | Click "Exit" | Returns to P01 | The list keeps its original filter conditions and selection |
+| 4 | Record not found (404) | Displayed per uiux_design_specification.md §16 | Shows "Record not found" and provides a button to return to the list |
 
 ---
 
-> **重复规则**：按页面数量重复 `### 3.x P{nn} {页面名}` 小节。每节固定四个子节：
+> **Repetition Rule**: repeat the `### 3.x P{nn} {PageName}` section once per page. Each section has four fixed subsections:
 >
-> - `3.x.1 UI Design`（screen.png + code.html）
-> - `3.x.2 Page Business Functions`（编号功能表）
-> - `3.x.3 Page Layout and Elements`（按面板/区域分块，列表页固定 A-1～A-4 四块）
-> - `3.x.4 Page Behaviors`（编号 Trigger/Action/Result 表，Action 写完整端点）
+> - `3.x.1 UI Design` (screen.png + code.html)
+> - `3.x.2 Page Business Functions` (numbered function table)
+> - `3.x.3 Page Layout and Elements` (broken down by panel/area; list pages have a fixed A-1 through A-4)
+> - `3.x.4 Page Behaviors` (numbered Trigger/Action/Result table; Action states the full endpoint)
 >
-> 不同 Layout Mode 的 3.x.3 结构差异：
+> How the 3.x.3 structure differs by Layout Mode:
 >
-> | Layout Mode | 3.x.3 分块 |
+> | Layout Mode | 3.x.3 Breakdown |
 > |-------------|-----------|
-> | 单列表页 | A-1 查询条件 / A-2 功能按钮 / A-3 列表区域 / A-4 列表行交互 |
-> | 双列表页 | A. 左侧面板（A-1～A-4）+ B. 右侧面板（B-1～B-4，含隐含查询条件） |
-> | 树状（双）列表页 | A. 树面板（节点层级、展开规则、节点图标）+ B. 右侧列表面板（B-1～B-4） |
-> | 业务对象详情页 | A. 标题与功能按钮 / B. 属性分组（创建/只读/编辑三模式差异表） / C. 校验规则 |
-> | 只读详情页 | A. 标题与功能按钮 / B. 属性分组 / C. 长文本与媒体区域 |
-> | Dashboard | A. 状态卡片 / B. 统计卡片 / C. 最近事件列表 / D. 自动刷新策略（§10） |
-> | 双栏布局（API 调试页） | A. 左栏端点树（按 tech_design §5 分组，含跨模块调用分组）/ B. 右栏请求构造与响应展示 |
+> | Single-List Page | A-1 Filter Area / A-2 Action Button Area / A-3 List Area / A-4 Row Interaction |
+> | Dual-List Page | A. Left Panel (A-1–A-4) + B. Right Panel (B-1–B-4, including the Implicit Filter Condition) |
+> | Tree (Dual-)List Page | A. Tree Panel (node hierarchy, expand rules, node icons) + B. Right List Panel (B-1–B-4) |
+> | Business Object Detail Page | A. Title and Action Button Area / B. Property Groups (a table comparing the create/read-only/edit mode differences) / C. Validation Rules |
+> | Read-Only Detail Page | A. Title and Action Button Area / B. Property Groups / C. Long Text and Media Area |
+> | Dashboard | A. Status Cards / B. Statistics Cards / C. Recent Events List / D. Auto-Refresh Strategy (§10) |
+> | Two-Column Layout (API Debug Page) | A. Left Column Endpoint Tree (grouped per tech_design §5, including a cross-module call group) / B. Right Column Request Builder and Response Display |
 
 ---
 
-## 4 路由定义
+## 4 Route Definitions
 
-| # | Route | Page | 组件文件 | 说明 |
+| # | Route | Page | Component File | Description |
 |---|-------|------|---------|------|
-| 1 | `/{component-code-name}/{page-a}` | P01 {页面名1} | `pages/{page-a}/index.tsx` | {说明} |
-| 2 | `/{component-code-name}/{page-a}/:{id_field}` | P02 {页面名2} | `pages/{page-a}-detail/index.tsx` | {说明} |
-| 3 | `/{component-code-name}/{page-b}` | P03 {页面名3} | `pages/{page-b}/index.tsx` | {说明} |
-| 4 | `/{component-code-name}/{page-c}/new` | P{nn} {创建页} | `pages/{page-c}-detail/index.tsx` | 创建模式 |
-| 5 | `/{component-code-name}/{page-c}/:{id_field}` | P{nn} {详情页} | `pages/{page-c}-detail/index.tsx` | 只读模式 |
-| 6 | `/{component-code-name}/{page-c}/:{id_field}/edit` | P{nn} {编辑页} | `pages/{page-c}-detail/index.tsx` | 编辑模式 |
-| 7 | `/{component-code-name}/api-debug` | P07 API 调试页 | `pages/api-debug/index.tsx` | 开发调试用 |
+| 1 | `/{component-code-name}/{page-a}` | P01 {PageName1} | `pages/{page-a}/index.tsx` | {Description} |
+| 2 | `/{component-code-name}/{page-a}/:{id_field}` | P02 {PageName2} | `pages/{page-a}-detail/index.tsx` | {Description} |
+| 3 | `/{component-code-name}/{page-b}` | P03 {PageName3} | `pages/{page-b}/index.tsx` | {Description} |
+| 4 | `/{component-code-name}/{page-c}/new` | P{nn} {CreatePage} | `pages/{page-c}-detail/index.tsx` | Create mode |
+| 5 | `/{component-code-name}/{page-c}/:{id_field}` | P{nn} {DetailPage} | `pages/{page-c}-detail/index.tsx` | Read-only mode |
+| 6 | `/{component-code-name}/{page-c}/:{id_field}/edit` | P{nn} {EditPage} | `pages/{page-c}-detail/index.tsx` | Edit mode |
+| 7 | `/{component-code-name}/api-debug` | P07 API Debug Page | `pages/api-debug/index.tsx` | For development and debugging |
 
-> **版本范围注记**：{说明本表中哪些路由属于哪个版本，例如："v0.1 实现 P01–P0x 的路由（共 n 条）；
-> P07 API 调试页属于 v0.2；P0y 属于 v0.z。"标注必须与
-> [{component_code_name}_version_plan.md](./{component_code_name}_version_plan.md) 一致。}
+> **Version Scope Notes**: {state which routes in this table belong to which version, e.g.: "v0.1 implements the routes for
+> P01–P0x (n routes total); the P07 API Debug Page belongs to v0.2; P0y belongs to v0.z." This annotation must be
+> consistent with [{component_code_name}_version_plan.md](./{component_code_name}_version_plan.md).}
 >
-> - 路由路径使用 kebab-case，与前端包目录命名规则一致（见 [naming_convention.md](../../naming_convention.md)）。
-> - 详情页的创建 / 只读 / 编辑三模式**复用同一个组件文件**，通过路由后缀区分模式
->   （见 uiux_design_specification.md §2.2）。
+> - Route paths use kebab-case, consistent with the frontend package directory naming rule (see [naming_convention.md](../../naming_convention.md)).
+> - The create / read-only / edit modes of a detail page **reuse the same component file**, distinguished by a route suffix
+>   (see uiux_design_specification.md §2.2).
 
 ---
 
@@ -430,33 +436,34 @@
 ```
 src/frontend/packages/{component-code-name}/
 ├── src/
-│   ├── pages/                       # 页面组件，一个页面一个目录
+│   ├── pages/                       # Page components, one directory per page
 │   │   ├── {page-a}/index.tsx       # P01
 │   │   ├── {page-a}-detail/index.tsx# P02
 │   │   └── api-debug/index.tsx      # P07
-│   ├── components/                  # 本组件私有的可复用组件
-│   ├── models/                      # TypeScript 类型定义（C/E/I 前缀，见 naming_convention.md §3）
-│   ├── services/                    # API 客户端封装（api.ts），页面内禁止直接发请求
-│   ├── hooks/                       # 数据钩子层
-│   ├── stores/                      # 状态管理（one-store-per-entity + uiStore，见规范 §8）
-│   ├── mock/                        # v0.1 硬编码数据；v0.2 起仅用于测试
-│   ├── routes.tsx                   # 路由注册，与 §4 一一对应
-│   └── index.ts                     # 包导出
+│   ├── components/                  # Reusable components private to this component
+│   ├── models/                      # TypeScript type definitions (C/E/I prefixes, see naming_convention.md §3)
+│   ├── services/                    # API client wrappers (api.ts); pages must not send requests directly
+│   ├── hooks/                       # Data hook layer
+│   ├── stores/                      # State management (one-store-per-entity + uiStore, see spec §8)
+│   ├── mock/                        # v0.1 hardcoded data; used only for testing from v0.2 onward
+│   ├── routes.tsx                   # Route registration, one-to-one with §4
+│   └── index.ts                     # Package exports
 └── package.json
 ```
 
-> 目录使用 **kebab-case**（`src/frontend/` 规则）；文件命名规则见
-> [uiux_design_specification.md](../../uiux_design_specification.md) §18 与
-> [naming_convention.md](../../naming_convention.md)。
+> Directories use **kebab-case** (the `src/frontend/` rule); for file naming rules see
+> [uiux_design_specification.md](../../uiux_design_specification.md) §18 and
+> [naming_convention.md](../../naming_convention.md).
 
 ---
 
 ## Change Log
 
-| 版本 | 日期 | 变更内容 |
+| Version | Date | Changes |
 |------|------|---------|
-| {x.y.z} | {YYYY-MM-DD} | {变更说明；若源于 review，标注条目 ID，如"修复 R7-04：补充 P01–P05 待完善标注"} |
-| {x.y.z} | {YYYY-MM-DD} | {变更说明} |
+| {x.y.z} | {YYYY-MM-DD} | {Description of the change; if it originated from a review, note the item ID, e.g. "Fixed R7-04: added To-Be-Completed annotations for P01–P05"} |
+| {x.y.z} | {YYYY-MM-DD} | {Description of the change} |
 
-> Change Log 按**倒序**排列（最新在上）。每次因 review 修改文档都必须新增一行并标注 review 条目 ID，
-> 便于 ai_dev/01_DocReviewRefine 的下一轮 review 验证落实情况。
+> The Change Log is listed in **reverse chronological order** (newest at top). Every time a document is modified due to a
+> review, a new row must be added noting the review item ID, to help the next round of ai_dev/01_DocReviewRefine review
+> verify that it was addressed.

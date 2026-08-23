@@ -1,42 +1,42 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】
-本文件是 **组件级（Component-Level）技术文档** 模板。
+[Document Level]
+This file is a **Component-Level Technical Design** template.
 
-- 存放位置：`docs/components/{component_code_name}/`
-- 文件命名：将前导 `_` 替换为组件代码名。
-  例如组件 `crawler` → `crawler_tech_design.md`
+- Location: `docs/components/{component_code_name}/`
+- File naming: replace the leading `_` with the component code name.
+  For example, component `crawler` → `crawler_tech_design.md`
 
-【与平台级文档的边界区分】
-`docs/` 根目录下的 `technical_overview.md` 是 **平台级** 技术文档，两者层级完全不同：
+[Boundary Between This and the Platform-Level Document]
+`technical_overview.md` at the root of `docs/` is the **platform-level** technical document; the two are at completely different levels:
 
-| 维度 | 平台级 `docs/technical_overview.md` | 组件级 `{component}_tech_design.md`（本模板） |
+| Dimension | Platform-Level `docs/technical_overview.md` | Component-Level `{component}_tech_design.md` (this template) |
 |------|-------------------------------------|-------------------------------------------|
-| 描述对象 | 整个平台的技术架构 | 单个产品组件的技术实现 |
-| 内容 | 架构分层、后端服务架构模式、跨模块 API 调用规则、数据库划分、全局技术规范（API/DB/前端/后端/日志/安全/版本） | 本组件的类定义、数据库表、API 端点、源码目录 |
-| 技术栈 | 全平台统一的语言版本、依赖版本、中间件版本的**权威清单** | 只声明本组件用到了其中哪些，版本必须与平台级一致 |
-| 规范 | 定义规范本身 | 引用规范章节号，说明本组件如何遵循 |
+| Describes | The technical architecture of the entire platform | The technical implementation of a single product component |
+| Content | Architecture layering, backend service architecture patterns, cross-module API call rules, database partitioning, global technical standards (API/DB/frontend/backend/logging/security/versioning) | This component's class definitions, database tables, API endpoints, source code directory |
+| Tech stack | The **authoritative list** of platform-wide unified language versions, dependency versions, and middleware versions | Only declares which of these this component uses; versions must match the platform level |
+| Standards | Defines the standards themselves | References the standard's section number and explains how this component complies |
 
-**硬性规则**：
-1. 组件级文档 **不得重复定义** 平台级已有的技术规范（统一响应格式、错误码体系、
-   命名规范、日志规范、分层规则等）。需要时以
-   `遵循 [technical_overview.md](../../technical_overview.md) §4.x` 的形式引用。
-2. 技术栈版本 **不得与** `technical_overview.md §5` 冲突。若本组件需要新的语言或
-   主要依赖，必须先更新平台级文档，再在本文引用。
-3. 本文 §2 的每个类，必须能在 `{component}_business_desc.md §3 Business Objects`
-   中找到对应的业务对象；两边的属性集合必须一致。
-4. 本文 §5 定义的每个端点，必须与 `{component}_uiux.md §2.3 Page-Object-API Mapping`
-   中引用的端点路径完全一致，并同步反映在 `{component}_api.mmd` 中。
+**Hard Rules**:
+1. Component-level documents **must not redefine** technical standards that already exist at the platform level (unified response format, error code system,
+   naming conventions, logging conventions, layering rules, etc.). Where needed, reference them as
+   `Follows [technical_overview.md](../../technical_overview.md) §4.x`.
+2. Tech stack versions **must not conflict with** `technical_overview.md §5`. If this component needs a new language or
+   major dependency, the platform-level document must be updated first, then referenced here.
+3. Every class in §2 of this document must be traceable to a corresponding business object in
+   `{component}_business_desc.md §3 Business Objects`; the property sets on both sides must match.
+4. Every endpoint defined in §5 of this document must exactly match the endpoint paths referenced in
+   `{component}_uiux.md §2.3 Page-Object-API Mapping`, and be reflected in sync in `{component}_api.mmd`.
 
-【文档约定】
-- 第 1 章必须是 Table of Contents。
-- 所有章节使用数字编号（1、1.1、1.1.1）。
-- `{花括号}` 内为占位符，使用时替换为实际内容。
-- 可选章节在正文中已标注保留/删除条件，不需要的整章删除并重新编号。
+[Document Conventions]
+- Section 1 must be the Table of Contents.
+- All sections use numeric numbering (1, 1.1, 1.1.1).
+- Content inside `{curly braces}` is a placeholder; replace with actual content when using.
+- Optional sections are marked in the body with keep/delete conditions; delete the entire section if not needed and renumber.
 -->
 
-# {组件中文名}（{component_code_name}） Technical Design
+# {ComponentName} ({component_code_name}) Technical Design
 
 **Document Version**: {x.y.z}
 
@@ -57,14 +57,14 @@
 - [4 Database Definitions](#4-database-definitions)
   - [4.0 Database Schema Diagram](#40-database-schema-diagram)
   - [4.1 {table_name_1}](#41-table_name_1)
-  - [4.2 {code_name}_{suffix}（动态分表）](#42-code_name_suffix动态分表)
+  - [4.2 {code_name}_{suffix} (Dynamic Sharded Table)](#42-code_name_suffix-dynamic-sharded-table)
 - [5 API Definitions](#5-api-definitions)
   - [5.0 API Overview Diagram](#50-api-overview-diagram)
   - [5.1 {Resource1} CRUD](#51-resource1-crud)
-  - [5.2 {Resource2} 查询](#52-resource2-查询)
-  - [5.3 通用分页响应格式](#53-通用分页响应格式)
-  - [5.4 通用错误码定义](#54-通用错误码定义)
-  - [5.5 请求/响应 JSON Schema 示例](#55-请求响应-json-schema-示例)
+  - [5.2 {Resource2} Query](#52-resource2-query)
+  - [5.3 Common Pagination Response Format](#53-common-pagination-response-format)
+  - [5.4 Common Error Code Definitions](#54-common-error-code-definitions)
+  - [5.5 Request/Response JSON Schema Examples](#55-requestresponse-json-schema-examples)
 - [6 Development Technology](#6-development-technology)
   - [6.1 Operating System](#61-operating-system)
   - [6.2 Software Form](#62-software-form)
@@ -72,337 +72,337 @@
   - [6.4 Major Dependencies](#64-major-dependencies)
   - [6.5 Release Form](#65-release-form)
 - [7 Environment Configuration](#7-environment-configuration)
-  - [7.1 环境变量清单](#71-环境变量清单)
-  - [7.2 配置文件格式](#72-配置文件格式)
+  - [7.1 Environment Variable List](#71-environment-variable-list)
+  - [7.2 Configuration File Format](#72-configuration-file-format)
 - [8 Build & Run](#8-build--run)
 - [9 Server Parameters](#9-server-parameters)
 - [10 Source Code Directory Layout](#10-source-code-directory-layout)
 - [11 Appendix](#11-appendix)
   - [11.1 Glossary](#111-glossary)
-  - [11.2 code_name 命名规则](#112-code_name-命名规则)
-  - [11.3 输入验证规则](#113-输入验证规则)
-  - [11.4 日志规范](#114-日志规范)
-  - [11.5 测试策略](#115-测试策略)
+  - [11.2 code_name Naming Rules](#112-code_name-naming-rules)
+  - [11.3 Input Validation Rules](#113-input-validation-rules)
+  - [11.4 Logging Conventions](#114-logging-conventions)
+  - [11.5 Test Strategy](#115-test-strategy)
 - [Change Log](#change-log)
 
 ---
 
 ## 2 Class Definitions
 
-> 类型命名遵循 [naming_convention.md](../../naming_convention.md)：
-> 类以 `C` 前缀、枚举以 `E` 前缀、接口以 `I` 前缀、配置属性以 `cfg` 前缀。
+> Type naming follows [naming_convention.md](../../naming_convention.md):
+> classes use the `C` prefix, enums use the `E` prefix, interfaces use the `I` prefix, config properties use the `cfg` prefix.
 
 ### 2.1 Class Diagram
 
 ![Class Diagram](./{component_code_name}_class_diagram.png)
 
-> 源文件：[{component_code_name}_class_diagram.mmd](./{component_code_name}_class_diagram.mmd)
+> Source file: [{component_code_name}_class_diagram.mmd](./{component_code_name}_class_diagram.mmd)
 >
-> 绘图规范见 [templates/mermaid/](../../../templates/mermaid/)：
-> 白色画布、类框按类型（本模块类 / 引用类 / 枚举 / 抽象基类）归类着色、所有文字为黑色。
-> 引用自其他模块的类使用虚线边框，并在图上标注 `<<ref: {module}>>`。
+> Drawing conventions: see [templates/mermaid/](../../../templates/mermaid/):
+> white canvas, class boxes colored by category (classes in this module / referenced classes / enums / abstract base classes), all text in black.
+> Classes referenced from other modules use a dashed border and are annotated on the diagram with `<<ref: {module}>>`.
 
-**本图中的类归属**：
+**Class ownership in this diagram**:
 
-| 类 | 归属模块 | 图中表现 |
+| Class | Owning Module | Diagram Representation |
 |----|---------|---------|
-| {CClassName1} | 本模块 | 实线框 |
-| {CClassName2} | 本模块 | 实线框 |
-| {CBaseClass} | `{other_module}` | 虚线框，`<<abstract - ref: {other_module}>>` |
-| {EEnumName1} | 本模块 | 实线框，`<<enumeration>>` |
-| {EEnumName2} | `{other_module}` | 虚线框，`<<enumeration - ref: {other_module}>>` |
+| {CClassName1} | This module | Solid border |
+| {CClassName2} | This module | Solid border |
+| {CBaseClass} | `{other_module}` | Dashed border, `<<abstract - ref: {other_module}>>` |
+| {EEnumName1} | This module | Solid border, `<<enumeration>>` |
+| {EEnumName2} | `{other_module}` | Dashed border, `<<enumeration - ref: {other_module}>>` |
 
 ### 2.2 {CClassName1}
 
-**映射业务对象**：[{component_code_name}_business_desc.md](./{component_code_name}_business_desc.md) §3.1 {ObjectName1}（{对象中文名1}）
+**Maps to Business Object**: [{component_code_name}_business_desc.md](./{component_code_name}_business_desc.md) §3.1 {ObjectName1} ({ObjectDisplayName1})
 
-{1–3 句说明这个类的职责、生命周期、被哪些 service 使用。}
+{1–3 sentences describing this class's responsibility, lifecycle, and which services use it.}
 
 | Member | Type | UI/DB Display or Storage Requirements | Description |
 |--------|------|---------------------------------------|-------------|
-| {member_id} | {int} | {PK, auto-increment；列表页右对齐显示，不加 `#` 前缀} | {业务含义} |
-| {display_name} | {string} | {NOT NULL UNIQUE；列表页第 1 列，14px 粗体} | {业务含义} |
-| {code_name} | {string} | {NOT NULL UNIQUE；创建后不可变，是所有分表命名依据} | {业务含义；命名规则见 §11.2} |
-| {some_enum} | {EEnumName1} | {NOT NULL；以 Tag 徽章展示} | {业务含义；枚举定义见 §2.5.1} |
-| {some_json} | {CSubStruct} | {NOT NULL, JSONB；子字段需建表达式索引} | {业务含义} |
-| {is_active} | {bool} | {NOT NULL DEFAULT true；false 时列表行使用 inactive 样式} | {业务含义} |
-| {deleted_at} | {datetime?} | {NULL 表示未删除；非 NULL 时列表行使用 soft-deleted 样式} | {软删除时间戳} |
-| {created_at} | {datetime} | {NOT NULL DEFAULT NOW()；只读} | {创建时间} |
-| {updated_at} | {datetime} | {NOT NULL DEFAULT NOW()；auto-update via DB trigger；只读} | {最后更新时间} |
+| {member_id} | {int} | {PK, auto-increment; right-aligned on the list page, no `#` prefix} | {business meaning} |
+| {display_name} | {string} | {NOT NULL UNIQUE; column 1 on the list page, 14px bold} | {business meaning} |
+| {code_name} | {string} | {NOT NULL UNIQUE; immutable after creation, the basis for naming all sharded tables} | {business meaning; naming rules in §11.2} |
+| {some_enum} | {EEnumName1} | {NOT NULL; displayed as a Tag badge} | {business meaning; enum defined in §2.5.1} |
+| {some_json} | {CSubStruct} | {NOT NULL, JSONB; sub-fields require an expression index} | {business meaning} |
+| {is_active} | {bool} | {NOT NULL DEFAULT true; list row uses the inactive style when false} | {business meaning} |
+| {deleted_at} | {datetime?} | {NULL means not deleted; list row uses the soft-deleted style when non-NULL} | {soft delete timestamp} |
+| {created_at} | {datetime} | {NOT NULL DEFAULT NOW(); read-only} | {creation time} |
+| {updated_at} | {datetime} | {NOT NULL DEFAULT NOW(); auto-update via DB trigger; read-only} | {last update time} |
 
-**字段级约束**：
+**Field-Level Constraints**:
 
-| # | 字段 | 约束 | 说明 |
+| # | Field | Constraint | Description |
 |---|------|------|------|
-| 1 | {code_name} | 创建后不可修改 | {原因：作为分表名前缀，修改会导致数据丢失} |
-| 2 | {stat_field} | 系统计算值，API 不可写 | {由 {daemon_name} 定期刷新} |
+| 1 | {code_name} | Immutable after creation | {Reason: used as the sharded table name prefix; changing it would cause data loss} |
+| 2 | {stat_field} | System-computed value, not writable via API | {refreshed periodically by {daemon_name}} |
 
 ### 2.3 {CClassName2}
 
-**映射业务对象**：[{component_code_name}_business_desc.md](./{component_code_name}_business_desc.md) §3.2 {ObjectName2}（{对象中文名2}）
+**Maps to Business Object**: [{component_code_name}_business_desc.md](./{component_code_name}_business_desc.md) §3.2 {ObjectName2} ({ObjectDisplayName2})
 
-{CClassName2} 继承自 {CBaseClass}（见 §2.4）。下表**只列出本类新增的成员**，
-继承成员见 §2.4。
+{CClassName2} inherits from {CBaseClass} (see §2.4). The table below **lists only the members newly added by this class**;
+inherited members are covered in §2.4.
 
 | Member | Type | UI/DB Display or Storage Requirements | Description |
 |--------|------|---------------------------------------|-------------|
-| {member1} | {bool} | {NOT NULL DEFAULT false} | {业务含义} |
-| {member2} | {string?} | {NULL；仅当 {member1} = true 时必填；UI 中密码类字段需遮掩显示} | {业务含义} |
+| {member1} | {bool} | {NOT NULL DEFAULT false} | {business meaning} |
+| {member2} | {string?} | {NULL; required only when {member1} = true; password-type fields must be masked in the UI} | {business meaning} |
 
 ### 2.4 {CBaseClass} (Reference)
 
-> **引用类写法**：本类的**权威定义不在本模块**。此处仅为完整展示继承关系而复制，
-> 任何修改都必须先在权威模块中进行，再同步到此处。
+> **How to write a Reference class**: the **authoritative definition of this class is not in this module**. It is duplicated here only to fully show the inheritance relationship;
+> any change must be made in the authoritative module first, then synced here.
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| **权威定义模块** | `{other_module}` |
-| **权威定义文件** | [{other_module}_tech_design.md](../{other_module}/{other_module}_tech_design.md) §2.{n} |
-| **权威类图** | [{other_module}_class_diagram.mmd](../{other_module}/{other_module}_class_diagram.mmd) |
-| **本模块使用方式** | {如：{CClassName2} 继承自本类；本模块的 {table_name} 表包含其全部列} |
+| **Authoritative Definition Module** | `{other_module}` |
+| **Authoritative Definition File** | [{other_module}_tech_design.md](../{other_module}/{other_module}_tech_design.md) §2.{n} |
+| **Authoritative Class Diagram** | [{other_module}_class_diagram.mmd](../{other_module}/{other_module}_class_diagram.mmd) |
+| **How This Module Uses It** | {e.g.: {CClassName2} inherits from this class; this module's {table_name} table includes all of its columns} |
 
 | Member | Type | UI/DB Display or Storage Requirements | Description |
 |--------|------|---------------------------------------|-------------|
-| {base_member1} | {int} | {PK, auto-increment} | {业务含义} |
-| {base_member2} | {string} | {NOT NULL UNIQUE} | {业务含义} |
+| {base_member1} | {int} | {PK, auto-increment} | {business meaning} |
+| {base_member2} | {string} | {NOT NULL UNIQUE} | {business meaning} |
 
-> **同步检查项**：每次 review 必须核对本节字段与权威模块定义是否一致。
-> 历史上"基类字段在一个模块改了、另一个模块没改"是最高频的跨模块文档缺陷。
+> **Sync Check Item**: every review must verify that the fields in this section are consistent with the authoritative module's definition.
+> Historically, "the base class field was changed in one module but not the other" is the most frequent cross-module documentation defect.
 
 ### 2.5 Enum Definitions
 
-> 枚举的**业务解释**见 [{component_code_name}_business_desc.md](./{component_code_name}_business_desc.md) §6.2。
-> 本节是**技术权威定义**：值的字面量、存储类型、默认值。
+> The **business explanation** of enums is in [{component_code_name}_business_desc.md](./{component_code_name}_business_desc.md) §6.2.
+> This section is the **authoritative technical definition**: the value literals, storage type, and default value.
 
 #### 2.5.1 {EEnumName1}
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| **权威定义** | 本模块 |
-| **存储类型** | {TEXT}（存储枚举字面量，不使用数据库 enum 类型） |
-| **默认值** | `{DEFAULT_VALUE}` |
-| **使用位置** | {§2.2 {CClassName1}.{member}；§4.1 {table_name}.{column}} |
+| **Authoritative Definition** | This module |
+| **Storage Type** | {TEXT} (stores the enum literal; the database's native enum type is not used) |
+| **Default Value** | `{DEFAULT_VALUE}` |
+| **Used In** | {§2.2 {CClassName1}.{member}; §4.1 {table_name}.{column}} |
 
-| Value | 含义 | 说明 |
+| Value | Meaning | Description |
 |-------|------|------|
-| `{VALUE_1}` | {含义} | {何时取该值；是否为终态} |
-| `{VALUE_2}` | {含义} | {说明} |
-| `{VALUE_3}` | {含义} | {说明} |
+| `{VALUE_1}` | {meaning} | {when this value applies; whether it is a terminal state} |
+| `{VALUE_2}` | {meaning} | {description} |
+| `{VALUE_3}` | {meaning} | {description} |
 
 #### 2.5.2 {EEnumName2}
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| **权威定义** | {本模块 / `{other_module}`，见 [{other_module}_tech_design.md](../{other_module}/{other_module}_tech_design.md) §2.{n}} |
-| **存储类型** | {TEXT} |
-| **默认值** | `{DEFAULT_VALUE}` |
-| **使用位置** | {§2.3 {CClassName2}.{member}} |
+| **Authoritative Definition** | {This module / `{other_module}`, see [{other_module}_tech_design.md](../{other_module}/{other_module}_tech_design.md) §2.{n}} |
+| **Storage Type** | {TEXT} |
+| **Default Value** | `{DEFAULT_VALUE}` |
+| **Used In** | {§2.3 {CClassName2}.{member}} |
 
-| Value | 含义 | 说明 |
+| Value | Meaning | Description |
 |-------|------|------|
-| `{VALUE_1}` | {含义} | {说明} |
+| `{VALUE_1}` | {meaning} | {description} |
 
 ---
 
 ## 3 Software Program Descriptions
 
-> **可选章节**：仅当本组件包含 daemon 常驻进程、CLI 工具或多个可执行程序时保留本章。
-> 纯 REST 服务 + 前端包的组件请整章删除，并将后续章节重新编号。
+> **OPTIONAL SECTION**: keep this section only if this component includes resident daemon processes, CLI tools, or multiple executable programs.
+> Components that are a pure REST service + frontend package should delete this entire section and renumber the following sections.
 
-本组件包含以下可执行程序：
+This component includes the following executable programs:
 
-| # | 程序 | 形态 | 适用输入 | 触发方式 | 详细设计 |
+| # | Program | Form | Applicable Input | Trigger Mode | Detailed Design |
 |---|------|------|---------|---------|---------|
-| 1 | {ProgramName1} | {daemon} | {适用的数据类型/配置条件} | {定时轮询 / 事件驱动} | [sub_{program_1}/{program_1}_design.md](./sub_{program_1}/{program_1}_design.md) |
-| 2 | {ProgramName2} | {daemon} | {适用条件} | {触发方式} | [sub_{program_2}/{program_2}_design.md](./sub_{program_2}/{program_2}_design.md) |
+| 1 | {ProgramName1} | {daemon} | {applicable data type/config condition} | {scheduled polling / event-driven} | [sub_{program_1}/{program_1}_design.md](./sub_{program_1}/{program_1}_design.md) |
+| 2 | {ProgramName2} | {daemon} | {applicable condition} | {trigger mode} | [sub_{program_2}/{program_2}_design.md](./sub_{program_2}/{program_2}_design.md) |
 
-> **设计拆分约定**：每个 daemon / CLI 程序的完整设计（详细主循环、状态机、错误处理、
-> 配置项）拆分到 `sub_{program_name}/` 子目录下的独立设计文档。本章只保留**摘要**，
-> 用于让读者快速理解本组件由哪些程序构成、各自的边界在哪里。
+> **Design-Splitting Convention**: the full design for each daemon/CLI program (detailed main loop, state machine, error handling,
+> configuration items) is split into a standalone design document under the `sub_{program_name}/` subdirectory. This section keeps only a **summary**,
+> letting the reader quickly understand which programs make up this component and where each one's boundaries lie.
 >
-> **约束说明**：多个 daemon 之间的执行时序、并发冲突、共享数据的读写顺序，
-> 若在业务上无害，应在本章引言明确声明"不纠结 daemon 间时序冲突"，
-> 避免 review 反复纠缠于无实际影响的竞态讨论。
+> **Constraint Note**: regarding execution timing, concurrency conflicts, and read/write ordering of shared data between multiple daemons —
+> if these are harmless from a business standpoint, this section's introduction should explicitly state "timing conflicts between daemons are not a concern",
+> to avoid reviews repeatedly getting bogged down in race-condition discussions that have no real impact.
 
 ### 3.1 {ProgramName1}
 
 | Item | Detail |
 |------|--------|
-| **职责** | {一句话说明} |
-| **适用输入** | {加载条件，如：`{table}` 中 `is_active = true 且 deleted_at IS NULL` 的记录} |
-| **触发方式** | {如：以最小触发间隔轮询；每轮重新加载配置列表} |
-| **并发模型** | {单进程单线程 / 主进程 + 每输入一个子进程 / 协程池} |
-| **产出** | {写入哪些表；产生哪些日志} |
+| **Responsibility** | {one-sentence description} |
+| **Applicable Input** | {load condition, e.g.: records in `{table}` where `is_active = true and deleted_at IS NULL`} |
+| **Trigger Mode** | {e.g.: polls at the minimum trigger interval; reloads the config list every round} |
+| **Concurrency Model** | {single process/single thread / main process + one child process per input / coroutine pool} |
+| **Output** | {which tables it writes to; which logs it produces} |
 
-**主循环步骤**：
+**Main Loop Steps**:
 
-| # | 步骤 | 说明 |
+| # | Step | Description |
 |---|------|------|
-| 1 | {加载配置} | {从哪里加载；多久重载一次；如何感知新增/停用/删除} |
-| 2 | {判定触发} | {判定条件；跳过条件} |
-| 3 | {执行任务} | {做什么；写入哪些记录} |
-| 4 | {清理} | {清理什么；如何处理已停用/已删除输入对应的遗留任务} |
+| 1 | {load config} | {where it loads from; how often it reloads; how it detects additions/deactivations/deletions} |
+| 2 | {evaluate trigger} | {trigger condition; skip condition} |
+| 3 | {execute task} | {what it does; which records it writes} |
+| 4 | {cleanup} | {what is cleaned up; how leftover tasks for deactivated/deleted inputs are handled} |
 
-**失败重试规则**：
+**Failure Retry Rules**:
 
-| 失败类型 | 重试策略 | 上限 | 超限后行为 |
+| Failure Type | Retry Strategy | Limit | Behavior After Limit Exceeded |
 |---------|---------|------|-----------|
-| {网络超时} | {进程内立即重试} | {n 次} | {标记任务为 {状态}，写入错误日志} |
-| {解析失败} | {不重试} | — | {标记任务为 {状态}} |
+| {network timeout} | {immediate in-process retry} | {n times} | {mark the task as {status}, write an error log} |
+| {parse failure} | {no retry} | — | {mark the task as {status}} |
 
-**已知局限**：
+**Known Limitations**:
 
-| # | 局限 | 影响 | 备注 |
+| # | Limitation | Impact | Notes |
 |---|------|------|------|
-| 1 | {局限} | {影响} | {是否计划在后续版本解决} |
+| 1 | {limitation} | {impact} | {whether it is planned to be resolved in a later version} |
 
 ### 3.2 {ProgramName2}
 
-{同上结构。}
+{Same structure as above.}
 
 ---
 
 ## 4 Database Definitions
 
-> 数据库划分、命名规范、软删除约定、索引要求遵循
-> [technical_overview.md](../../technical_overview.md) §4.2。
+> Database partitioning, naming conventions, soft delete conventions, and indexing requirements follow
+> [technical_overview.md](../../technical_overview.md) §4.2.
 >
-> 本组件独立数据库：`{db_name}`。**禁止跨库 JOIN**，跨模块数据一律通过 REST API 获取。
+> This component has its own independent database: `{db_name}`. **Cross-database JOINs are prohibited**; cross-module data must always be obtained via REST API.
 
 ### 4.0 Database Schema Diagram
 
 ![Database Schema](./{component_code_name}_db_schema.png)
 
-> 源文件：[{component_code_name}_db_schema.mmd](./{component_code_name}_db_schema.mmd)
+> Source file: [{component_code_name}_db_schema.mmd](./{component_code_name}_db_schema.mmd)
 >
-> 绘图规范见 [templates/mermaid/](../../../templates/mermaid/)：
-> 白色画布、表框按用途（配置表 / 业务数据表 / 动态分表模板 / 引用表）归类着色、所有文字为黑色。
+> Drawing conventions: see [templates/mermaid/](../../../templates/mermaid/):
+> white canvas, table boxes colored by purpose (config table / business data table / dynamic sharded table template / reference table), all text in black.
 
 ### 4.1 {table_name_1}
 
-{1–2 句说明这张表的用途、写入方、读取方、数据量级预期。}
+{1–2 sentences describing this table's purpose, who writes to it, who reads it, and the expected data volume.}
 
 | Column | Type | Constraints | Index | Description |
 |--------|------|-------------|-------|-------------|
-| {col_id} | {BIGSERIAL} | {PK} | {PK} | {业务含义} |
-| {display_name} | {TEXT} | {NOT NULL, UNIQUE} | {UNIQUE} | {业务含义} |
-| {code_name} | {TEXT} | {NOT NULL, UNIQUE} | {UNIQUE} | {业务含义；创建后不可变，命名规则见 §11.2} |
-| {some_enum} | {TEXT} | {NOT NULL} | {BTREE} | {存储 {EEnumName1} 字面量，见 §2.5.1} |
-| {some_json} | {JSONB} | {NOT NULL} | {子字段表达式索引：`(({some_json}->>'{sub_field}')::int)`} | {业务含义} |
-| {is_active} | {BOOLEAN} | {NOT NULL DEFAULT true} | {BTREE} | {业务含义} |
-| {deleted_at} | {TIMESTAMPTZ} | {NULL} | {BTREE} | {软删除时间戳；NULL 表示未删除} |
-| {created_at} | {TIMESTAMPTZ} | {NOT NULL DEFAULT NOW()} | {BTREE} | {创建时间} |
-| {updated_at} | {TIMESTAMPTZ} | {NOT NULL DEFAULT NOW()} | {None} | {最后更新时间；auto-update via DB trigger} |
+| {col_id} | {BIGSERIAL} | {PK} | {PK} | {business meaning} |
+| {display_name} | {TEXT} | {NOT NULL, UNIQUE} | {UNIQUE} | {business meaning} |
+| {code_name} | {TEXT} | {NOT NULL, UNIQUE} | {UNIQUE} | {business meaning; immutable after creation, naming rules in §11.2} |
+| {some_enum} | {TEXT} | {NOT NULL} | {BTREE} | {stores the {EEnumName1} literal, see §2.5.1} |
+| {some_json} | {JSONB} | {NOT NULL} | {sub-field expression index: `(({some_json}->>'{sub_field}')::int)`} | {business meaning} |
+| {is_active} | {BOOLEAN} | {NOT NULL DEFAULT true} | {BTREE} | {business meaning} |
+| {deleted_at} | {TIMESTAMPTZ} | {NULL} | {BTREE} | {soft delete timestamp; NULL means not deleted} |
+| {created_at} | {TIMESTAMPTZ} | {NOT NULL DEFAULT NOW()} | {BTREE} | {creation time} |
+| {updated_at} | {TIMESTAMPTZ} | {NOT NULL DEFAULT NOW()} | {None} | {last update time; auto-update via DB trigger} |
 
-> **索引强制要求**：任何出现在 API 的 `WHERE` 过滤条件或 `ORDER BY` 排序字段中的列，
-> 都必须在本表标注索引类型。Index 列填 `None` 的字段不得出现在 §5 的
-> 查询参数或排序参数中——这是 review 的固定检查项。
+> **Mandatory Indexing Requirement**: any column that appears in an API's `WHERE` filter condition or `ORDER BY` sort field
+> must have its index type documented in this table. A column whose Index cell is `None` must not appear as a
+> query parameter or sort parameter in §5 — this is a standing review check item.
 
-**索引汇总**：
+**Index Summary**:
 
-| 索引名 | 类型 | 字段 | 用途 |
+| Index Name | Type | Field(s) | Purpose |
 |--------|------|------|------|
-| `{idx_name_1}` | {BTREE} | {col} | {支撑 §5.1.1 的 {param} 过滤} |
-| `{idx_name_2}` | {BTREE} | {col_a, col_b} | {支撑 §5.1.1 的复合排序} |
+| `{idx_name_1}` | {BTREE} | {col} | {supports the {param} filter in §5.1.1} |
+| `{idx_name_2}` | {BTREE} | {col_a, col_b} | {supports the composite sort in §5.1.1} |
 
-### 4.2 {code_name}_{suffix}（动态分表）
+### 4.2 {code_name}_{suffix} (Dynamic Sharded Table)
 
-> **动态分表模板写法**：本组件按 {分表维度} 动态创建数据表，表名模板为
-> `{code_name}_{suffix}`，其中 `{code_name}` 取自 §4.1 `{table_name_1}.code_name`。
+> **How to write a dynamic sharded table template**: this component dynamically creates data tables by {sharding dimension}, with the table name template
+> `{code_name}_{suffix}`, where `{code_name}` is taken from §4.1 `{table_name_1}.code_name`.
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| **表名模板** | `{code_name}_{suffix}` |
-| **分表维度** | {如：每个信息源一张表} |
-| **创建时机** | {如：该 {维度对象} 首次执行 {动作} 时由 {daemon_name} 动态创建} |
-| **表不存在时的处理** | {单表查询 API 返回 404；跨表聚合 API 跳过不存在的表，不报错} |
-| **建表安全** | {表名由 `code_name` 拼接，必须先按 §11.2 的正则校验，防止 SQL 注入} |
-| **清理策略** | {如：{维度对象} 被软删除后，其分表保留 / 由 {daemon} 清理} |
+| **Table Name Template** | `{code_name}_{suffix}` |
+| **Sharding Dimension** | {e.g.: one table per information source} |
+| **Creation Timing** | {e.g.: dynamically created by {daemon_name} the first time the {dimension object} performs {action}} |
+| **Handling When the Table Does Not Exist** | {single-table query API returns 404; cross-table aggregation API skips tables that don't exist, without erroring} |
+| **Table Creation Safety** | {the table name is built by concatenating `code_name`, which must first be validated against the §11.2 regex to prevent SQL injection} |
+| **Cleanup Policy** | {e.g.: after a {dimension object} is soft-deleted, its sharded table is retained / cleaned up by {daemon}} |
 
-**表结构**：
+**Table Structure**:
 
 | Column | Type | Constraints | Index | Description |
 |--------|------|-------------|-------|-------------|
-| {col_id} | {BIGSERIAL} | {PK} | {PK} | {业务含义} |
-| {parent_code_name} | {TEXT} | {NOT NULL} | {BTREE} | {冗余存储所属 {维度对象} 的 code_name} |
-| {exe_status} | {TEXT} | {NOT NULL} | {BTREE} | {存储 {EEnumName} 字面量} |
-| {exe_name} | {TEXT} | {NOT NULL} | {BTREE} | {写入该记录的程序名；支撑按程序名查询} |
-| {created_at} | {TIMESTAMPTZ} | {NOT NULL DEFAULT NOW()} | {BTREE} | {创建时间} |
+| {col_id} | {BIGSERIAL} | {PK} | {PK} | {business meaning} |
+| {parent_code_name} | {TEXT} | {NOT NULL} | {BTREE} | {redundantly stores the code_name of the owning {dimension object}} |
+| {exe_status} | {TEXT} | {NOT NULL} | {BTREE} | {stores the {EEnumName} literal} |
+| {exe_name} | {TEXT} | {NOT NULL} | {BTREE} | {the name of the program that wrote this record; supports querying by program name} |
+| {created_at} | {TIMESTAMPTZ} | {NOT NULL DEFAULT NOW()} | {BTREE} | {creation time} |
 
-> 按表数量增删 4.x 小节。
+> Add or remove §4.x subsections according to the number of tables.
 
 ---
 
 ## 5 API Definitions
 
-> API 设计规范（前缀、资源命名、方法语义、统一响应体、批量操作命名）遵循
-> [technical_overview.md](../../technical_overview.md) §4.1。
+> API design conventions (prefixes, resource naming, method semantics, unified response body, batch operation naming) follow
+> [technical_overview.md](../../technical_overview.md) §4.1.
 >
-> 本组件对外 API 前缀：`/api/v1/`，监听端口见 §9。
+> This component's external API prefix: `/api/v1/`, listening port in §9.
 >
-> **跨模块调用说明**：本组件的 {列出被跨模块调用的端点} 也被 `{other_module}` 调用，
-> 依据 [technical_overview.md](../../technical_overview.md) §4.{n}。这些端点必须在
-> 调用方的 API 调试页中以"跨模块调用"分组展示。
+> **Cross-Module Call Note**: this component's {list the endpoints called across modules} is also called by `{other_module}`,
+> per [technical_overview.md](../../technical_overview.md) §4.{n}. These endpoints must be shown in a "cross-module call" group
+> on the caller's API debug page.
 
-**端点总览**：
+**Endpoint Overview**:
 
-| # | 分组 | 端点数 | 说明 |
+| # | Group | Endpoint Count | Description |
 |---|------|-------|------|
-| 1 | §5.1 {Resource1} CRUD | {5} | {说明} |
-| 2 | §5.2 {Resource2} 查询 | {4} | {说明} |
-| | **合计** | **{n}** | |
+| 1 | §5.1 {Resource1} CRUD | {5} | {description} |
+| 2 | §5.2 {Resource2} Query | {4} | {description} |
+| | **Total** | **{n}** | |
 
-> **一致性要求**：端点总数与路径必须在三处保持一致 ——
-> 本章、`{component_code_name}_uiux.md` 的 API 调试页章节、`{component_code_name}_api.mmd`。
+> **Consistency Requirement**: the endpoint count and paths must agree across three places —
+> this chapter, the API debug page section of `{component_code_name}_uiux.md`, and `{component_code_name}_api.mmd`.
 
 ### 5.0 API Overview Diagram
 
 ![API Overview](./{component_code_name}_api.png)
 
-> 源文件：[{component_code_name}_api.mmd](./{component_code_name}_api.mmd)
+> Source file: [{component_code_name}_api.mmd](./{component_code_name}_api.mmd)
 >
-> 绘图规范见 [templates/mermaid/](../../../templates/mermaid/)：
-> 白色画布、节点按类型（页面 / 本模块 API / 跨模块调用方）归类着色、所有文字为黑色。
-> 每个 API 分组用一个 subgraph，subgraph 标题带上本文的章节号。
+> Drawing conventions: see [templates/mermaid/](../../../templates/mermaid/):
+> white canvas, nodes colored by type (page / this module's API / cross-module caller), all text in black.
+> Each API group uses one subgraph, with the subgraph title carrying this document's section number.
 
 ### 5.1 {Resource1} CRUD
 
-{1–2 句说明这组接口服务于哪些页面、对应哪个业务对象。}
+{1–2 sentences describing which pages this group of endpoints serves and which business object it corresponds to.}
 
-**可写字段范围**（POST / PUT 共用）：
+**Writable Field Scope** (shared by POST / PUT):
 
-| 类别 | 字段 | 说明 |
+| Category | Fields | Description |
 |------|------|------|
-| **可写** | {列出全部可写字段} | {由客户端提交} |
-| **不可写 — 系统生成** | {id}、{created_at}、{updated_at} | {由数据库生成} |
-| **不可写 — 系统计算** | {stat_field_1}、{stat_field_2} | {由 {daemon_name} 定期刷新，客户端提交将被忽略} |
-| **不可写 — 状态字段** | {deleted_at} | {只能通过 DELETE 端点变更} |
-| **创建后不可变** | {code_name} | {见 §2.2 字段级约束} |
+| **Writable** | {list all writable fields} | {submitted by the client} |
+| **Not Writable — System-Generated** | {id}, {created_at}, {updated_at} | {generated by the database} |
+| **Not Writable — System-Computed** | {stat_field_1}, {stat_field_2} | {refreshed periodically by {daemon_name}; client submissions are ignored} |
+| **Not Writable — Status Field** | {deleted_at} | {changeable only via the DELETE endpoint} |
+| **Immutable After Creation** | {code_name} | {see the field-level constraints in §2.2} |
 
-#### 5.1.1 获取{Resource1}列表
+#### 5.1.1 Get {Resource1} List
 
 | Item | Detail |
 |------|--------|
 | **Endpoint** | `GET /api/v1/{resource-1}` |
-| **Description** | {说明} |
+| **Description** | {description} |
 | **Authentication** | {Required / Optional / None} |
 
 **Request Parameters**:
 
 | Parameter | Location | Type | Required | Description |
 |-----------|----------|------|----------|-------------|
-| `{filter_1}` | query | {string} | N | {过滤条件；对应 §4.1 的 {col}，已建 {BTREE} 索引} |
-| `{filter_2}` | query | {bool} | N | {过滤条件} |
-| `include_deleted` | query | {bool} | N | {默认 false；true 时返回软删除记录} |
-| `keyword` | query | {string} | N | {模糊搜索字段范围：{col_a}、{col_b}；大小写不敏感} |
-| `sort_by` | query | {string} | N | {**必须完整列举全部合法值**，禁止使用"等"字}：`{col_1}`、`{col_2}`、`{col_3}` |
-| `sort_order` | query | {string} | N | `asc` / `desc`，默认 `{desc}` |
-| `page` | query | {int} | N | {默认 1} |
-| `page_size` | query | {int} | N | {默认 50，上限 {200}} |
+| `{filter_1}` | query | {string} | N | {filter condition; corresponds to {col} in §4.1, which has a {BTREE} index} |
+| `{filter_2}` | query | {bool} | N | {filter condition} |
+| `include_deleted` | query | {bool} | N | {default false; returns soft-deleted records when true} |
+| `keyword` | query | {string} | N | {fuzzy search field scope: {col_a}, {col_b}; case-insensitive} |
+| `sort_by` | query | {string} | N | {**must exhaustively enumerate every legal value**; never write "etc."}: `{col_1}`, `{col_2}`, `{col_3}` |
+| `sort_order` | query | {string} | N | `asc` / `desc`, defaults to `{desc}` |
+| `page` | query | {int} | N | {default 1} |
+| `page_size` | query | {int} | N | {default 50, max {200}} |
 
-> **排序字段特殊说明**：若某个 `sort_by` 值实际是 JSONB 子字段（如 `{sub_field}`），
-> 必须在此注明 SQL 表达式映射：`ORDER BY (({some_json}->>'{sub_field}')::int)`，
-> 否则实现方会误以为存在同名独立列。
+> **Special Note on Sort Fields**: if a `sort_by` value is actually a JSONB sub-field (e.g. `{sub_field}`),
+> the SQL expression mapping must be documented here: `ORDER BY (({some_json}->>'{sub_field}')::int)`,
+> otherwise implementers will mistakenly assume there is a standalone column of the same name.
 
 **Request Example**:
 
@@ -420,7 +420,7 @@ GET /api/v1/{resource-1}?{filter_1}={value}&sort_by={col_1}&sort_order=asc&page=
     "items": [
       {
         "{col_id}": 1,
-        "{display_name}": "{示例值}",
+        "{display_name}": "{example value}",
         "{code_name}": "{example_code_name}",
         "{some_enum}": "{VALUE_1}",
         "{is_active}": true,
@@ -438,24 +438,24 @@ GET /api/v1/{resource-1}?{filter_1}={value}&sort_by={col_1}&sort_order=asc&page=
 
 **Error Responses**:
 
-| HTTP | code | 触发条件 |
+| HTTP | code | Trigger Condition |
 |------|------|---------|
-| 400 | {40001} | {参数格式非法，如 sort_by 不在合法值列表中} |
-| 500 | {50001} | {服务器内部错误} |
+| 400 | {40001} | {invalid parameter format, e.g. sort_by not in the list of legal values} |
+| 500 | {50001} | {internal server error} |
 
-#### 5.1.2 获取单个{Resource1}
+#### 5.1.2 Get a Single {Resource1}
 
 | Item | Detail |
 |------|--------|
 | **Endpoint** | `GET /api/v1/{resource-1}/{id}` |
-| **Description** | {说明} |
+| **Description** | {description} |
 | **Authentication** | {Required} |
 
 **Request Parameters**:
 
 | Parameter | Location | Type | Required | Description |
 |-----------|----------|------|----------|-------------|
-| `{id}` | path | {int} | Y | {说明} |
+| `{id}` | path | {int} | Y | {description} |
 
 **Response**:
 
@@ -465,40 +465,40 @@ GET /api/v1/{resource-1}?{filter_1}={value}&sort_by={col_1}&sort_order=asc&page=
   "message": "success",
   "data": {
     "{col_id}": 1,
-    "{display_name}": "{示例值}"
+    "{display_name}": "{example value}"
   }
 }
 ```
 
 **Error Responses**:
 
-| HTTP | code | 触发条件 |
+| HTTP | code | Trigger Condition |
 |------|------|---------|
-| 404 | {40401} | {记录不存在} |
+| 404 | {40401} | {record does not exist} |
 
-#### 5.1.3 创建{Resource1}
+#### 5.1.3 Create {Resource1}
 
 | Item | Detail |
 |------|--------|
 | **Endpoint** | `POST /api/v1/{resource-1}` |
-| **Description** | {说明} |
+| **Description** | {description} |
 | **Authentication** | {Required} |
 
 **Request Parameters**:
 
 | Parameter | Location | Type | Required | Description |
 |-----------|----------|------|----------|-------------|
-| `{display_name}` | body | {string} | Y | {说明；长度 {1–128}} |
-| `{code_name}` | body | {string} | Y | {说明；格式校验见 §11.2；创建后不可变} |
-| `{some_enum}` | body | {string} | Y | {合法值见 §2.5.1} |
+| `{display_name}` | body | {string} | Y | {description; length {1–128}} |
+| `{code_name}` | body | {string} | Y | {description; format validation in §11.2; immutable after creation} |
+| `{some_enum}` | body | {string} | Y | {legal values in §2.5.1} |
 
-**字段级校验规则**：见 §11.3。服务端在写库前必须完成全部校验，不合规返回 400。
+**Field-Level Validation Rules**: see §11.3. The server must complete all validation before writing to the database; return 400 if non-compliant.
 
 **Request Example**:
 
 ```json
 {
-  "{display_name}": "{示例值}",
+  "{display_name}": "{example value}",
   "{code_name}": "{example_code_name}",
   "{some_enum}": "{VALUE_1}"
 }
@@ -518,28 +518,28 @@ GET /api/v1/{resource-1}?{filter_1}={value}&sort_by={col_1}&sort_order=asc&page=
 
 **Error Responses**:
 
-| HTTP | code | 触发条件 |
+| HTTP | code | Trigger Condition |
 |------|------|---------|
-| 400 | {40001} | {字段校验失败，message 中返回具体字段名} |
-| 409 | {40901} | {`{code_name}` 或 `{display_name}` 已存在} |
+| 400 | {40001} | {field validation failed; the message returns the specific field name} |
+| 409 | {40901} | {`{code_name}` or `{display_name}` already exists} |
 
-#### 5.1.4 更新{Resource1}
+#### 5.1.4 Update {Resource1}
 
 | Item | Detail |
 |------|--------|
 | **Endpoint** | `PUT /api/v1/{resource-1}/{id}` |
-| **Description** | {全量更新；可写字段范围见本节开头} |
+| **Description** | {full update; writable field scope is described at the top of this section} |
 | **Authentication** | {Required} |
 
 **Request Parameters**:
 
 | Parameter | Location | Type | Required | Description |
 |-----------|----------|------|----------|-------------|
-| `{id}` | path | {int} | Y | {说明} |
-| `{display_name}` | body | {string} | Y | {说明} |
+| `{id}` | path | {int} | Y | {description} |
+| `{display_name}` | body | {string} | Y | {description} |
 
-> **不可变字段说明**：请求体中若包含 `{code_name}`，服务端必须校验其与现有值一致，
-> 不一致时返回 400；不得静默忽略。
+> **Immutable Field Note**: if the request body includes `{code_name}`, the server must verify it matches the existing value;
+> if it does not match, return 400 — it must not be silently ignored.
 
 **Response**:
 
@@ -551,21 +551,21 @@ GET /api/v1/{resource-1}?{filter_1}={value}&sort_by={col_1}&sort_order=asc&page=
 }
 ```
 
-#### 5.1.5 删除{Resource1}（软删除）
+#### 5.1.5 Delete {Resource1} (Soft Delete)
 
 | Item | Detail |
 |------|--------|
 | **Endpoint** | `DELETE /api/v1/{resource-1}/{id}` |
-| **Description** | {软删除：将 `deleted_at` 置为当前时间，记录不物理删除} |
+| **Description** | {soft delete: sets `deleted_at` to the current time; the record is not physically deleted} |
 | **Authentication** | {Required} |
 
-**级联处理说明**：
+**Cascade Handling**:
 
-| 关联数据 | 处理方式 |
+| Related Data | Handling |
 |---------|---------|
-| {关联表/分表} | {不做级联处理 / 将 {状态} 记录标记为 {终态}} |
+| {related table/sharded table} | {no cascade handling / marks {status} records as {terminal state}} |
 
-> 必须明确写出"是否级联"，留空会导致实现方各自猜测。
+> Whether cascading occurs must be stated explicitly — leaving it blank leads implementers to each guess independently.
 
 **Response**:
 
@@ -577,23 +577,23 @@ GET /api/v1/{resource-1}?{filter_1}={value}&sort_by={col_1}&sort_order=asc&page=
 }
 ```
 
-### 5.2 {Resource2} 查询
+### 5.2 {Resource2} Query
 
-{同 5.1 结构，按需增减端点。}
+{Same structure as 5.1; add or remove endpoints as needed.}
 
-#### 5.2.1 {端点名}
+#### 5.2.1 {Endpoint Name}
 
 | Item | Detail |
 |------|--------|
 | **Endpoint** | `{METHOD} /api/v1/{resource-2}/{path}` |
-| **Description** | {说明} |
+| **Description** | {description} |
 | **Authentication** | {Required} |
 
 **Request Parameters**:
 
 | Parameter | Location | Type | Required | Description |
 |-----------|----------|------|----------|-------------|
-| `{param}` | {path/query/body} | {type} | {Y/N} | {说明} |
+| `{param}` | {path/query/body} | {type} | {Y/N} | {description} |
 
 **Response**:
 
@@ -605,12 +605,12 @@ GET /api/v1/{resource-1}?{filter_1}={value}&sort_by={col_1}&sort_order=asc&page=
 }
 ```
 
-#### 5.2.2 批量{动作}
+#### 5.2.2 Batch {Action}
 
 | Item | Detail |
 |------|--------|
 | **Endpoint** | `POST /api/v1/{resource-2}/batch-{action}` |
-| **Description** | {批量操作；单条操作时数组含 1 个元素} |
+| **Description** | {batch operation; a single-item operation still uses an array with 1 element} |
 | **Authentication** | {Required} |
 
 **Request Example**:
@@ -634,11 +634,11 @@ GET /api/v1/{resource-1}?{filter_1}={value}&sort_by={col_1}&sort_order=asc&page=
 }
 ```
 
-> 按资源分组数量增删 5.x 小节。
+> Add or remove §5.x subsections according to the number of resource groups.
 
-### 5.3 通用分页响应格式
+### 5.3 Common Pagination Response Format
 
-> 遵循 [technical_overview.md](../../technical_overview.md) §4.1.1。此处仅复述本组件的具体取值。
+> Follows [technical_overview.md](../../technical_overview.md) §4.1.1. This section only restates this component's specific values.
 
 ```json
 {
@@ -653,36 +653,36 @@ GET /api/v1/{resource-1}?{filter_1}={value}&sort_by={col_1}&sort_order=asc&page=
 }
 ```
 
-| 字段 | 类型 | 说明 |
+| Field | Type | Description |
 |------|------|------|
-| `items` | array | {当前页记录} |
-| `total` | int | {符合条件的总记录数} |
-| `page` | int | {当前页码，从 1 开始} |
-| `page_size` | int | {每页条数；本组件固定 {50}} |
+| `items` | array | {records on the current page} |
+| `total` | int | {total number of matching records} |
+| `page` | int | {current page number, starting at 1} |
+| `page_size` | int | {records per page; fixed at {50} for this component} |
 
-### 5.4 通用错误码定义
+### 5.4 Common Error Code Definitions
 
-> 全局错误码见 [technical_overview.md](../../technical_overview.md) §4.1.2。
-> 本节只列出**本组件特有**的错误码，不得与全局错误码冲突。
+> Global error codes are in [technical_overview.md](../../technical_overview.md) §4.1.2.
+> This section lists only the error codes **specific to this component**; they must not conflict with the global error codes.
 
-| HTTP | code | message | 触发条件 |
+| HTTP | code | message | Trigger Condition |
 |------|------|---------|---------|
-| 400 | {40001} | {invalid parameter} | {参数校验失败} |
-| 404 | {40401} | {not found} | {记录不存在；或动态分表尚未创建} |
-| 409 | {40901} | {conflict} | {唯一约束冲突} |
-| 500 | {50001} | {internal error} | {服务器内部错误} |
+| 400 | {40001} | {invalid parameter} | {parameter validation failed} |
+| 404 | {40401} | {not found} | {record does not exist; or the dynamic sharded table has not been created yet} |
+| 409 | {40901} | {conflict} | {unique constraint violation} |
+| 500 | {50001} | {internal error} | {internal server error} |
 
-### 5.5 请求/响应 JSON Schema 示例
+### 5.5 Request/Response JSON Schema Examples
 
-> 用于前端类型生成与 API 调试页的参数模板。完整 OpenAPI 契约见
-> `src/apis/{component_code_name}/openapi.yaml`。
+> Used for frontend type generation and the API debug page's parameter templates. The full OpenAPI contract is in
+> `src/apis/{component_code_name}/openapi.yaml`.
 
-**{CClassName1} 完整 JSON 结构**：
+**{CClassName1} Full JSON Structure**:
 
 ```json
 {
   "{col_id}": 1,
-  "{display_name}": "{示例值}",
+  "{display_name}": "{example value}",
   "{code_name}": "{example_code_name}",
   "{some_enum}": "{VALUE_1}",
   "{some_json}": {
@@ -696,82 +696,82 @@ GET /api/v1/{resource-1}?{filter_1}={value}&sort_by={col_1}&sort_order=asc&page=
 }
 ```
 
-**字段说明**：
+**Field Descriptions**:
 
-| 字段 | JSON 类型 | 可空 | 说明 |
+| Field | JSON Type | Nullable | Description |
 |------|----------|------|------|
-| `{col_id}` | number | N | {说明} |
-| `{some_json}` | object | N | {子字段结构说明} |
-| `{deleted_at}` | string \| null | Y | {ISO 8601；null 表示未删除} |
+| `{col_id}` | number | N | {description} |
+| `{some_json}` | object | N | {sub-field structure description} |
+| `{deleted_at}` | string \| null | Y | {ISO 8601; null means not deleted} |
 
 ---
 
 ## 6 Development Technology
 
-> **版本一致性要求**：本章列出的语言版本、依赖版本、中间件版本**必须与**
-> [technical_overview.md](../../technical_overview.md) §5 完全一致。
-> 本组件若需要新的语言或主要依赖，必须先更新平台级文档，再在此引用。
+> **Version Consistency Requirement**: the language versions, dependency versions, and middleware versions listed in this section **must exactly match**
+> [technical_overview.md](../../technical_overview.md) §5.
+> If this component needs a new language or major dependency, the platform-level document must be updated first, then referenced here.
 
 ### 6.1 Operating System
 
 | OS | Version | Notes |
 |----|---------|-------|
-| {Linux} | {Ubuntu 22.04} | {生产} |
-| {Windows} | {11} | {开发} |
+| {Linux} | {Ubuntu 22.04} | {production} |
+| {Windows} | {11} | {development} |
 
 ### 6.2 Software Form
 
 | Module | Form | Description |
 |--------|------|-------------|
-| {module_1} | {Service} | {REST API 服务} |
-| {module_2} | {Daemon} | {常驻采集进程} |
-| {module_3} | {Frontend} | {前端页面包} |
+| {module_1} | {Service} | {REST API service} |
+| {module_2} | {Daemon} | {resident collection process} |
+| {module_3} | {Frontend} | {frontend page package} |
 
 ### 6.3 Programming Language
 
-| Language | Version | Usage | 平台级对应章节 |
+| Language | Version | Usage | Corresponding Platform-Level Section |
 |----------|---------|-------|--------------|
-| {Go} | {1.25.x} | {后端服务与 daemon} | technical_overview.md §5.1 |
-| {TypeScript} | {5.x} | {前端} | technical_overview.md §5.1 |
+| {Go} | {1.25.x} | {backend service and daemons} | technical_overview.md §5.1 |
+| {TypeScript} | {5.x} | {frontend} | technical_overview.md §5.1 |
 
 ### 6.4 Major Dependencies
 
-| Dependency | Version | Purpose | 平台级对应章节 |
+| Dependency | Version | Purpose | Corresponding Platform-Level Section |
 |-----------|---------|---------|--------------|
-| {Gin} | {1.x} | {Web 框架} | technical_overview.md §5.3 |
+| {Gin} | {1.x} | {web framework} | technical_overview.md §5.3 |
 | {GORM} | {2.x} | {ORM} | technical_overview.md §5.3 |
-| {React} | {18.x} | {前端框架} | technical_overview.md §5.2 |
-| {PostgreSQL} | {17.x} | {数据库} | technical_overview.md §5.5 |
+| {React} | {18.x} | {frontend framework} | technical_overview.md §5.2 |
+| {PostgreSQL} | {17.x} | {database} | technical_overview.md §5.5 |
 
 ### 6.5 Release Form
 
 | Artifact | Form | Description |
 |----------|------|-------------|
-| {artifact_1} | {Binary} | {单一可执行文件} |
-| {artifact_2} | {Static file directory} | {前端构建产物} |
-| {artifact_3} | {Docker image} | {镜像名与 tag 规则} |
+| {artifact_1} | {Binary} | {single executable file} |
+| {artifact_2} | {Static file directory} | {frontend build output} |
+| {artifact_3} | {Docker image} | {image name and tag rules} |
 
 ---
 
 ## 7 Environment Configuration
 
-> **可选章节**：仅当本组件是可独立部署的服务/daemon（需要环境变量或配置文件）时保留。
-> 纯前端包或纯类库请整章删除，并将后续章节重新编号。
+> **OPTIONAL SECTION**: keep this section only if this component is an independently deployable service/daemon (requiring environment variables or a config file).
+> Pure frontend packages or pure libraries should delete this entire section and renumber the following sections.
 
-### 7.1 环境变量清单
+### 7.1 Environment Variable List
 
-| 变量名 | 必填 | 默认值 | 说明 |
+| Variable | Required | Default | Description |
 |--------|------|-------|------|
-| `{COMPONENT}_DB_DSN` | Y | — | {数据库连接串} |
-| `{COMPONENT}_PORT` | N | {8081} | {HTTP 监听端口} |
-| `{COMPONENT}_LOG_LEVEL` | N | {INFO} | {日志级别：DEBUG/INFO/WARN/ERROR} |
+| `{COMPONENT}_DB_DSN` | Y | — | {database connection string} |
+| `{COMPONENT}_PORT` | N | {8081} | {HTTP listening port} |
+| `{COMPONENT}_LOG_LEVEL` | N | {INFO} | {log level: DEBUG/INFO/WARN/ERROR} |
 
-> **敏感信息**：密码、Token、密钥一律通过环境变量注入，**禁止写入配置文件并提交仓库**，
-> 遵循 [technical_overview.md](../../technical_overview.md) §4.6。
+> **Sensitive Information**: passwords, tokens, and secrets must always be injected via environment variables — **never write them into a config file and commit it to the repository** —
+> following [technical_overview.md](../../technical_overview.md) §4.6.
 
-### 7.2 配置文件格式
+### 7.2 Configuration File Format
 
-配置文件路径：`{config/config.yaml}`
+Config file path: `{config/config.yaml}`
 
 ```yaml
 server:
@@ -788,118 +788,120 @@ log:
   format: {json}
 ```
 
-| 配置项 | 类型 | 默认值 | 说明 |
+| Config Item | Type | Default | Description |
 |--------|------|-------|------|
-| `server.port` | int | {8081} | {说明；可被环境变量覆盖} |
-| `database.max_open_conns` | int | {20} | {说明} |
+| `server.port` | int | {8081} | {description; can be overridden by an environment variable} |
+| `database.max_open_conns` | int | {20} | {description} |
 
 ---
 
 ## 8 Build & Run
 
-> **可选章节**：仅当本组件包含可构建的可执行产物时保留。
+> **OPTIONAL SECTION**: keep this section only if this component has a buildable executable artifact.
 
-**构建**：
+**Build**:
 
 ```bash
 {build_command}
 ```
 
-**运行（开发）**：
+**Run (Development)**:
 
 ```bash
 {run_dev_command}
 ```
 
-**运行（生产）**：
+**Run (Production)**:
 
 ```bash
 {run_prod_command}
 ```
 
-**健康检查**：
+**Health Check**:
 
 ```bash
 curl http://localhost:{8081}/healthz
 ```
 
-| 检查项 | 端点 | 预期响应 |
+| Check | Endpoint | Expected Response |
 |--------|------|---------|
-| 存活 | `GET /healthz` | `{"code":0,"message":"success"}` |
-| 就绪 | `GET /readyz` | {说明：包含数据库连通性检查} |
+| Liveness | `GET /healthz` | `{"code":0,"message":"success"}` |
+| Readiness | `GET /readyz` | {description: includes database connectivity check} |
 
 ---
 
 ## 9 Server Parameters
 
-> **可选章节**：仅当本组件是后端服务时保留。
+> **OPTIONAL SECTION**: keep this section only if this component is a backend service.
 
-| 参数 | 值 | 说明 |
+| Parameter | Value | Description |
 |------|-----|------|
-| 监听端口 | {8081} | {与 technical_overview.md §3 的端口分配表一致} |
-| API 前缀 | `/api/v1/` | {遵循 technical_overview.md §4.1} |
-| 读超时 | {5000 ms} | {说明} |
-| 写超时 | {5000 ms} | {说明} |
-| 数据库最大连接数 | {20} | {说明} |
-| 数据库空闲连接数 | {5} | {说明} |
-| 优雅停机等待 | {10 s} | {说明} |
+| Listening Port | {8081} | {matches the port allocation table in technical_overview.md §3} |
+| API Prefix | `/api/v1/` | {follows technical_overview.md §4.1} |
+| Read Timeout | {5000 ms} | {description} |
+| Write Timeout | {5000 ms} | {description} |
+| Max DB Connections | {20} | {description} |
+| Idle DB Connections | {5} | {description} |
+| Graceful Shutdown Wait | {10 s} | {description} |
 
 ---
 
 ## 10 Source Code Directory Layout
 
-> 目录命名遵循 [naming_convention.md](../../naming_convention.md)：
-> `src/backend/` 使用 snake_case，`src/frontend/` 使用 kebab-case。
+> Directory naming follows [naming_convention.md](../../naming_convention.md):
+> `src/backend/` uses snake_case, `src/frontend/` uses kebab-case.
 
-**后端**：
+**Backend**:
 
 ```
 src/backend/{component_code_name}/
-├── cmd/                        # 各可执行程序入口
-│   ├── server/                 # REST API 服务入口          [v0.2+]
-│   └── {daemon_name}/          # daemon 程序入口             [v0.5+]
-├── config/                     # 配置加载                     [v0.2+]
+├── cmd/                        # Entry points for each executable program
+│   ├── server/                 # REST API service entry point            [v0.3.2+]
+│   └── {daemon_name}/          # Daemon program entry point              [v0.5+]
+├── config/                     # Config loading                          [v0.3.2+]
 ├── internal/
-│   ├── handler/                # HTTP 层：参数解析、验证、响应封装  [v0.2+]
-│   ├── service/                # 业务逻辑层                    [v0.2+]
-│   ├── repository/             # 数据访问层（接口 + 实现）        [v0.2 接口 / v0.3 实现]
-│   ├── model/                  # 数据结构定义（对应 §2 类定义）    [v0.2+]
-│   ├── enum/                   # 枚举定义（对应 §2.5）           [v0.2+]
-│   └── mock/                   # 硬编码 mock 数据               [v0.2 生产使用 / v0.3+ 仅测试]
-├── pkg/                        # 可复用工具包（响应封装、错误码等） [v0.2+]
-└── sql/                        # 数据库脚本                     [v0.3+]
-    ├── init_databases.sql      # 建库脚本
-    ├── migrations/             # 迁移脚本
-    └── sample_data.sql         # 样例数据
+│   ├── handler/                # HTTP layer: param parsing, validation, response wrapping [v0.3.2+]
+│   ├── service/                # Business logic layer                    [v0.3.2+]
+│   ├── repository/             # Data access layer (interfaces + implementation) [v0.3.2+]
+│   ├── model/                  # Data structure definitions (maps to §2 class definitions) [v0.3.2+]
+│   ├── enum/                   # Enum definitions (maps to §2.5)         [v0.3.2+]
+│   └── mock/                   # Hardcoded mock data (test use only)     [v0.3.2+]
+├── pkg/                        # Reusable utility packages (response wrapping, error codes, etc.) [v0.3.2+]
+└── sql/                        # Database scripts                        [v0.3.2+]
+    ├── init_databases.sql      # DB creation script
+    ├── migrations/             # Migration scripts
+    └── sample_data.sql         # Sample data
 ```
 
-**前端**：
+**Frontend**:
 
 ```
 src/frontend/packages/{component-code-name}/
 ├── src/
-│   ├── pages/                  # 页面组件，对应 uiux.md 的 P01–P{nn}   [v0.1+]
+│   ├── pages/                  # Page components, map to P01–P{nn} in uiux.md   [v0.2+]
 │   │   └── {page-name}/
-│   ├── components/             # 本包内复用组件                        [v0.1+]
-│   ├── models/                 # TypeScript 类型定义（对应 §2 类定义）   [v0.1+]
-│   ├── mock/                   # 硬编码数据                            [v0.1 使用 / v0.2+ 移除]
-│   ├── services/               # API 客户端封装                        [v0.2+]
-│   ├── hooks/                  # 数据钩子                              [v0.2+]
-│   ├── stores/                 # 状态管理                              [v0.1+]
-│   └── routes.tsx              # 路由注册（对应 uiux.md §4 路由定义）    [v0.1+]
+│   ├── components/             # Components reused within this package         [v0.2+]
+│   ├── models/                 # TypeScript type definitions (maps to §2 class definitions) [v0.2+]
+│   ├── mock/                   # Hardcoded data                                [v0.2 used / removed at v0.4+]
+│   ├── services/               # API client wrapper                           [v0.4+]
+│   ├── hooks/                  # Data hooks                                    [v0.4+]
+│   ├── stores/                 # State management                             [v0.2+]
+│   └── routes.tsx              # Route registration (maps to §4 route definitions in uiux.md) [v0.2+]
 └── package.json
 ```
 
-**版本范围说明**：
+**Version Scope Description**:
 
-| 版本 | 本组件的目录范围 |
+| Version | This Component's Directory Scope |
 |------|----------------|
-| {v0.1} | {仅前端，`mock/` 提供全部数据，无 `services/`} |
-| {v0.2} | {新增后端 `cmd/server`、`handler`、`service`、`model`、`mock`；前端新增 `services/`、`hooks/`，移除 `mock/` 引用} |
-| {v0.3} | {新增 `repository` GORM 实现、`sql/`；`mock/` 降级为仅测试使用} |
-| {v0.5+} | {新增 `cmd/{daemon_name}/` 各 daemon 程序} |
+| {v0.1} | {Baseline design docs only; backend entity definitions defined in documentation, no code yet} |
+| {v0.2} | {Frontend only; `mock/` supplies all data; no `services/` or `hooks/`} |
+| {v0.3.1} | {Technical design completed; no new code directories} |
+| {v0.3.2} | {Adds all backend code: `cmd/server`, `handler`, `service`, `repository`, `model`, `enum`, `pkg`, `sql/`; backend `mock/` becomes test-only} |
+| {v0.4} | {Three-tier integration; frontend adds `services/`, `hooks/`; frontend `mock/` references are removed} |
+| {v0.5+} | {Adds `cmd/{daemon_name}/` for each daemon program} |
 
-> 详细版本范围见 [{component_code_name}_version_plan.md](./{component_code_name}_version_plan.md)。
+> Detailed version scope is in [{component_code_name}_version_plan.md](./{component_code_name}_version_plan.md).
 
 ---
 
@@ -907,80 +909,80 @@ src/frontend/packages/{component-code-name}/
 
 ### 11.1 Glossary
 
-> 仅收录**本组件私有**的技术术语。平台通用术语见
-> [technical_overview.md](../../technical_overview.md) §7.2。
+> Contains only technical terms **private to this component**. Platform-wide common terms are in
+> [technical_overview.md](../../technical_overview.md) §7.2.
 
 | Term | Definition |
 |------|-----------|
-| {术语1} | {定义} |
-| {术语2} | {定义} |
+| {term1} | {definition} |
+| {term2} | {definition} |
 
-### 11.2 code_name 命名规则
+### 11.2 code_name Naming Rules
 
-`code_name` 是 {说明其用途，如：所有动态分表的命名依据}，因此必须严格约束格式。
+`code_name` is {explain its purpose, e.g.: the naming basis for all dynamic sharded tables}, so its format must be strictly constrained.
 
-| 项目 | 规则 |
+| Item | Rule |
 |------|------|
-| **正则** | `^[a-z][a-z0-9_]*$` |
-| **长度** | {3–64} 字符 |
-| **大小写** | 全小写 snake_case |
-| **可变性** | 创建后不可修改 |
-| **校验时机** | {前端提交前校验 + 服务端写库前强制校验}；不合规返回 400 |
+| **Regex** | `^[a-z][a-z0-9_]*$` |
+| **Length** | {3–64} characters |
+| **Case** | all lowercase snake_case |
+| **Mutability** | immutable after creation |
+| **Validation Timing** | {validated on the frontend before submission + enforced on the server before writing to the database}; returns 400 if non-compliant |
 
-**前端自动生成规则**：
+**Frontend Auto-Generation Rules**:
 
-| # | 规则 | 说明 |
+| # | Rule | Description |
 |---|------|------|
-| 1 | {display_name} 失焦时自动生成 | {全部转小写；空格与标点替换为下划线} |
-| 2 | 含非 ASCII 字符时 | {code_name 置空，必须由用户手动填写后方可保存} |
-| 3 | 保存前 | {前端先本地校验格式，不合规则提示用户，不发起请求} |
+| 1 | Auto-generated when {display_name} loses focus | {fully lowercased; spaces and punctuation replaced with underscores} |
+| 2 | When non-ASCII characters are present | {code_name is left blank; the user must fill it in manually before saving} |
+| 3 | Before saving | {the frontend validates the format locally first; if non-compliant, it prompts the user and does not send the request} |
 
-> **安全要求**：`code_name` 会被拼接进 `CREATE TABLE` / 查询语句构造表名，
-> 服务端在任何拼接前必须重新校验正则，**不得信任客户端校验结果**。
+> **Security Requirement**: `code_name` is concatenated into `CREATE TABLE` / query statements to build table names.
+> The server must re-validate it against the regex before any concatenation — **it must never trust the client-side validation result**.
 
-### 11.3 输入验证规则
+### 11.3 Input Validation Rules
 
-> 验证在 handler 层完成，遵循 [technical_overview.md](../../technical_overview.md) §4.4。
+> Validation is completed at the handler layer, following [technical_overview.md](../../technical_overview.md) §4.4.
 
-| 字段 | 规则 | 失败时的 message |
+| Field | Rule | Message on Failure |
 |------|------|-----------------|
-| `{display_name}` | {非空；长度 1–128} | {`{display_name} is required`} |
-| `{code_name}` | {正则 `^[a-z][a-z0-9_]*$`；长度 3–64} | {`invalid {code_name} format`} |
-| `{some_enum}` | {必须在 §2.5.1 的合法值集合内} | {`invalid {some_enum} value`} |
-| `{some_int}` | {范围 {min}–{max}} | {`{some_int} out of range`} |
-| `{url_field}` | {合法 URL；scheme 限 http/https} | {`invalid url`} |
-| `{conditional_field}` | {当 `{trigger_field}` = {值} 时必填} | {`{conditional_field} is required when ...`} |
+| `{display_name}` | {non-empty; length 1–128} | {`{display_name} is required`} |
+| `{code_name}` | {regex `^[a-z][a-z0-9_]*$`; length 3–64} | {`invalid {code_name} format`} |
+| `{some_enum}` | {must be within the legal value set in §2.5.1} | {`invalid {some_enum} value`} |
+| `{some_int}` | {range {min}–{max}} | {`{some_int} out of range`} |
+| `{url_field}` | {valid URL; scheme limited to http/https} | {`invalid url`} |
+| `{conditional_field}` | {required when `{trigger_field}` = {value}} | {`{conditional_field} is required when ...`} |
 
-### 11.4 日志规范
+### 11.4 Logging Conventions
 
-> 级别定义、输出格式、trace_id 透传遵循
-> [technical_overview.md](../../technical_overview.md) §4.5。本节仅列出本组件的具体约定。
+> Level definitions, output format, and trace_id propagation follow
+> [technical_overview.md](../../technical_overview.md) §4.5. This section lists only this component's specific conventions.
 
-| 场景 | 级别 | 必含字段 | 示例 |
+| Scenario | Level | Required Fields | Example |
 |------|------|---------|------|
-| {HTTP 请求} | INFO | {method, path, status, duration_ms, trace_id} | {示例} |
-| {daemon 轮询开始} | INFO | {exe_name, {code_name}} | {示例} |
-| {任务失败} | ERROR | {exe_name, {code_name}, error, retry_count} | {示例} |
-| {外部请求重试} | WARN | {url, attempt, error} | {示例} |
+| {HTTP request} | INFO | {method, path, status, duration_ms, trace_id} | {example} |
+| {daemon polling starts} | INFO | {exe_name, {code_name}} | {example} |
+| {task failure} | ERROR | {exe_name, {code_name}, error, retry_count} | {example} |
+| {external request retry} | WARN | {url, attempt, error} | {example} |
 
-**脱敏字段**：{列出必须脱敏的字段，如 `{media_pwd}`、`token`}。
+**Masked Fields**: {list the fields that must be masked, e.g. `{media_pwd}`, `token`}.
 
-### 11.5 测试策略
+### 11.5 Test Strategy
 
-| 层 | 测试类型 | 覆盖要求 | 工具 |
+| Layer | Test Type | Coverage Requirement | Tool |
 |----|---------|---------|------|
-| {service} | {单元测试} | {核心业务逻辑分支} | {工具} |
-| {repository} | {集成测试} | {依赖真实数据库的查询} | {工具} |
-| {handler} | {接口测试} | {参数校验与错误码} | {工具} |
-| {前端} | {不做自动化测试 / 说明} | {遵循 uiux_design_specification.md §17} | — |
+| {service} | {unit tests} | {core business logic branches} | {tool} |
+| {repository} | {integration tests} | {queries that depend on a real database} | {tool} |
+| {handler} | {interface tests} | {parameter validation and error codes} | {tool} |
+| {frontend} | {no automated testing / explanation} | {follows uiux_design_specification.md §17} | — |
 
-**测试数据**：{说明来源，如 `sql/sample_data.sql`}。
+**Test Data**: {describe the source, e.g. `sql/sample_data.sql`}.
 
 ---
 
 ## Change Log
 
-| 版本 | 日期 | 变更内容 |
+| Version | Date | Change Description |
 |------|------|---------|
-| {x.y.z} | {YYYY-MM-DD} | {变更说明} |
-| {x.y.z} | {YYYY-MM-DD} | {初版} |
+| {x.y.z} | {YYYY-MM-DD} | {change description} |
+| {x.y.z} | {YYYY-MM-DD} | {initial version} |

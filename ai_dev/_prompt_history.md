@@ -1,51 +1,61 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】AI 开发过程文档。**放在 `ai_dev_history/` 根目录，不进任何编号子目录。**
+[Document Level] AI development process documentation. **Sits in the root of
+`ai_dev_history/`, not inside any numbered subdirectory.**
 
-【落盘路径】
-  - 平台级：docs/ai_dev_history/prompt_history.md
-  - 组件级：docs/components/{component_code_name}/ai_dev_history/prompt_history.md
-  - 公共库：docs/common_lib/ai_dev_history/prompt_history.md
+[Target Location]
+  - Platform-level: docs/ai_dev_history/prompt_history.md
+  - Component-level: docs/components/{component_code_name}/ai_dev_history/prompt_history.md
+  - Common library: docs/common_lib/ai_dev_history/prompt_history.md
 
-【模板文件名】前导 `_` 只是模板标记，复制时**去掉** `_`。
-  落盘就叫 `prompt_history.md`，**不加组件名前缀**
-  （它已经位于组件自己的 ai_dev_history/ 下，再加前缀是冗余）。
+[Template File Name] The leading `_` is only a template marker; **remove it** when copying.
+  On disk it is simply called `prompt_history.md`, **with no component-name prefix**
+  (it already lives under the component's own ai_dev_history/, so adding a prefix would be
+  redundant).
 
-【为什么在根目录，而不进 01_/02_/03_/04_ 任何一个】
-  编号子目录对应开发生命周期的**各个阶段**，每个阶段会产出多份带日期或版本号的文档。
-  本文件不属于任何单一阶段——它是**贯穿整个开发周期的单一累积文件**：
-  每个组件（或平台）**各一份，只追加、不新建、不按阶段拆分**。
-  把它放在根目录，是为了让任何阶段的 AI 都能一眼找到"工程师到底原话说了什么"。
+[Why It's in the Root Directory, Not Inside 01_/02_/03_/04_]
+  The numbered subdirectories correspond to the **stages** of the development lifecycle, and
+  each stage produces multiple documents with dates or version numbers. This file does not
+  belong to any single stage — it is a **single accumulating file that spans the entire
+  development lifecycle**: each component (or the platform) has **one, appended to only, never
+  recreated, never split by stage**. Putting it in the root directory lets an AI at any stage
+  find at a glance "what did the engineer actually say".
 
-【与 99_Prompts/_PromptLibrary.md 的区别】务必分清，两者不可互相替代：
+[Difference from 99_Prompts/_PromptLibrary.md] Be sure to distinguish these — they are not
+interchangeable:
 
-  | 维度 | 本文件 prompt_history.md | 99_Prompts/prompt_library.md |
-  |------|-------------------------|------------------------------|
-  | 性质 | **历史归档** | **可复用模板** |
-  | 内容 | 真实发生过的原始 prompt，逐字原样 | 抽象过的标准 prompt，去掉了一次性上下文 |
-  | 时间 | 带时间戳，倒序累积 | 无时间戳，按用途分类 |
-  | 数量 | 每组件一份 | 全平台一份 |
-  | 用途 | 回答"这份文档为什么长这样" | 回答"下次做同类事该发什么 prompt" |
-  | 变更 | 只追加，历史条目**永不修改** | 产出不理想就**修订**该条 |
+  | Dimension | This file, prompt_history.md | 99_Prompts/prompt_library.md |
+  |-----------|-------------------------------|-------------------------------|
+  | Nature | **Historical archive** | **Reusable template** |
+  | Content | Raw prompts that actually occurred, verbatim | Abstracted standard prompts, with one-off context removed |
+  | Time | Timestamped, accumulated in reverse chronological order | No timestamps, categorized by purpose |
+  | Quantity | One per component | One for the whole platform |
+  | Purpose | Answers "why does this document look the way it does" | Answers "what prompt should I send next time for a similar task" |
+  | Changes | Append-only; historical entries are **never modified** | Revised whenever the output isn't ideal |
 
-  流转关系：一条历史 prompt 被反复使用、证明有效后，应**抽象后补进 PromptLibrary**；
-  PromptLibrary 中的条目不回写本文件。
+  Flow: once a historical prompt has been used repeatedly and proven effective, it should be
+  **abstracted and added to the PromptLibrary**; entries in the PromptLibrary are not written
+  back into this file.
 
-【记什么 —— 不必记录每一条 prompt】只收录以下三类：
-  1. 用户为某份文档提供了**大段实质性描述**（数行以上的规格描述）；
-  2. 用户**明确要求**归档的 prompt；
-  3. **改变了设计方向或推翻既有决策**的 prompt。
-  日常的"改一下这里""继续""按你的建议改"之类的对话**不收录**。
+[What to Record — Not Every Prompt Needs Recording] Only the following three categories are
+collected:
+  1. The user provided a **substantial, substantive description** for a given document (a
+     multi-line-or-more specification);
+  2. The user **explicitly requested** that the prompt be archived;
+  3. A prompt that **changed the design direction or overturned an existing decision**.
+  Routine exchanges like "change this bit here", "continue", "changed per your suggestion" are
+  **not collected**.
 
-【Content Type 取值】见正文中的取值表，只能从中选取。
+[Content Type Values] See the values table in the body; only values from that table may be used.
 
-【排序】**倒序**（最新在最上），因为最近的意图查阅频率最高。
+[Ordering] **Reverse chronological** (newest at the top), since the most recent intent is looked
+up most often.
 -->
 
 # {ComponentName} Prompt History
 
-<!-- 平台级使用时，标题写作：# Prompt History -->
+<!-- When used at the platform level, write the title as: # Prompt History -->
 
 **Document Version**: {x.y.z}
 
@@ -54,42 +64,46 @@
 > only those where a user explicitly provides a substantial description for a specific document,
 > or when the user explicitly requests it, or when the prompt changed a design decision.
 >
-> 本文件保存开发过程中工程师提供的**原始 Prompt 原文**，使"文档为什么长这样"可追溯。
-> 文档正文是 AI 加工后的结果，原始意图只保存在这里。
-> 不需要收录每一条 Prompt——只收录工程师针对某份文档给出大段描述性需求的、
-> 工程师明确要求记录的、或改变了设计方向的 Prompt。
+> This file preserves the original text of the **raw prompts** provided by the engineer during
+> the development process, so that "why does the document look this way" can be traced.
+> The document body is the result of AI processing; the original intent is preserved only here.
+> Not every prompt needs to be collected — only prompts where the engineer gave a substantial
+> descriptive requirement for a specific document, prompts the engineer explicitly asked to be
+> recorded, or prompts that changed the design direction.
 
 ---
 
 ## Prompt Index
 
-| # | DateTime | User | Content Type | Title | 关联文档 |
-|---|----------|------|--------------|-------|---------|
-| {3} | {YYYY-MM-DD HH:MM} | {UserName} | {content_type} | {Short title} | {该 prompt 产出或修改的文件路径} |
-| {2} | {YYYY-MM-DD HH:MM} | {UserName} | {content_type} | {Short title} | {该 prompt 产出或修改的文件路径} |
-| {1} | {YYYY-MM-DD HH:MM} | {UserName} | {content_type} | {Short title} | {该 prompt 产出或修改的文件路径} |
+| # | DateTime | User | Content Type | Title | Related Document |
+|---|----------|------|---------------|-------|---------------------|
+| {3} | {YYYY-MM-DD HH:MM} | {UserName} | {content_type} | {Short title} | {file path(s) produced or modified by this prompt} |
+| {2} | {YYYY-MM-DD HH:MM} | {UserName} | {content_type} | {Short title} | {file path(s) produced or modified by this prompt} |
+| {1} | {YYYY-MM-DD HH:MM} | {UserName} | {content_type} | {Short title} | {file path(s) produced or modified by this prompt} |
 
-> **关联文档** 列填该 prompt 直接**产出或修改**的文件（可多个，用 `、` 分隔），
-> 使用相对本文件的路径或相对仓库根的路径均可，但同一文件内保持一致。
-> 例：`../{component}_uiux.md`、`02_DevPlanAndReport/v0.3_BE_DevPlan.md`。
-> 若该 prompt 未直接产出文件（如仅确认了一个决策），填 `—` 并在 Title 中说明。
+> The **Related Document** column lists the file(s) directly **produced or modified** by this
+> prompt (can be multiple, separated by `, `); either a path relative to this file or relative
+> to the repo root is fine, but stay consistent within the same file.
+> Example: `../{component}_uiux.md`, `02_DevPlanAndReport/v0.3_BE_DevPlan.md`.
+> If the prompt did not directly produce a file (e.g. it only confirmed a decision), fill in `—`
+> and explain in the Title.
 
-**Content Type 取值**（只能从下表中选取）：
+**Content Type values** (only values from the table below may be used):
 
-| 取值 | 适用场景 | 典型关联文档 |
-|------|---------|-------------|
-| `business_desc` | 业务描述文档相关的需求描述 | `{component}_business_desc.md` |
-| `tech_design` | 技术设计文档相关的需求描述 | `{component}_tech_design.md` |
-| `uiux` | UI/UX 需求文档相关的需求描述 | `{component}_uiux.md` |
-| `ui_page_design` | 页面设计稿（HTML / Stitch）相关的描述 | `ui_page_design/P{nn}  {页面名}/code.html` |
-| `version_plan` | 版本规划、版本范围划分相关的描述 | `{component}_version_plan.md` |
-| `dev_plan` | 开发计划、实现方案相关的描述 | `02_DevPlanAndReport/v{版本}_{BE\|FE}_DevPlan.md` |
-| `dev_report` | 开发报告、进度审查相关的描述 | `02_DevPlanAndReport/v{版本}_DevReport.md` |
-| `doc_review` | 文档审查要求、审查报告格式、对文档审查结论的答复 | `01_DocReviewRefine/docs_review_{YYYYMMDD}-r{n}.md` |
-| `code_review` | 代码审查要求、对代码审查结论的答复 | `03_CodeReviewRefine/{BE\|FE}_code_review_{YYYYMMDD}-r{n}.md` |
-| `debug` | 缺陷排查、联调、修复相关的描述 | `04_DebugFix/debug_{主题}_{YYYYMMDD}-r{n}.md` |
-| `handover` | 保存现场、AI 之间交接相关的指令 | `02_DevPlanAndReport/v{版本}_Handover.md`、`v{版本}_Snapshot.md` |
-| `other` | 以上都不属于的其他内容（如命名规范决策、图表绘制要求、目录整理） | {视情况填写} |
+| Value | Applicable Scenario | Typical Related Document |
+|-------|------------------------|------------------------------|
+| `business_desc` | Requirement descriptions related to the business description document | `{component}_business_desc.md` |
+| `tech_design` | Requirement descriptions related to the technical design document | `{component}_tech_design.md` |
+| `uiux` | Requirement descriptions related to the UI/UX requirements document | `{component}_uiux.md` |
+| `ui_page_design` | Descriptions related to page mockups (HTML / Stitch) | `ui_page_design/P{nn}  {PageName}/code.html` |
+| `version_plan` | Descriptions related to version planning and version scope division | `{component}_version_plan.md` |
+| `dev_plan` | Descriptions related to the dev plan and implementation approach | `02_DevPlanAndReport/v{version}_{BE\|FE}_DevPlan.md` |
+| `dev_report` | Descriptions related to the dev report and progress review | `02_DevPlanAndReport/v{version}_DevReport.md` |
+| `doc_review` | Document review requirements, review report format, responses to document review conclusions | `01_DocReviewRefine/docs_review_{YYYYMMDD}-r{n}.md` |
+| `code_review` | Code review requirements, responses to code review conclusions | `03_CodeReviewRefine/{BE\|FE}_code_review_{YYYYMMDD}-r{n}.md` |
+| `debug` | Descriptions related to defect investigation, integration debugging, and fixes | `04_DebugFix/debug_{topic}_{YYYYMMDD}-r{n}.md` |
+| `handover` | Instructions related to snapshots and AI-to-AI handovers | `02_DevPlanAndReport/v{version}_Handover.md`, `v{version}_Snapshot.md` |
+| `other` | Anything not covered above (e.g. naming convention decisions, diagramming requirements, directory reorganization) | {fill in as appropriate} |
 
 ---
 
@@ -97,15 +111,16 @@
 
 ### # {3} | {YYYY-MM-DD HH:MM} | {UserName} | {content_type} | {Short title}
 
-**关联文档**：{该 prompt 产出或修改的文件路径}
+**Related Document**: {file path(s) produced or modified by this prompt}
 
-{Paste the original raw prompt content here. 原样粘贴，不做任何改写、精简或格式化。}
+{Paste the original raw prompt content here. Paste it exactly as-is, with no rewriting,
+condensing, or reformatting.}
 
 ---
 
 ### # {2} | {YYYY-MM-DD HH:MM} | {UserName} | {content_type} | {Short title}
 
-**关联文档**：{该 prompt 产出或修改的文件路径}
+**Related Document**: {file path(s) produced or modified by this prompt}
 
 {Paste the original raw prompt content here.}
 
@@ -113,32 +128,39 @@
 
 ### # {1} | {YYYY-MM-DD HH:MM} | {UserName} | {content_type} | {Short title}
 
-**关联文档**：{该 prompt 产出或修改的文件路径}
+**Related Document**: {file path(s) produced or modified by this prompt}
 
 {Paste the original raw prompt content here.}
 
 ---
 
 > Prompts are listed in **reverse chronological order** (newest first).
-> Prompt 按**倒序**排列（最新的在最上面）。
+> Prompts are arranged in **reverse order** (the newest one is at the top).
 >
-> To add a new prompt / 追加新 Prompt 的步骤：
+> To add a new prompt / Steps to append a new prompt:
 >
-> 1. **在 Prompt Index 表的最上方插入一行**，`#` 取当前最大值 +1，并填写「关联文档」列。
+> 1. **Insert a new row at the top of the Prompt Index table**, with `#` set to the current
+>    maximum + 1, and fill in the "Related Document" column.
 >    Insert a new row at the **top** of the Prompt Index table; `#` = current max + 1.
->    编号**只增不减**：即使中间某条被判定为不必保留，也不回收其编号、不重排既有编号。
-> 2. **在 `## Prompts` 标题的正下方插入新的 Prompt 小节**（即新条目排在最前面）。
->    Add a new section at the **top** of the Prompts area, directly below the `## Prompts` heading.
-> 3. 每个 Prompt 小节遵循以下格式 / Each prompt section follows this format：
->    - **首行**：`### # {n} | {DateTime} | {User} | {Content Type} | {Short title}` —— 与索引表行完全一致。
+>    Numbers **only ever increase, never decrease**: even if a given entry is later judged
+>    unnecessary to keep, its number is not reclaimed and existing numbers are not renumbered.
+> 2. **Insert the new Prompt section directly below the `## Prompts` heading** (i.e. the newest
+>    entry goes at the very top).
+>    Add a new section at the **top** of the Prompts area, directly below the `## Prompts`
+>    heading.
+> 3. Each Prompt section follows this format / Each prompt section follows this format:
+>    - **First line**: `### # {n} | {DateTime} | {User} | {Content Type} | {Short title}` —
+>      exactly matching the index table row.
 >      **First line**: matching the index row exactly.
->    - **第二行**：`**关联文档**：{路径}`。
->    - **正文**：原始 Prompt 内容，**逐字原样**。不做摘要、不重排版、不改错别字、不翻译。
+>    - **Second line**: `**Related Document**: {path}`.
+>    - **Body**: the raw prompt content, **verbatim, word for word**. Do not summarize, do not
+>      reformat, do not fix typos, do not translate.
 >      **Body**: the raw prompt content, **verbatim**. Do not summarize, reformat, or fix typos.
->    - **结尾**：一条分隔线 `---` 加空行，然后是下一条 Prompt。
+>    - **Ending**: a horizontal rule `---` followed by a blank line, then the next prompt.
 >      **End**: a horizontal rule (`---`) followed by a blank line, then the next prompt.
-> 4. **既有条目一律不修改。** 若某条 prompt 的决策后来被推翻，不要改动原条目，
->    而是把推翻它的新 prompt 作为新条目追加在最前面，并在新条目的 Title 中注明
->    "推翻 #{n}"。历史的价值在于它是历史。
-> 5. 追加后更新文件顶部的 `**Document Version**`。
+> 4. **Existing entries are never modified, under any circumstance.** If a prompt's decision is
+>    later overturned, do not change the original entry — instead, append the new prompt that
+>    overturns it as a new entry at the top, and note in the new entry's Title that it
+>    "overturns #{n}". The value of history lies in it being history.
+> 5. After appending, update the `**Document Version**` at the top of the file.
 >    Update `**Document Version**` at the top when adding prompts.
