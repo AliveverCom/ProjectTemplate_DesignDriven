@@ -1,139 +1,148 @@
-# 通用版本规划
+# Common Version Plan
 
 <!--
-模板说明（使用时删除本注释块）
-- 层级：**平台级版本规范**。放在 `docs/` 根目录，文件名去掉前导下划线 → `version_plan.md`。
-- 与组件级 `{component}_version_plan.md` 的区别（务必守住边界）：
+TEMPLATE NOTES (delete this comment block when using)
+- Level: **platform-level version specification**. Place it in the `docs/` root; drop the leading underscore → `version_plan.md`.
+- Difference from the component-level `{component}_version_plan.md` (hold this boundary):
 
-  | 维度 | 本文（平台级 version_plan.md） | 组件级 {component}_version_plan.md |
-  |------|------------------------------|-----------------------------------|
-  | 内容 | 版本号**格式**与**里程碑语义** | 该组件每个 v0.x **具体做什么** |
-  | 数量 | 全平台唯一一份 | 每个组件一份 |
-  | 变更频率 | 极低（改动会波及全平台） | 跟随组件迭代 |
-  | 关系 | 定义"v0.3 是什么意思" | 定义"本组件 v0.3 交付哪些功能" |
+  | Dimension | This document (platform-level version_plan.md) | Component-level {component}_version_plan.md |
+  |-----------|-----------------------------------------------|--------------------------------------------|
+  | Content | Version number **format** and **milestone semantics** | What each v0.x of that component **actually delivers** |
+  | Count | Exactly one per platform | One per component |
+  | Change rate | Very low (a change ripples across the whole platform) | Follows the component's iterations |
+  | Relationship | Defines "what v0.3 means" | Defines "which features this component ships in v0.3" |
 
-- 组件级模板见 `templates/component/_version_plan.md`。
-- 本文一旦定稿，组件文档只能**引用**这里的里程碑语义，不得重新定义 v0.x 的含义。
+- Component-level template: `templates/component/_version_plan.md`.
+- Once this document is final, component documents may only **reference** the milestone semantics defined here; they must not redefine what v0.x means.
 -->
 
-本文档定义「{平台中文名}」平台**所有内部组件**的统一版本号规范。
+This document defines the unified version numbering convention for **all internal components** of the {PlatformName} platform.
 
 ---
 
 <a id="c1"></a>
 
-## 1 版本号格式
+## 1 Version Number Format
 
 ```
 vA.B.C.D.E
 ```
 
-| 段位 | 名称 | 含义 | 变更示例 |
-|------|------|------|---------|
-| **A** | 主业务版本 | 业务模型发生重大变更（核心功能重新设计、架构大幅调整） | v**2**.0.0 |
-| **B** | 子业务版本 | 子业务或功能模块级别的变更（新增产品功能、调整业务流程） | v1.**3**.0 |
-| **C** | 代码主更新 | 代码实现的主要更新（新增 API、重构核心模块） | v1.3.**2** |
-| **D** | 次要修复 | Bug 修复或微小功能更新；**极少使用** | v1.3.2.**1** |
-| **E** | 预发布标识 | Alpha、Beta 等预发布版本；**极少使用** | v1.3.2.1.**beta1** |
+| Segment | Name | Meaning | Example Change |
+|---------|------|---------|----------------|
+| **A** | Major business version | Major change to the business model (core features redesigned, architecture substantially reworked) | v**2**.0.0 |
+| **B** | Minor business version | Change at the sub-business or feature-module level (new product features, revised business processes) | v1.**3**.0 |
+| **C** | Major code update | Significant change in the code implementation (new APIs, core module refactoring) | v1.3.**2** |
+| **D** | Minor fix | Bug fixes or tiny feature updates; **rarely used** | v1.3.2.**1** |
+| **E** | Pre-release tag | Alpha, Beta and other pre-release versions; **rarely used** | v1.3.2.1.**beta1** |
 
-> **说明**：
-> - 第 4 段（D）和第 5 段（E）极少使用，仅在需要精细区分补丁或预发布时启用。
-> - 在尚无源代码的阶段（如纯文档阶段），版本号可仅使用前两段（如 `v0.1`）。
-> - `VERSION` 文件中的值**不带 `v` 前缀**（`0.1.0` 而非 `v0.1.0`）。
+> **Notes**:
+> - Segments 4 (D) and 5 (E) are rarely used — enable them only when patches or pre-releases need to be distinguished at a fine granularity.
+> - While no source code exists yet (for example, the documentation-only stage), a version number may use just the first two segments (such as `v0.1`).
+> - The value inside a `VERSION` file carries **no `v` prefix** (`0.1.0`, not `v0.1.0`).
 
 ---
 
 <a id="c2"></a>
 
-## 2 版本里程碑
+## 2 Version Milestones
 
-以下为每个产品组件从文档到集成的标准版本里程碑：
+The standard milestones every product component passes through, from documentation to integration:
 
-| 版本 | 里程碑 | 说明 |
-|------|--------|------|
-| `v0.1` | **文档初版** | 首次生成组件的业务描述、技术设计和 UI/UX 需求文档。 |
-| `vx.x.1` | **源代码初版** | 首次为组件生成源代码。此时前端、API 定义、后端和数据库等各部分**独立生成，尚未相互打通**。 |
-| `v1.0.1` | **首次集成** | 该组件**首次打通前端、后端与数据库**，可进行组件内部的集成测试。这是组件可运行的第一个完整版本。 |
-| `v1.0.x+` | **持续迭代** | 在首次集成基础上进行 Bug 修复、功能完善和性能优化。 |
-| `v1.1.0+` | **功能扩展** | 新增子业务功能或对现有功能进行较大调整。 |
+| Version | Milestone | Description |
+|---------|-----------|-------------|
+| `v0.1` | **Baseline design docs** | First generation of the component's business description, technical design and UI/UX requirement documents, plus the page UI designs. |
+| `v0.2` | **First source code** | First frontend code for the component. The frontend runs on hardcoded data; backend and database are not built yet. |
+| `v0.3` | **Design completed, backend built** | The technical design is completed (`v0.3.1`) and the whole backend plus database is implemented in one pass (`v0.3.2`). Frontend, backend and database exist but are **not yet wired together**. |
+| `v0.4` | **First integration** | The component **first wires frontend, backend and database together**, enabling component-level integration testing. This is the first complete runnable version of the component. |
+| `v0.5` – `v0.6` | **Pipelines and platform integration** | Data/compute pipelines and daemons are implemented, then the component is integrated end to end with the platform framework. |
+| `v0.7` – `v0.8` | **Reserve** | Continuous iteration: features added mid-course, requirement changes, bug fixes and code refactoring. |
+| `v1.0` | **First official release** | First official release of the system. |
+| `v1.0.x+` | **Continuous iteration** | Bug fixes, feature polishing and performance tuning on top of the first release. |
+| `v1.1.0+` | **Feature expansion** | New sub-business features, or substantial changes to existing features. |
 
 ---
 
 <a id="c3"></a>
 
-## 3 版本号使用示例
+## 3 Version Ladder
 
-以下是一个典型组件从零到正式发布的版本推进路径。**组件级 version_plan 必须按此语义划分自己的版本**：
+The standard path a component follows from nothing to official release.
+**Every component-level version_plan must partition its own versions according to these semantics.**
 
-```
-v0.1  — 纯前端页面，所有数据硬编码
-v0.2  — 后端类定义 + 所有 API 端点返回硬编码数据
-v0.3  — 实现真正的后端 API 服务；数据库建库脚本、数据初始化脚本及插入样例数据的 SQL script
-v0.4  — 将前后端页面调用打通；所有前端页面使用后端 API 返回的结果，不再使用前端硬编码的静态数据
-v0.5  — 在 v0.4 基础上进行所有测试、修复 Bug、功能查漏补缺
-v0.6  — 接入用户登录系统；所有前端页面受用户登录状态控制，未登录用户无法进入系统
-v1.0  — 发布第一版正式系统
-```
+| Version | Code Name | Deliverables |
+|---------|-----------|--------------|
+| `v0.1` | **Baseline Design Docs** | Product / business documentation complete. Backend technical design covers **entity definitions only** — no other backend design yet. Frontend UI/UX document main content complete. Page UI design complete: every page has its own `.html` and `.png` under `ui_page_design/`. |
+| `v0.2` | **Frontend Only (Hardcoded Data)** | Pure frontend running on hardcoded data. Create the `deployment/` directory with one-click scripts: build all frontends, start frontend services, kill frontend services. Document these commands in `README.md`. |
+| `v0.3.1` | **Technical Design Completed** | Complete the backend technical design: class design, database design, remaining backend logic, standard CRUD API design, special query structure design. Complete the frontend UI/UX document with the per-feature design of how each function calls the backend API. |
+| `v0.3.2` | **Backend Implementation** | Implement everything specified in the backend technical design in a single pass: API contract definitions, backend class implementation, backend database access implementation, backend service encapsulation. Database schema init script, data init script, demo data init script. Extend `deployment/` with one-click build / start / kill for all backends, plus one-click build-all / start-all / kill-all. Switch `README.md` to the build-all / start-all / kill-all commands so the user can run everything in one shot. Further extend `deployment/` with an Ubuntu provisioning script — the database is provided at the OS level by default; all product modules are built as Docker images. |
+| `v0.4` | **Three-Tier Integration** | Frontend, backend and database integration and testing. |
+| `v0.5` | **Pipelines & Daemons** | If the component has data pipelines, compute pipelines or daemons, implement them here. Technical design document first, then development and testing. |
+| `v0.6` | **Platform Integration** | End-to-end integration of the component, its pipelines and the platform framework. |
+| `v0.7` – `v0.8` | **Reserve** | Typically used for features added mid-course, requirement changes, and code refactoring. |
+| `v1.0` | **First Official Release** | First official release of the system. |
 
-**各阶段的交付判定标准**（供 dev_plan 和 progress_review 引用）：
+**Delivery acceptance criteria per stage** (referenced by Dev Plan and Dev Report):
 
-| 版本 | 前端判定 | 后端判定 | 数据库判定 |
-|------|---------|---------|-----------|
-| `v0.1` | {全部页面可点通，数据来自 `mock/`} | — | — |
-| `v0.2` | {不变} | {全部端点可访问，返回硬编码数据} | — |
-| `v0.3` | {不变} | {端点实现真实业务逻辑} | {建库脚本 + 迁移 + 样例数据可执行} |
-| `v0.4` | {全部页面改用 `services/api.ts`，`mock/` 不再被生产代码引用} | {不变} | {不变} |
-| `v0.5` | {手工测试通过，缺口补齐} | {同左} | {同左} |
-| `v0.6` | {全部路由受登录态保护} | {鉴权中间件生效} | — |
-| `v1.0` | {正式发布} | {正式发布} | {正式发布} |
+| Version | Frontend criterion | Backend criterion | Database criterion |
+|---------|-------------------|-------------------|--------------------|
+| `v0.1` | {All page UI designs done: `.html` + `.png` per page} | {Entity definitions only} | — |
+| `v0.2` | {Every page is clickable end to end, data comes from `mock/`} | — | — |
+| `v0.3.1` | {UI/UX doc specifies the API call design for every feature} | {Technical design complete: classes, DB, CRUD APIs, special queries} | {Schema design complete} |
+| `v0.3.2` | {Unchanged} | {Endpoints implement real business logic} | {Schema init + data init + demo data scripts run successfully} |
+| `v0.4` | {Every page uses `services/api.ts`; `mock/` is no longer referenced by production code} | {Unchanged} | {Unchanged} |
+| `v0.5` | — | {Pipelines / daemons implemented and tested} | {Unchanged} |
+| `v0.6` | {All routes integrated into the platform framework} | {Cross-component calls work} | — |
+| `v1.0` | {Official release} | {Official release} | {Official release} |
 
-> **允许偏差**：实际开发中某一侧可能超前（如后端已到 v0.3 而前端仍在 v0.1）。
-> 这种"进度断层"必须在 `ai_dev_history/02_DevPlanAndReport/v{版本}_DevReport.md` 中显式记录并给出补齐计划。
+> **Deviation is allowed**: in practice one side may run ahead (for example the backend has reached `v0.3.2` while the frontend is still at `v0.2`).
+> Such a "progress gap" must be recorded explicitly, with a catch-up plan, in `ai_dev_history/02_DevPlanAndReport/v{version}_DevReport.md`.
 
 ---
 
 <a id="c4"></a>
 
-## 4 组件级版本控制（VERSION 文件）
+## 4 Component-Level Version Control (VERSION file)
 
-本平台采用**多组件独立版本控制**策略（Per-Component Versioning）：每个可独立发布的单元
-（文档、前端包、后端服务、公用库）在其目录中放置一个 `VERSION` 文件，内容为纯文本一行版本号
-（如 `0.0.0`，**不带 `v` 前缀**）。各组件按自身节奏独立演进，不要求版本号同步。
+This platform uses a **per-component versioning** strategy: every independently releasable unit
+(documentation, frontend package, backend service, shared library) carries a `VERSION` file in its
+directory containing a single plain-text line with the version number (such as `0.0.0`, **without the
+`v` prefix**). Components evolve at their own pace; version numbers are not required to stay in sync.
 
-| 项目 | 规则 |
+| Item | Rule |
 |------|------|
-| 文件内容 | 纯文本一行版本号，无注释、无空行 |
-| Git Tag | `{层}/{组件名}/v{版本号}`，如 `be/{component_code_name}/v0.2.3` |
-| CI/CD | 读取 `VERSION` 决定镜像 Tag、制品版本号与 Changelog |
-| 文档版本 | 每份设计文档头部标注 `**Document Version**: {x.y.z}`，文末维护 Change Log |
+| File content | A single plain-text line with the version number; no comments, no blank lines |
+| Git tag | `{layer}/{component_name}/v{version}`, e.g. `be/{component_code_name}/v0.2.3` |
+| CI/CD | Reads `VERSION` to determine the image tag, artifact version and changelog |
+| Document version | Every design document carries `**Document Version**: {x.y.z}` in its header and maintains a Change Log at the end |
 
-该策略的完整说明（Git Tag 命名规则、CI/CD 集成方式和 `VERSION` 文件在项目中的完整分布清单）
-请参见：
+The full description of this strategy (Git tag naming rules, CI/CD integration and the complete
+inventory of `VERSION` files across the project) is documented in:
 
-> 📄 [project_directory_plan.md — §5 组件级版本控制](../../project_directory_plan.md#c5)
+> 📄 [project_directory_plan.md — §5 Component-Level Version Control](../../project_directory_plan.md#c5)
 
 ---
 
 <a id="c5"></a>
 
-## 5 本文与组件版本规划的分工
+## 5 Division of Labour Between This Document and Component Version Plans
 
-| 文档 | 位置 | 职责 | 谁来维护 |
-|------|------|------|---------|
-| **本文（平台级）** | `docs/version_plan.md` | 定义版本号**格式**、**里程碑语义**、`VERSION` 文件策略 | 架构师；变更需评估全平台影响 |
-| **组件级版本规划** | `docs/components/{组件名}/{组件名}_version_plan.md` | 定义**该组件**每个 v0.x 的目标、功能范围、技术栈、不包含的内容 | 该组件负责人；随迭代更新 |
+| Document | Location | Responsibility | Owner |
+|----------|----------|----------------|-------|
+| **This document (platform-level)** | `docs/version_plan.md` | Defines the version number **format**, **milestone semantics** and `VERSION` file strategy | Architect; changes require a platform-wide impact assessment |
+| **Component-level version plan** | `docs/components/{component_name}/{component_name}_version_plan.md` | Defines, **for that component**, the goal, feature scope, tech stack and out-of-scope items of each v0.x | Component owner; updated as the component iterates |
 
-**使用约定**：
+**Usage conventions**:
 
-| # | 约定 |
-|---|------|
-| 1 | 组件级 version_plan **不得重新定义** v0.x 的通用含义，只能声明"本组件 v0.3 交付哪些具体功能" |
-| 2 | 组件级 version_plan 的每个版本章节必须包含：**版本目标 / 功能范围 / 技术栈 / 不包含的内容** |
-| 3 | 「不包含的内容」是**必填项**——明确写出本版本刻意不做什么，防止 AI 开发者自行扩大范围 |
-| 4 | 开发计划（`ai_dev_history/02_DevPlanAndReport/v{版本}_DevPlan.md`）以组件 version_plan 的某个版本为**权威范围定义**，不得超出 |
-| 5 | 开发报告（`ai_dev_history/02_DevPlanAndReport/v{版本}_DevReport.md`）以组件 version_plan 为基准文档逐项核对完成度 |
+| # | Convention |
+|---|------------|
+| 1 | A component-level version plan **must not redefine** the general meaning of v0.x; it may only state "this component ships these specific features in v0.3" |
+| 2 | Every version section of a component-level version plan must contain: **version goal / feature scope / tech stack / out-of-scope items** |
+| 3 | "Out-of-scope items" is a **mandatory field** — spell out what this version deliberately does not do, so an AI developer cannot expand the scope on its own |
+| 4 | The dev plan (`ai_dev_history/02_DevPlanAndReport/v{version}_DevPlan.md`) takes one version of the component version plan as its **authoritative scope definition** and must not exceed it |
+| 5 | The dev report (`ai_dev_history/02_DevPlanAndReport/v{version}_DevReport.md`) uses the component version plan as its baseline document and checks completion item by item |
 
-> 组件级模板：`templates/component/_version_plan.md`。
+> Component-level template: `templates/component/_version_plan.md`.
 
 ---
 
@@ -141,4 +150,4 @@ v1.0  — 发布第一版正式系统
 
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
-| {x.y.z} | {YYYY-MM-DD} | {Author} | {变更说明} |
+| {x.y.z} | {YYYY-MM-DD} | {Author} | {Change description} |

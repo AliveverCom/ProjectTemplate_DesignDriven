@@ -1,251 +1,464 @@
 <!--
-模板说明（使用时删除本注释块）
+TEMPLATE NOTES (delete this comment block when using)
 
-【文档层级】组件级（Component-level）版本规划文档。
+[DOCUMENT LEVEL] Component-level version plan.
 
-【存放位置】docs/components/{component_code_name}/{component_code_name}_version_plan.md
-  - 文件名把前导 `_` 换成组件代码名，例如 `material_collector_version_plan.md`。
+[TARGET LOCATION] docs/components/{component_code_name}/{component_code_name}_version_plan.md
+  - Replace the leading `_` with the component code name, e.g. `material_collector_version_plan.md`.
 
-【与平台级文档的边界】
-  - 平台级 docs/version_plan.md（由 templates/platform/_version_plan.md 生成）
-    定义**通用版本号规范**：vA.B.C.D.E 五段语义、版本里程碑（v0.1 文档初版 → v1.0 首次集成）、
-    组件级 VERSION 文件策略、Git Tag 命名规则。
-  - 本组件级文档**不重复定义版本号语义**，只回答"本组件的 v0.1/v0.2/… 各自做什么、
-    包含什么、明确不包含什么、用什么技术栈"。
-  - 本文是 ai_dev/02_DevPlanAndReport 下 BE/FE 开发计划的**权威范围依据**：
-    开发计划只能实现本文已定义的版本范围，超出范围必须先回来修订本文。
-  - 本文也是 ai_dev/02_DevPlanAndReport 下 `v{版本}_DevReport.md` 开发报告的**基准文档**。
+[BOUNDARY AGAINST THE PLATFORM-LEVEL DOCUMENT]
+  - The platform-level docs/version_plan.md (generated from templates/platform/_version_plan.md)
+    defines the **general version numbering convention**: the five segments of vA.B.C.D.E, the
+    milestone ladder (v0.1 Baseline Design Docs -> v1.0 First Official Release), the component
+    `VERSION` file strategy and the Git tag naming rules.
+  - This component-level document **must not redefine version number semantics**. It only answers
+    "what does *this component's* v0.1 / v0.2 / ... deliver, what is included, what is explicitly
+    excluded, and which parts of the tech stack are added".
+  - This document is the **authoritative scope definition** for the dev plans under
+    ai_dev/02_DevPlanAndReport: a dev plan may only implement the scope defined here, and going
+    beyond it requires coming back and revising this document first.
+  - This document is also the **baseline document** for `v{version}_DevReport.md` under
+    ai_dev/02_DevPlanAndReport.
 
-【填写要点】
-  - "不包含的内容"章节是本模板最重要的部分：AI 开发者最容易越界实现下个版本的功能，
-    必须逐条写死红线（不做响应式、不做性能优化、不接数据库、不做自动化测试…）。
-  - 每个版本的技术栈只写**该版本新增**的部分，不重复上一版本已有的。
+[HOW TO FILL IT IN]
+  - The "Out of Scope" section is the most important part of this template. An AI developer is most
+    likely to overreach and implement next version's features, so every hard constraint must be
+    written down explicitly (no responsive layout, no performance tuning, no database, no automated
+    tests, ...).
+  - Each version's tech stack lists only what **that version adds**; never repeat what an earlier
+    version already introduced.
+  - The standard ladder below (v0.1 -> v1.0) is the platform default. Keep the version numbers and
+    their semantics; fill in what your component ships in each of them. If a version does not apply
+    to your component (for example v0.5 when there are no pipelines or daemons), keep the section
+    and write "Not applicable to this component" rather than deleting and renumbering.
 -->
 
-# {组件中文名}（{component_code_name}）Version Plan
+# {ComponentName} ({component_code_name}) Version Plan
 
 **Document Version**: {x.y.z}
 **Created**: {YYYY-MM-DD}
 
-> **版本号语义**：本文中的 `vA.B.C` 版本号语义、版本里程碑定义、`VERSION` 文件与 Git Tag 规则，
-> 一律遵循平台级通用版本规范
-> [docs/version_plan.md](../../version_plan.md)（模板源：`templates/platform/_version_plan.md`）
-> 与 [project_directory_plan.md §5](../../../project_directory_plan.md#c5)。本文不重复定义，只定义本组件各版本的**功能范围**。
+> **Version number semantics**: the meaning of the `vA.B.C` version numbers used here, the milestone
+> definitions, and the `VERSION` file and Git tag rules all follow the platform-level common version
+> specification in [docs/version_plan.md](../../version_plan.md)
+> (template source: `templates/platform/_version_plan.md`) and
+> [project_directory_plan.md §5](../../../project_directory_plan.md#c5).
+> This document does not redefine any of them — it defines only the **feature scope** of each
+> version of this component.
 
 ---
 
 ## 1 Table of Contents
 
 - [1 Table of Contents](#1-table-of-contents)
-- [2 版本规划总览](#2-版本规划总览)
-- [3 v0.1 — {版本代号1}](#3-v01--版本代号1)
-  - [3.1 版本目标](#31-版本目标)
-  - [3.2 功能范围](#32-功能范围)
-  - [3.3 技术栈](#33-技术栈)
-  - [3.4 不包含的内容](#34-不包含的内容)
-- [4 v0.2 — {版本代号2}](#4-v02--版本代号2)
-  - [4.1 版本目标](#41-版本目标)
-  - [4.2 新增功能范围](#42-新增功能范围)
-  - [4.3 新增技术栈](#43-新增技术栈)
-  - [4.4 不包含的内容](#44-不包含的内容)
-- [5 v0.3 — {版本代号3}](#5-v03--版本代号3)
-  - [5.1 版本目标](#51-版本目标)
-  - [5.2 新增功能范围](#52-新增功能范围)
-  - [5.3 新增技术栈](#53-新增技术栈)
-- [6 v0.4 — {版本代号4}](#6-v04--版本代号4)
-  - [6.1 版本目标](#61-版本目标)
-  - [6.2 新增功能范围](#62-新增功能范围)
-  - [6.3 新增技术栈](#63-新增技术栈)
-- [7 版本对比矩阵](#7-版本对比矩阵)
+- [2 Version Plan Overview](#2-version-plan-overview)
+- [3 v0.1 — Baseline Design Docs](#3-v01--baseline-design-docs)
+  - [3.1 Objective](#31-objective)
+  - [3.2 Scope](#32-scope)
+  - [3.3 Tech Stack](#33-tech-stack)
+  - [3.4 Out of Scope](#34-out-of-scope)
+- [4 v0.2 — Frontend Only (Hardcoded Data)](#4-v02--frontend-only-hardcoded-data)
+  - [4.1 Objective](#41-objective)
+  - [4.2 Added Scope](#42-added-scope)
+  - [4.3 Added Tech Stack](#43-added-tech-stack)
+  - [4.4 Out of Scope](#44-out-of-scope)
+- [5 v0.3.1 — Technical Design Completed](#5-v031--technical-design-completed)
+  - [5.1 Objective](#51-objective)
+  - [5.2 Added Scope](#52-added-scope)
+  - [5.3 Added Tech Stack](#53-added-tech-stack)
+  - [5.4 Out of Scope](#54-out-of-scope)
+- [6 v0.3.2 — Backend Implementation](#6-v032--backend-implementation)
+  - [6.1 Objective](#61-objective)
+  - [6.2 Added Scope](#62-added-scope)
+  - [6.3 Added Tech Stack](#63-added-tech-stack)
+  - [6.4 Out of Scope](#64-out-of-scope)
+- [7 v0.4 — Three-Tier Integration](#7-v04--three-tier-integration)
+  - [7.1 Objective](#71-objective)
+  - [7.2 Added Scope](#72-added-scope)
+  - [7.3 Added Tech Stack](#73-added-tech-stack)
+  - [7.4 Out of Scope](#74-out-of-scope)
+- [8 v0.5 — Pipelines & Daemons](#8-v05--pipelines--daemons)
+  - [8.1 Objective](#81-objective)
+  - [8.2 Added Scope](#82-added-scope)
+  - [8.3 Added Tech Stack](#83-added-tech-stack)
+  - [8.4 Out of Scope](#84-out-of-scope)
+- [9 v0.6 — Platform Integration](#9-v06--platform-integration)
+  - [9.1 Objective](#91-objective)
+  - [9.2 Added Scope](#92-added-scope)
+  - [9.3 Added Tech Stack](#93-added-tech-stack)
+  - [9.4 Out of Scope](#94-out-of-scope)
+- [10 v0.7 – v0.8 — Reserve](#10-v07--v08--reserve)
+- [11 v1.0 — First Official Release](#11-v10--first-official-release)
+- [12 Version Comparison Matrix](#12-version-comparison-matrix)
 - [Change Log](#change-log)
 
 ---
 
-## 2 版本规划总览
+## 2 Version Plan Overview
 
-| 版本 | 代号 | 版本目标（一句话） | 主要交付物 | 状态 |
-|------|------|------------------|-----------|------|
-| `v0.1` | {纯前端（硬编码数据）} | {搭出全部页面骨架，数据全部硬编码} | {前端包 + n 个页面 + 路由} | {🟢 已完成 / 🟡 进行中 / ⚪ 未开始} |
-| `v0.2` | {后端 API + 硬编码数据} | {后端服务与全部端点就位，返回 mock 数据；前端接入 API} | {后端服务 + n 个端点 + 前端 API 客户端层 + API 调试页} | {⚪ 未开始} |
-| `v0.3` | {接入数据库} | {端点实现真实业务逻辑，数据落库} | {建库脚本 + 迁移脚本 + 样例数据 + Repository 实现} | {⚪ 未开始} |
-| `v0.4` | {数据迁移} | {把老系统数据迁入本组件数据库} | {迁移工具 + 校验报告} | {⚪ 未开始} |
-| `v0.5` | {后台程序 A} | {实现 {daemon A}} | {daemon 可执行程序} | {⚪ 未开始} |
-| `v0.6` | {后台程序 B} | {实现 {daemon B}} | {daemon 可执行程序} | {⚪ 未开始} |
-| `v1.0` | {首次集成} | {前端、后端、数据库完整打通，可做组件内集成测试} | {可运行的完整组件} | {⚪ 未开始} |
+| Version | Code Name | Goal in One Line | Status |
+|---------|-----------|------------------|--------|
+| `v0.1` | Baseline Design Docs | {Design documents and page UI mockups complete} | {🟢/🟡/🔴/⚪} |
+| `v0.2` | Frontend Only (Hardcoded Data) | {Every page clickable end to end on hardcoded data} | {🟢/🟡/🔴/⚪} |
+| `v0.3.1` | Technical Design Completed | {Backend technical design and frontend API integration design complete} | {🟢/🟡/🔴/⚪} |
+| `v0.3.2` | Backend Implementation | {Backend, database and deployment scripts implemented in one pass} | {🟢/🟡/🔴/⚪} |
+| `v0.4` | Three-Tier Integration | {Frontend, backend and database wired together and tested} | {🟢/🟡/🔴/⚪} |
+| `v0.5` | Pipelines & Daemons | {Data / compute pipelines and daemons implemented} | {🟢/🟡/🔴/⚪} |
+| `v0.6` | Platform Integration | {Component integrated end to end with the platform framework} | {🟢/🟡/🔴/⚪} |
+| `v0.7` – `v0.8` | Reserve | {Mid-course features, requirement changes, refactoring} | {🟢/🟡/🔴/⚪} |
+| `v1.0` | First Official Release | {First official release} | {🟢/🟡/🔴/⚪} |
 
-> **状态色标**：🟢 已完成 | 🟡 部分完成 | 🔴 未实现（但按计划应已实现） | ⚪ 计划外 / 未开始
+> **Status legend**: 🟢 Done | 🟡 Partial | 🔴 Not Implemented (but planned to be done by now) | ⚪ Out of Scope / Not Started
 >
-> 状态列由 ai_dev/02_DevPlanAndReport 的 `v{版本}_DevReport.md` 结论回填，不要手工臆测。
+> The Status column is filled in from the conclusions of `v{version}_DevReport.md` under
+> `ai_dev/02_DevPlanAndReport`. Never guess it by hand.
 
 ---
 
-## 3 v0.1 — {版本代号1}
+## 3 v0.1 — Baseline Design Docs
 
-### 3.1 版本目标
+### 3.1 Objective
 
-{一到三段说明本版本要达成什么状态、验收标准是什么。例如："搭建 {component_code_name} 前端包，
-实现 uiux 文档中定义的全部 {n} 个页面与 {m} 条路由。所有数据来自前端硬编码 mock，
-不调用任何后端接口。验收标准：unified_portal 菜单可进入本组件全部页面，页面交互（筛选、排序、
-翻页、跳转）在本地 mock 数据上完整可用。"}
+{Produce the complete set of baseline design documents for this component, so that the frontend work
+in v0.2 can start from a specification rather than from imagination. No source code is written in
+this version.}
 
-### 3.2 功能范围
+### 3.2 Scope
 
-| # | 功能项 | 对应文档章节 | 说明 |
-|---|-------|-------------|------|
-| 1 | {P01 {页面名}} | `{component_code_name}_uiux.md` §3.1 | {说明} |
-| 2 | {P02 {页面名}} | `{component_code_name}_uiux.md` §3.2 | {说明} |
-| 3 | {路由注册（n 条）} | `{component_code_name}_uiux.md` §4 | {说明} |
-| 4 | {TypeScript 类型定义} | `{component_code_name}_tech_design.md` §2 | {C/E/I 前缀，见 naming_convention.md §3} |
-| 5 | {Mock 数据} | — | {数据取自 ui_page_design/P{nn}/code.html 中的示例数据} |
-| 6 | {状态管理 store} | `uiux_design_specification.md` §8 | {one-store-per-entity + uiStore} |
+| # | Deliverable | Detail |
+|---|-------------|--------|
+| 1 | Product / business documentation | `{component_code_name}_business_desc.md` complete: component overview, key concepts, business objects and their attributes, business process |
+| 2 | Backend technical design — **entity definitions only** | `{component_code_name}_tech_design.md` §2 contains the entity (class) definitions and enum definitions **only**. Nothing else in the backend design is written yet. |
+| 3 | Frontend UI/UX document — main content | `{component_code_name}_uiux.md` complete for: page flow diagram, page list, navigation menu, page-object mapping, and the layout / elements / behaviours of every page |
+| 4 | Page UI design | Under `ui_page_design/`, **every page has its own `.html` and `.png`** — `P{nn}  {PageName}/code.html` plus `P{nn}  {PageName}/screen.png` |
+| 5 | Diagrams | `{component_code_name}_business_process.mmd` + `.png`, `{component_code_name}_class_diagram.mmd` + `.png`, `ui_page_design/{component_code_name}_page_flow.mmd` + `.png` |
 
-### 3.3 技术栈
+### 3.3 Tech Stack
 
-| 类别 | 选型 | 版本 | 说明 |
-|------|------|------|------|
-| 前端框架 | {React} | {18.x} | 版本锁定，见 [technical_overview.md §5.2](../../technical_overview.md) |
-| 构建工具 | {Vite} | {5.x} | |
-| UI 组件库 | {Ant Design} | {5.x} | |
-| 状态管理 | {Zustand} | {4.x} | |
-| 语言 | {TypeScript} | {5.x} | |
+| Item | Value |
+|------|-------|
+| Documentation format | Markdown, per `templates/` |
+| Diagrams | Mermaid (`.mmd`) rendered to `.png`, per `templates/mermaid/mmd_style_guide.md` |
+| Page mockups | {HTML mockup tool, e.g. Google Stitch} → `code.html` + `screen.png` |
 
-### 3.4 不包含的内容
+### 3.4 Out of Scope
 
-> ⚠️ 以下为 v0.1 **红线**，AI 开发者不得越界实现。
+> **Hard constraints for v0.1 — none of the following may be produced in this version:**
 
-| # | 不包含 | 原因 / 归属版本 |
-|---|-------|----------------|
-| 1 | 任何后端 API 调用 | 归属 v0.2 |
-| 2 | 数据库访问 | 归属 v0.3 |
-| 3 | 用户登录与权限控制 | 归属 {unified_portal / v0.x} |
-| 4 | 响应式设计 | 见 uiux_design_specification.md §14，全平台不做 |
-| 5 | 性能优化（lazy load / React.memo / code split） | 见 uiux_design_specification.md §15，全平台不做 |
-| 6 | 自动化测试 | 见 uiux_design_specification.md §17 |
-| 7 | 国际化（i18n）实现 | {归属版本} |
-| 8 | {其他红线} | {原因} |
+| # | Explicitly Not Done | Why |
+|---|--------------------|-----|
+| 1 | Any source code | This is a documentation-only version |
+| 2 | Backend class design, database design, API design | Only entity definitions belong in v0.1; the rest lands in v0.3.1 |
+| 3 | The design of how each frontend feature calls the backend API | Lands in v0.3.1 |
+| 4 | `deployment/` directory and any script | Lands in v0.2 |
+| 5 | {Other items this component deliberately defers} | {Reason} |
 
 ---
 
-## 4 v0.2 — {版本代号2}
+## 4 v0.2 — Frontend Only (Hardcoded Data)
 
-### 4.1 版本目标
+### 4.1 Objective
 
-{说明。例如："实现后端服务骨架与全部 REST 端点，端点返回硬编码 mock 数据；
-前端新增 API 客户端层与数据钩子层，全部页面由 mock 数据切换为调用后端 API；
-新增 API 调试页用于验证全部端点。"}
+{Build the complete frontend of this component against hardcoded data, so that every page and every
+navigation path defined in the UI/UX document can be clicked through and reviewed before any backend
+exists.}
 
-### 4.2 新增功能范围
+### 4.2 Added Scope
 
-| # | 功能项 | 对应文档章节 | 说明 |
-|---|-------|-------------|------|
-| 1 | {后端服务骨架（handler/service/repository/model 四层）} | `{component_code_name}_tech_design.md` §{n} | {说明} |
-| 2 | {全部 {n} 个 API 端点（返回 mock 数据）} | `{component_code_name}_tech_design.md` §5 | {说明} |
-| 3 | {前端 API 客户端层 `services/api.ts`} | `{component_code_name}_uiux.md` §5 | {统一封装，页面内不直接发请求} |
-| 4 | {前端数据钩子层 `hooks/`} | — | {说明} |
-| 5 | {P{nn} API 调试页} | `{component_code_name}_uiux.md` §3.{n} | {覆盖本模块全部端点，含跨模块调用分组} |
+| # | Deliverable | Detail |
+|---|-------------|--------|
+| 1 | Frontend package | `src/frontend/packages/{component-code-name}/` — all pages listed in `{component_code_name}_uiux.md` §2.1 |
+| 2 | Routing | All routes from `{component_code_name}_uiux.md` §4 registered and reachable |
+| 3 | Type definitions | `src/models/` — TypeScript types derived from the entity definitions in `{component_code_name}_tech_design.md` §2 |
+| 4 | Hardcoded data | `src/mock/` — sample data taken from the `code.html` mockups produced in v0.1 |
+| 5 | State management | `src/stores/` — {one store per entity plus a UI store} |
+| 6 | `deployment/` directory | Created in this version, with the frontend one-click scripts below |
+| 7 | One-click frontend scripts | `build-all-frontend` — build every frontend package<br>`start-frontend` — start the frontend services<br>`kill-frontend` — stop the frontend services |
+| 8 | README commands | `README.md` documents the three commands above so a reviewer can run the frontend in one shot |
 
-### 4.3 新增技术栈
+### 4.3 Added Tech Stack
 
-| 类别 | 选型 | 版本 | 说明 |
-|------|------|------|------|
-| 后端语言 | {Go} | {1.25.x} | 见 [technical_overview.md §5.1](../../technical_overview.md) |
-| Web 框架 | {Gin} | {1.x} | |
-| 配置管理 | {Viper} | {1.x} | |
-| CORS | {gin-contrib/cors} | {latest} | |
+| Item | Value | Note |
+|------|-------|------|
+| Frontend framework | {e.g. React 18.x} | Version locked by `technical_overview.md` §5.2 |
+| Build tool | {e.g. Vite 5.x} | |
+| State management | {e.g. Zustand} | |
+| Script shell | {e.g. bash / PowerShell} | For the `deployment/` one-click scripts |
 
-### 4.4 不包含的内容
+### 4.4 Out of Scope
 
-| # | 不包含 | 原因 / 归属版本 |
-|---|-------|----------------|
-| 1 | 数据库连接与真实持久化 | 归属 v0.3 |
-| 2 | {daemon 后台程序} | 归属 v0.{n} |
-| 3 | {其他} | {原因} |
+> **Hard constraints for v0.2 — none of the following may be produced in this version:**
 
----
-
-## 5 v0.3 — {版本代号3}
-
-### 5.1 版本目标
-
-{说明。例如："接入 PostgreSQL，端点实现真实业务逻辑；提供建库脚本、迁移脚本与样例数据脚本；
-Repository 层由 mock 实现替换为 ORM 实现。"}
-
-### 5.2 新增功能范围
-
-| # | 功能项 | 对应文档章节 | 说明 |
-|---|-------|-------------|------|
-| 1 | {建库脚本 `init_databases.sql`} | `{component_code_name}_tech_design.md` §{n} | {说明} |
-| 2 | {迁移脚本 `sql/migrations/`} | 同上 | {golang-migrate} |
-| 3 | {样例数据脚本 `sample_data.sql`} | — | {关联键对照表见开发计划} |
-| 4 | {Repository ORM 实现} | 同上 | {说明} |
-| 5 | {Service 层真实业务逻辑} | 同上 | {说明} |
-| 6 | {Handler 层输入验证} | `{component_code_name}_tech_design.md` 附录 输入验证规则 | {说明} |
-| 7 | {动态表创建与表名白名单校验} | 同上 | {防注入，见 technical_overview.md §4.4} |
-
-### 5.3 新增技术栈
-
-| 类别 | 选型 | 版本 | 说明 |
-|------|------|------|------|
-| 数据库 | {PostgreSQL} | {17.x} | |
-| ORM | {GORM} | {2.x} | + `gorm/driver/postgres` |
-| 迁移工具 | {golang-migrate} | {4.x} | |
+| # | Explicitly Not Done | Why |
+|---|--------------------|-----|
+| 1 | Any backend code or API call | The frontend reads `src/mock/` only |
+| 2 | Database of any kind | Lands in v0.3.2 |
+| 3 | Backend one-click scripts, build-all / start-all / kill-all | Land in v0.3.2 |
+| 4 | Responsive layout | {Desktop only in this project} |
+| 5 | Performance tuning (lazy loading, memoization, code splitting) | Deliberately deferred; do not introduce it on your own |
+| 6 | Automated tests | {Deferred to v0.4} |
+| 7 | Login / authentication | Handled by the platform portal, integrated in v0.6 |
 
 ---
 
-## 6 v0.4 — {版本代号4}
+## 5 v0.3.1 — Technical Design Completed
 
-### 6.1 版本目标
+### 5.1 Objective
 
-{说明。例如："将 {老系统名} 的历史数据迁移到本组件的 PostgreSQL 数据库。"}
+{Complete every remaining part of the technical design, so that v0.3.2 can implement the whole
+backend in a single pass without any open design question.}
 
-### 6.2 新增功能范围
+### 5.2 Added Scope
 
-| # | 功能项 | 对应文档章节 | 说明 |
-|---|-------|-------------|------|
-| 1 | {迁移工具} | `old_projects_migration/{old_system}_migration_plan.md` | {dry-run / 正式 / 仅校验 三种模式} |
-| 2 | {数据映射实现} | 同上 §4 | {说明} |
-| 3 | {迁移校验报告} | 同上 §7 | {行数比对 + 抽样比对} |
+| # | Deliverable | Detail |
+|---|-------------|--------|
+| 1 | Class design | `{component_code_name}_tech_design.md` §2 extended beyond entities: full class definitions, responsibilities, member constraints, cross-module reference classes |
+| 2 | Database design | §4 — every table, column, type, constraint and index; dynamic sharded table templates and their creation timing; `{component_code_name}_db_schema.mmd` + `.png` |
+| 3 | Remaining backend logic | §3 — programs / services / daemons of this component, their responsibilities, main loops, retry rules and known limitations |
+| 4 | Standard CRUD API design | §5 — for every business object: list, get, create, update, delete; request parameters, examples, responses, error codes, writable-field scope |
+| 5 | Special query structure design | §5 — non-CRUD endpoints: aggregations, statistics, batch operations, cross-table queries; and the SQL expression mapping for any JSONB sub-field used in sorting or filtering |
+| 6 | API diagram | `{component_code_name}_api.mmd` + `.png` |
+| 7 | Frontend API integration design | `{component_code_name}_uiux.md` extended: for **every feature on every page**, which endpoint it calls with which parameters, and what it does with the response — the `Page Behaviors` table Action column now carries concrete REST endpoints |
 
-### 6.3 新增技术栈
+### 5.3 Added Tech Stack
 
-| 类别 | 选型 | 版本 | 说明 |
-|------|------|------|------|
-| {迁移工具语言} | {Go / Python} | {版本} | {说明} |
-| {源库驱动} | {MySQL driver} | {版本} | {说明} |
+| Item | Value | Note |
+|------|-------|------|
+| API contract format | {e.g. OpenAPI 3.x} | Contract file location per `project_directory_plan.md` §4.4 |
+| Database | {e.g. PostgreSQL 17.x} | Design only in this version; nothing is created yet |
 
-> 按版本数量继续重复 `## n v0.x — {版本代号}` 小节。
-> v0.2 之后的每个版本固定三个子节（版本目标 / 新增功能范围 / 新增技术栈），
-> 有红线时再加"不包含的内容"。
+### 5.4 Out of Scope
+
+> **Hard constraints for v0.3.1 — none of the following may be produced in this version:**
+
+| # | Explicitly Not Done | Why |
+|---|--------------------|-----|
+| 1 | Any backend source code | This is a documentation-only version; implementation is v0.3.2 |
+| 2 | Any database object | Scripts are written in v0.3.2 |
+| 3 | Changing the frontend to call real APIs | The frontend stays on `src/mock/` until v0.4 |
 
 ---
 
-## 7 版本对比矩阵
+## 6 v0.3.2 — Backend Implementation
 
-| 功能 / 能力 | v0.1 | v0.2 | v0.3 | v0.4 | v0.5 | v1.0 |
-|------------|------|------|------|------|------|------|
-| 前端页面（P01–P{nn}） | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 前端 mock 数据 | ✅ | — | — | — | — | — |
-| 前端调用后端 API | — | ✅ | ✅ | ✅ | ✅ | ✅ |
-| API 调试页 | — | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 后端 REST 端点 | — | ✅（mock） | ✅（真实） | ✅ | ✅ | ✅ |
-| 数据库持久化 | — | — | ✅ | ✅ | ✅ | ✅ |
-| 历史数据迁移 | — | — | — | ✅ | ✅ | ✅ |
-| {daemon A} | — | — | — | — | ✅ | ✅ |
-| 用户登录控制 | — | — | — | — | — | ✅ |
-| 组件内集成测试 | — | — | — | — | — | ✅ |
+### 6.1 Objective
 
-> **图例**：✅ 本版本具备 | — 本版本不具备 | ⚪ 计划外
+{Implement, in a single pass, everything specified in the backend technical design completed in
+v0.3.1 — plus the database initialisation scripts and the full deployment tooling.}
+
+### 6.2 Added Scope
+
+| # | Deliverable | Detail |
+|---|-------------|--------|
+| 1 | API contract definitions | {e.g. `src/apis/{component_code_name}/openapi.yaml`} — every endpoint from §5 |
+| 2 | Backend class implementation | `internal/model/`, `internal/enum/` — the classes and enums from §2 |
+| 3 | Backend database access | `internal/repository/` — data access for every table in §4 |
+| 4 | Backend service encapsulation | `internal/service/` + `internal/handler/` — the business logic and HTTP layer for every endpoint in §5 |
+| 5 | Schema init script | `sql/init_schema.sql` — create database and tables |
+| 6 | Data init script | `sql/init_data.sql` — the reference / lookup data the system needs to run |
+| 7 | Demo data script | `sql/demo_data.sql` — sample rows for development and review |
+| 8 | One-click backend scripts | `build-all-backend`, `start-backend`, `kill-backend` in `deployment/` |
+| 9 | One-click global scripts | `build-all`, `start-all`, `kill-all` in `deployment/` — frontend plus backend in one command |
+| 10 | README commands **replaced** | `README.md` switches from the frontend-only commands to `build-all` / `start-all` / `kill-all`, so a user can bring the whole system up in one shot |
+| 11 | Ubuntu provisioning script | `deployment/` gains a provisioning script for Ubuntu. The database is provided at the **operating-system level** by default; every product module is built as a **Docker image**. |
+
+### 6.3 Added Tech Stack
+
+| Item | Value | Note |
+|------|-------|------|
+| Backend language | {e.g. Go 1.25.x} | Version locked by `technical_overview.md` §5.1 |
+| Web framework | {e.g. Gin 1.x} | |
+| ORM | {e.g. GORM 2.x} | |
+| Database | {e.g. PostgreSQL 17.x} | Provided at OS level by the Ubuntu provisioning script |
+| Migration tool | {e.g. golang-migrate} | |
+| Containerisation | {e.g. Docker} | Every product module ships as an image |
+
+### 6.4 Out of Scope
+
+> **Hard constraints for v0.3.2 — none of the following may be produced in this version:**
+
+| # | Explicitly Not Done | Why |
+|---|--------------------|-----|
+| 1 | Changing the frontend to call the real backend | That is exactly what v0.4 is for |
+| 2 | Pipelines / daemons | Land in v0.5 |
+| 3 | Integration with the platform framework and portal | Lands in v0.6 |
+| 4 | Performance tuning and load testing | {Deferred} |
+
+---
+
+## 7 v0.4 — Three-Tier Integration
+
+### 7.1 Objective
+
+{Wire the frontend, the backend and the database together and test the component end to end. This is
+the first fully runnable version of the component.}
+
+### 7.2 Added Scope
+
+| # | Deliverable | Detail |
+|---|-------------|--------|
+| 1 | Frontend API client | `src/services/api.ts` — every endpoint the pages need, wrapped in one place |
+| 2 | Pages switched to real data | Every page reads from the API; `src/mock/` is no longer referenced by production code |
+| 3 | API debug page | A page that exercises every endpoint of this component, for development and troubleshooting |
+| 4 | Integration testing | Every business function in `{component_code_name}_business_desc.md` §4 verified against the running three-tier stack |
+| 5 | Defect fixing | Issues found during integration recorded and fixed per `ai_dev/04_DebugFix` |
+
+### 7.3 Added Tech Stack
+
+| Item | Value | Note |
+|------|-------|------|
+| HTTP client | {e.g. axios / fetch wrapper} | |
+| Test approach | {e.g. manual walkthrough plus service-layer unit tests} | |
+
+### 7.4 Out of Scope
+
+| # | Explicitly Not Done | Why |
+|---|--------------------|-----|
+| 1 | Pipelines / daemons | Land in v0.5 |
+| 2 | Cross-component calls and portal integration | Land in v0.6 |
+
+---
+
+## 8 v0.5 — Pipelines & Daemons
+
+> **Applicability**: keep this section even if the component has no pipeline or daemon — write
+> "Not applicable to this component" under Scope rather than deleting and renumbering the sections.
+
+### 8.1 Objective
+
+{Implement the data pipelines, compute pipelines and daemons of this component. The technical design
+document comes first, then development and testing.}
+
+### 8.2 Added Scope
+
+| # | Deliverable | Detail |
+|---|-------------|--------|
+| 1 | Pipeline / daemon technical design | One design document per program under `sub_{program}/`, per `templates/component/_sub_module_design.md` — **written and reviewed before any code** |
+| 2 | Implementation | {The daemon / pipeline programs themselves} |
+| 3 | Scheduling and triggering | {How each program is started, its interval or trigger strategy, and its failure-retry rules} |
+| 4 | Monitoring | {Run-state reporting so the component's monitoring page can display it} |
+| 5 | Testing | {Each program tested against real data} |
+| 6 | Deployment scripts extended | `deployment/` gains build / start / kill for the daemons, folded into `build-all` / `start-all` / `kill-all` |
+
+### 8.3 Added Tech Stack
+
+| Item | Value | Note |
+|------|-------|------|
+| {Scheduler / queue} | {version} | {purpose} |
+
+### 8.4 Out of Scope
+
+| # | Explicitly Not Done | Why |
+|---|--------------------|-----|
+| 1 | Writing code before the design document exists | The design-first rule is not negotiable |
+| 2 | Platform-level orchestration | Lands in v0.6 |
+
+---
+
+## 9 v0.6 — Platform Integration
+
+### 9.1 Objective
+
+{Integrate this component, together with its pipelines, into the platform framework end to end.}
+
+### 9.2 Added Scope
+
+| # | Deliverable | Detail |
+|---|-------------|--------|
+| 1 | Portal integration | All routes of this component mounted into the platform portal; the navigation menu from `{component_code_name}_uiux.md` §2.2 wired up |
+| 2 | Authentication and authorization | The component's pages and APIs respect the platform login state |
+| 3 | Cross-component calls | Endpoints this component consumes from, or exposes to, other components verified against `technical_overview.md` §4.1 |
+| 4 | Pipeline orchestration | {The component's pipelines driven by the platform orchestrator} |
+| 5 | End-to-end walkthrough | The platform-level business process in `business_overview.md` §2 walked through with this component in place |
+
+### 9.3 Added Tech Stack
+
+| Item | Value | Note |
+|------|-------|------|
+| {Auth mechanism} | {version} | {purpose} |
+| {Gateway / orchestrator} | {version} | {purpose} |
+
+### 9.4 Out of Scope
+
+| # | Explicitly Not Done | Why |
+|---|--------------------|-----|
+| 1 | {Items deliberately deferred to v0.7 – v0.8} | {Reason} |
+
+---
+
+## 10 v0.7 – v0.8 — Reserve
+
+These two slots are reserve capacity. They are typically used for:
+
+| # | Typical Use | Note |
+|---|-------------|------|
+| 1 | Features added mid-course | Features that were not in the original plan but are needed before the official release |
+| 2 | Requirement changes | Reworking behaviour that v0.1 – v0.6 already delivered |
+| 3 | Code refactoring | Structural cleanups that do not change behaviour |
+| 4 | Hardening | {Bug fixing, edge cases, error handling, logging} |
+
+> Whenever a reserve slot is used, add a subsection here recording **what was done, why, and which
+> earlier documents were revised as a result**. Anything that changes an earlier version's scope must
+> be written back into that version's section, not only recorded here.
+
+| Version | Used For | Date | Documents Revised |
+|---------|----------|------|-------------------|
+| `v0.7` | {What it was used for, or "Not used"} | {YYYY-MM-DD} | {Documents that had to be updated} |
+| `v0.8` | {What it was used for, or "Not used"} | {YYYY-MM-DD} | {Documents that had to be updated} |
+
+---
+
+## 11 v1.0 — First Official Release
+
+### 11.1 Objective
+
+{First official release of the component as part of the platform.}
+
+### 11.2 Release Checklist
+
+| # | Item | Criterion | Status |
+|---|------|-----------|--------|
+| 1 | Documentation complete | Every design document at its final version, no `{placeholder}` and no "To Be Completed" markers left | {🟢/🟡/🔴} |
+| 2 | Feature complete | Every business function in `business_desc.md` §4 implemented and verified | {🟢/🟡/🔴} |
+| 3 | No P1 issues | No blocking issue left open in the latest `v{version}_DevReport.md` | {🟢/🟡/🔴} |
+| 4 | Deployment reproducible | `build-all` / `start-all` / `kill-all` work on a clean machine using the Ubuntu provisioning script | {🟢/🟡/🔴} |
+| 5 | Data initialisation | Schema init, data init and demo data scripts all run successfully on a fresh database | {🟢/🟡/🔴} |
+| 6 | `VERSION` files updated | Every `VERSION` file of this component set to the release version | {🟢/🟡/🔴} |
+
+---
+
+## 12 Version Comparison Matrix
+
+| Capability | v0.1 | v0.2 | v0.3.1 | v0.3.2 | v0.4 | v0.5 | v0.6 | v1.0 |
+|-----------|------|------|--------|--------|------|------|------|------|
+| Business / product documentation | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Backend entity definitions | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Full backend technical design | — | — | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Frontend UI/UX document (main content) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Frontend API integration design | — | — | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Page UI design (`.html` + `.png` per page) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Frontend pages runnable | — | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Frontend data source | — | mock | mock | mock | API | API | API | API |
+| Backend service | — | — | — | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Database | — | — | — | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Frontend one-click scripts | — | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Backend one-click scripts | — | — | — | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `build-all` / `start-all` / `kill-all` | — | — | — | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Ubuntu provisioning + Docker images | — | — | — | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Three-tier integration tested | — | — | — | — | ✅ | ✅ | ✅ | ✅ |
+| Pipelines / daemons | — | — | — | — | — | ✅ | ✅ | ✅ |
+| Platform framework integration | — | — | — | — | — | — | ✅ | ✅ |
+| Login / authentication | — | — | — | — | — | — | ✅ | ✅ |
+
+> **Legend**: ✅ present in this version | — not present in this version | ⚪ out of scope
 >
-> 本矩阵是跨版本一致性检查的抓手：`v{版本}_DevReport.md` 会逐格核对代码实现状态。
+> This matrix is the handle for cross-version consistency checking: `v{version}_DevReport.md` walks
+> it cell by cell against the actual code.
 
 ---
 
 ## Change Log
 
-| 版本 | 日期 | 变更内容 |
-|------|------|---------|
-| {x.y.z} | {YYYY-MM-DD} | {变更说明；若源于 review 或进度偏差，标注条目 ID} |
-
-> Change Log 按**倒序**排列（最新在上）。
-> 若实际开发顺序与本文规划发生偏差（例如后端直接从 v0.2 跳到 v0.3、前端滞留 v0.1），
-> 必须在此记录偏差并说明处理方式，不要静默修改历史规划。
+| Version | Date | Author | Description |
+|---------|------|--------|-------------|
+| {x.y.z} | {YYYY-MM-DD} | {Author} | {Change description} |
