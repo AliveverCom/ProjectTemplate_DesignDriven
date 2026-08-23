@@ -1,0 +1,137 @@
+%% ===== 模板说明（使用时整块删除）=====
+%% 图表用途：类定义图。展示本模块的业务实体类、值对象、枚举，以及跨模块引用的类。
+%% 存放目录：docs/components/{component_code_name}/
+%% 文件命名：{component_code_name}_class_diagram.mmd；PNG 与 .mmd 同名同目录。
+%% 渲染命令：mmdc -i {component_code_name}_class_diagram.mmd \
+%%                -o {component_code_name}_class_diagram.png -b white -s 3
+%% 引用位置：{component}_tech_design.md §2.1 Class Diagram
+%% 样式规范：见 templates/mermaid/mmd_style_guide.md
+%%           ① 白色画布 ② 类框按类型归类着浅色 ③ 全部文字为黑色
+%% 使用提示：
+%%   - 类名（CBaseObject / CObjectA / EObjectStatus …）请改成真实类名，
+%%     类名中**不要**出现花括号占位符，否则 mermaid 解析失败。
+%%   - 注解 <<...>> 中同样不要使用花括号。
+%%   - 每个类都必须出现在文件末尾的 style 归类语句中。
+%% -
+%% ⚠ 重要（已实测，mermaid v11.16）：classDiagram **不支持** classDef / cssClass / :::
+%%   这三种写法不会报错，但会被静默忽略，结果所有类框都是同一个主题色。
+%%   classDiagram 唯一生效的着色方式是每个类一条 `style 类名 fill:...,stroke:...,color:#000000`。
+%%   （flowchart / graph 则相反，用 classDef + ::: 即可。）
+%% ======================================
+%% -
+%% ===== 归属声明（必写，替换为真实内容后保留）=====
+%% 本模块（{component_code_name}）权威定义的类型：
+%%   - CObjectA、CObjectB、CValueObject、EObjectStatus
+%% 跨模块引用、仅为展示继承/关联关系而画出的类型：
+%%   - CBaseObject  —— 抽象基类，权威定义在 common_lib，见 common_lib_class_diagram.mmd
+%%   - CRefObject   —— 普通实体，权威定义在 other_module，见 other_module_class_diagram.mmd
+%% 引用类不得在本模块修改；若需变更字段，必须先改权威模块并同步所有引用处。
+%% -
+%% ===== 配色含义（classDiagram 不支持 subgraph 图例，故以注释说明）=====
+%%   浅蓝 #E3F2FD baseCls   —— 抽象基类
+%%   浅绿 #E8F5E9 entityCls —— 本模块业务实体类
+%%   浅青 #E0F7FA valueCls  —— 值对象 / 嵌套结构（JSONB 等）
+%%   浅黄 #FFF9C4 enumCls   —— 枚举
+%%   浅灰 #F5F5F5 refCls    —— 跨模块引用的普通实体（非本模块权威定义）
+%% 归类优先级：抽象基类即使来自 common_lib 也保持浅蓝 baseCls，
+%%   其"外来"身份由注解 <<abstract - ref: common_lib>> 标明；
+%%   浅灰 refCls 只用于非基类的跨模块引用。
+%% ======================================
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "background": "#FFFFFF",
+    "primaryColor": "#E3F2FD",
+    "primaryTextColor": "#000000",
+    "primaryBorderColor": "#1565C0",
+    "lineColor": "#333333",
+    "textColor": "#000000",
+    "titleColor": "#000000",
+    "classText": "#000000",
+    "clusterBkg": "#FAFAFA",
+    "clusterBorder": "#CCCCCC",
+    "edgeLabelBackground": "#FFFFFF",
+    "fontFamily": "Arial, sans-serif",
+    "fontSize": "13px"
+  }
+}}%%
+
+classDiagram
+    direction TB
+
+    %% ========== 抽象基类（跨模块引用，权威定义在 common_lib）==========
+    class CBaseObject {
+        <<abstract - ref: common_lib>>
+        +int object_id  PK auto-increment
+        +string display_name  NOT NULL UNIQUE
+        +string code_name  NOT NULL UNIQUE
+        +string description = ""
+        +bool is_active = true
+        +datetime? deleted_at
+        +datetime created_at = NOW()
+        +datetime updated_at = NOW()
+    }
+
+    %% ========== 本模块业务实体类 ==========
+    class CObjectA {
+        +EObjectStatus status  NOT NULL
+        +CValueObject metrics  NOT NULL
+        +string? optional_field
+        +string[] tag_list
+        +int retry_count = 0
+        +validate() bool
+        +toDTO() CObjectADTO
+    }
+
+    class CObjectB {
+        +int object_b_id  PK auto-increment
+        +int object_a_id  FK NOT NULL
+        +string title  NOT NULL
+        +datetime? processed_at
+        +datetime created_at = NOW()
+    }
+
+    %% ========== 值对象 / 嵌套结构（以 JSONB 落库）==========
+    class CValueObject {
+        <<value object>>
+        +int metric_one = -1
+        +int metric_two = -1
+        +int metric_three = -1
+    }
+
+    %% ========== 枚举（本模块权威定义）==========
+    class EObjectStatus {
+        <<enumeration>>
+        PLANNED
+        RUNNING
+        SUCCEEDED
+        FAILED
+        CANCELED
+    }
+
+    %% ========== 跨模块引用类（仅为补全关系而展示）==========
+    class CRefObject {
+        <<ref: other_module>>
+        +int ref_id  PK
+        +string code_name  NOT NULL UNIQUE
+    }
+
+    %% ========== 关系 ==========
+    CBaseObject <|-- CObjectA : 继承
+    CObjectA "1" --> "0..*" CObjectB : 一个 A 拥有多条 B
+    CObjectA "1" *-- "1" CValueObject : 组合（JSONB 内嵌）
+    CObjectA ..> EObjectStatus : 使用
+    CObjectB "0..*" --> "1" CRefObject : 跨模块关联
+
+    %% ========== 分类着色（每个类一条 style，按分类分组，不得遗漏任何类）==========
+    %% ----- baseCls 抽象基类：浅蓝 -----
+    style CBaseObject   fill:#E3F2FD,stroke:#1565C0,color:#000000
+    %% ----- entityCls 本模块业务实体类：浅绿 -----
+    style CObjectA      fill:#E8F5E9,stroke:#2E7D32,color:#000000
+    style CObjectB      fill:#E8F5E9,stroke:#2E7D32,color:#000000
+    %% ----- valueCls 值对象 / 嵌套结构：浅青 -----
+    style CValueObject  fill:#E0F7FA,stroke:#00838F,color:#000000
+    %% ----- enumCls 枚举：浅黄 -----
+    style EObjectStatus fill:#FFF9C4,stroke:#F9A825,color:#000000
+    %% ----- refCls 跨模块引用的普通实体：浅灰 -----
+    style CRefObject    fill:#F5F5F5,stroke:#616161,color:#000000

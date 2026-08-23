@@ -1,0 +1,106 @@
+---
+title: "{组件中文名} — 业务流程"
+---
+%% ===== 模板说明（使用时整块删除）=====
+%% 图表用途：业务流程图。按「角色」分组着色，展示端到端业务流转、分支与回路。
+%% 存放目录：组件级 → docs/components/{component_code_name}/
+%%           平台级 → docs/
+%% 文件命名：{component_code_name}_business_process.mmd（平台级为 business_process.mmd）
+%%           PNG 与 .mmd 同名同目录。
+%% 渲染命令：mmdc -i {component_code_name}_business_process.mmd \
+%%                -o {component_code_name}_business_process.png -b white -s 3
+%% 引用位置：{component}_business_desc.md §4.1 Process Diagram
+%% 样式规范：见 templates/mermaid/mmd_style_guide.md
+%%           ① 白色画布 ② 方框按角色归类着浅色 ③ 全部文字为黑色
+%% 注意事项：YAML front-matter（--- title ---）必须位于文件最开头，其前不得有任何内容。
+%% 使用提示：所有 {花括号} 占位符必须替换；节点 ID（A1/B1/...）可改名，
+%%           但每个节点必须保留 :::xxxCls 归类。
+%% ======================================
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "background": "#FFFFFF",
+    "primaryColor": "#E3F2FD",
+    "primaryTextColor": "#000000",
+    "primaryBorderColor": "#1565C0",
+    "secondaryColor": "#E8F5E9",
+    "tertiaryColor": "#FFF9C4",
+    "lineColor": "#555555",
+    "textColor": "#000000",
+    "titleColor": "#000000",
+    "clusterBkg": "#FAFAFA",
+    "clusterBorder": "#CCCCCC",
+    "edgeLabelBackground": "#FFFFFF",
+    "fontFamily": "Arial, sans-serif",
+    "fontSize": "14px"
+  }
+}}%%
+graph TD
+
+    %% ========== 分类样式定义（每类一个浅色系背景，文字一律黑色）==========
+    classDef roleACls    fill:#E3F2FD,stroke:#1565C0,color:#000000
+    classDef roleBCls    fill:#F3E5F5,stroke:#6A1B9A,color:#000000
+    classDef roleCCls    fill:#E8F5E9,stroke:#2E7D32,color:#000000
+    classDef systemCls   fill:#FFF3E0,stroke:#EF6C00,color:#000000
+    classDef decisionCls fill:#FFF9C4,stroke:#F9A825,color:#000000
+    classDef dataCls     fill:#FADBD8,stroke:#C0392B,color:#000000
+
+    %% ========== 步骤 1：{角色A} — {阶段名称} ==========
+    subgraph step1["1. {角色A}：{阶段名称}"]
+        direction TB
+        A1["1a. {动作描述}<br/>👤 {角色A}"]:::roleACls
+        A2["1b. {动作描述}<br/>👤 {角色A}"]:::roleACls
+        A3[("💾 {产出的业务对象}")]:::dataCls
+        A1 --> A2 --> A3
+    end
+
+    %% ========== 步骤 2：{角色B} — {阶段名称} ==========
+    subgraph step2["2. {角色B}：{阶段名称}"]
+        direction TB
+        B1["2a. {动作描述}<br/>👤 {角色B}"]:::roleBCls
+        B2["2b. {自动执行的动作}<br/>🤖 系统自动"]:::systemCls
+        B3["2c. {动作描述}<br/>👤 {角色B}"]:::roleBCls
+        B1 --> B2 --> B3
+    end
+
+    %% ========== 步骤 3：{角色C} — {阶段名称} ==========
+    subgraph step3["3. {角色C}：{阶段名称}"]
+        direction TB
+        C1["3a. {动作描述}<br/>👤 {角色C}"]:::roleCCls
+        C2["3b. {动作描述}<br/>👤 {角色C}"]:::roleCCls
+        C3{"3c. {判定内容}<br/>👤 {角色C}"}:::decisionCls
+        C1 --> C2 --> C3
+        C3 -->|"{不通过：需修订}"| C2
+    end
+
+    %% ========== 步骤 4：{角色A} — {阶段名称} ==========
+    subgraph step4["4. {角色A}：{阶段名称}"]
+        direction TB
+        D1["4a. {动作描述}<br/>👤 {角色A}"]:::roleACls
+        D2["4b. {动作描述}<br/>👤 {角色A}"]:::roleACls
+        D1 --> D2
+    end
+
+    %% ========== 图例 ==========
+    subgraph legend["图例"]
+        direction LR
+        LG1["{角色A}"]:::roleACls
+        LG2["{角色B}"]:::roleBCls
+        LG3["{角色C}"]:::roleCCls
+        LG4["系统自动"]:::systemCls
+        LG5{"人工判定"}:::decisionCls
+        LG6[("数据产出")]:::dataCls
+    end
+
+    %% ========== 步骤间连接（节点到节点，保证严格纵向布局）==========
+    A3 --> B1
+    B3 --> C1
+    C3 -->|"{通过}"| D1
+    D2 -.->|"{新一轮迭代}"| A1
+
+    %% ========== 容器底色（必须比节点更浅，且显式声明黑色文字）==========
+    style step1  fill:#F5FAFE,stroke:#1565C0,color:#000
+    style step2  fill:#FBF6FD,stroke:#6A1B9A,color:#000
+    style step3  fill:#F5FCF7,stroke:#2E7D32,color:#000
+    style step4  fill:#F5FAFE,stroke:#1565C0,color:#000
+    style legend fill:#F8F9FA,stroke:#CCCCCC,color:#000

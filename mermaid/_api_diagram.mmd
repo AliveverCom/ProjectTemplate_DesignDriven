@@ -1,0 +1,112 @@
+%% ===== 模板说明（使用时整块删除）=====
+%% 图表用途：API 调用关系图。左侧为前端页面，右侧为按 tech_design §5.x 分组的 REST 端点，
+%%           连线表示"哪个页面调用哪个端点"，并标出跨模块调用方。
+%% 存放目录：docs/components/{component_code_name}/
+%% 文件命名：{component_code_name}_api.mmd；PNG 与 .mmd 同名同目录。
+%% 渲染命令：mmdc -i {component_code_name}_api.mmd \
+%%                -o {component_code_name}_api.png -b white -s 3
+%% 引用位置：{component}_tech_design.md §5.0 API Overview Diagram
+%% 样式规范：见 templates/mermaid/mmd_style_guide.md
+%%           ① 白色画布 ② 方框按类型归类着浅色 ③ 全部文字为黑色
+%% 一致性要求（review 必查）：
+%%   本图的端点数量与路径必须与 tech_design §5 逐条一致，
+%%   并与 uiux.md §2.3 Page-Object-API Mapping、P{nn} API 调试页的端点清单三方对齐。
+%% 使用提示：所有 {花括号} 占位符必须替换；节点 ID 保持 `分组前缀_动作` 形式便于检索。
+%% ======================================
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "background": "#FFFFFF",
+    "primaryColor": "#E0F7FA",
+    "primaryTextColor": "#000000",
+    "primaryBorderColor": "#00838F",
+    "secondaryColor": "#E8F5E9",
+    "tertiaryColor": "#F5F5F5",
+    "lineColor": "#616161",
+    "textColor": "#000000",
+    "titleColor": "#000000",
+    "clusterBkg": "#FAFAFA",
+    "clusterBorder": "#CCCCCC",
+    "edgeLabelBackground": "#FFFFFF",
+    "fontFamily": "Arial, sans-serif",
+    "fontSize": "12px"
+  }
+}}%%
+graph LR
+
+    %% ========== 分类样式定义（每类一个浅色系背景，文字一律黑色）==========
+    classDef pageCls fill:#E0F7FA,stroke:#00838F,color:#000000
+    classDef apiCls  fill:#E8F5E9,stroke:#2E7D32,color:#000000
+    classDef extCls  fill:#F5F5F5,stroke:#616161,color:#000000
+
+    %% ========== 调用方：本模块前端页面 ==========
+    P01["P01 {页面1名称}"]:::pageCls
+    P02["P02 {页面2名称}"]:::pageCls
+    P03["P03 {页面3名称}"]:::pageCls
+    P04["P04 {监控仪表板}"]:::pageCls
+    P05["P05 API 调试页"]:::pageCls
+
+    %% ========== 调用方：跨模块 ==========
+    EXT1["{other_module}<br>跨模块调用"]:::extCls
+
+    %% ========== §5.1 {主对象} CRUD ==========
+    subgraph OBJ["§5.1 {主对象} CRUD"]
+        direction TB
+        OBJ_LIST["GET /{resource}<br>获取列表"]:::apiCls
+        OBJ_GET["GET /{resource}/{id}<br>获取单条"]:::apiCls
+        OBJ_POST["POST /{resource}<br>创建"]:::apiCls
+        OBJ_PUT["PUT /{resource}/{id}<br>更新"]:::apiCls
+        OBJ_DEL["DELETE /{resource}/{id}<br>软删除"]:::apiCls
+    end
+
+    %% ========== §5.2 {子对象} 查询 ==========
+    subgraph SUB["§5.2 {子对象} 查询"]
+        direction TB
+        SUB_LIST["GET /{sub-resource}<br>查询列表"]:::apiCls
+        SUB_GET["GET /{sub-resource}/{id}<br>获取单条"]:::apiCls
+        SUB_BDEL["POST /{sub-resource}/batch-delete<br>批量删除"]:::apiCls
+    end
+
+    %% ========== §5.3 {运行状态与统计} ==========
+    subgraph STAT["§5.3 {运行状态与统计}"]
+        direction TB
+        STAT_STATUS["GET /{daemons}/status<br>获取运行状态"]:::apiCls
+        STAT_SUM["GET /stats/summary<br>获取统计概览"]:::apiCls
+        STAT_ERR["GET /stats/recent-errors<br>获取最近错误"]:::apiCls
+    end
+
+    %% ========== 页面 → 端点 调用关系 ==========
+    P01 --> OBJ_LIST
+    P01 --> OBJ_DEL
+    P02 --> OBJ_GET
+    P02 --> OBJ_POST
+    P02 --> OBJ_PUT
+    P03 --> SUB_LIST
+    P03 --> SUB_BDEL
+    P03 --> OBJ_LIST
+    P04 --> STAT_STATUS
+    P04 --> STAT_SUM
+    P04 --> STAT_ERR
+
+    %% ========== API 调试页覆盖全部端点（虚线，避免连线过密）==========
+    P05 -.->|"覆盖全部端点"| OBJ
+    P05 -.->|"覆盖全部端点"| SUB
+    P05 -.->|"覆盖全部端点"| STAT
+
+    %% ========== 跨模块调用（虚线 + 说明标签）==========
+    EXT1 -.->|"{调用场景说明}"| OBJ_LIST
+    EXT1 -.->|"{调用场景说明}"| OBJ_GET
+
+    %% ========== 图例 ==========
+    subgraph legend["图例"]
+        direction LR
+        LG1["前端页面"]:::pageCls
+        LG2["REST 端点"]:::apiCls
+        LG3["跨模块调用方"]:::extCls
+    end
+
+    %% ========== 容器底色（必须比节点更浅，且显式声明黑色文字）==========
+    style OBJ    fill:#F5FCF7,stroke:#2E7D32,color:#000
+    style SUB    fill:#F5FCF7,stroke:#2E7D32,color:#000
+    style STAT   fill:#F5FCF7,stroke:#2E7D32,color:#000
+    style legend fill:#F8F9FA,stroke:#CCCCCC,color:#000

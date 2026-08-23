@@ -1,0 +1,171 @@
+%% ===== 模板说明（使用时整块删除）=====
+%% 图表用途：数据库表结构图（ER 图）。以 namespace 按「数据库 / 逻辑分组」划分，
+%%           展示表、列类型、主外键与表间关系。
+%% 存放目录：docs/components/{component_code_name}/
+%% 文件命名：{component_code_name}_db_schema.mmd；PNG 与 .mmd 同名同目录。
+%% 渲染命令：mmdc -i {component_code_name}_db_schema.mmd \
+%%                -o {component_code_name}_db_schema.png -b white -s 3
+%% 引用位置：{component}_tech_design.md §4.0 Database Schema Diagram
+%% 样式规范：见 templates/mermaid/mmd_style_guide.md
+%%           ① 白色画布 ② 表框按类型归类着浅色 ③ 全部文字为黑色
+%% -
+%% 列类型前缀约定（写在成员名之前，便于一眼看出约束）：
+%%   +INT_PK      主键（自增整型）        +INT_FK      外键
+%%   +TEXT_PK     主键（文本型）          +TEXT_UK     唯一约束文本列
+%%   +TEXT        普通文本                +INT         整型
+%%   +BOOLEAN     布尔                    +JSONB       结构化字段
+%%   +TIMESTAMPTZ 带时区时间戳            +NUMERIC     定点数
+%%   +BYTEA       二进制
+%% 可空列在**类型**后加 `?`（与类图保持一致），如 `+TIMESTAMPTZ? deleted_at`
+%% -
+%% 使用提示：
+%%   - 表名、namespace 名请改成真实名称，**不要**在其中使用花括号占位符，
+%%     否则 mermaid 解析失败。
+%%   - 动态分表用 `<<template: ...>>` 注解表示；注解内同样不能有花括号，
+%%     故以 `code_name_mrecord` 形式书写，实际含义为 `{code_name}_mrecord`。
+%%   - 每张表都必须出现在文件末尾的 style 归类语句中。
+%% -
+%% ⚠ 重要（已实测，mermaid v11.16）：classDiagram **不支持** classDef / cssClass / :::
+%%   这三种写法不会报错，但会被静默忽略，结果所有表框都是同一个主题色。
+%%   classDiagram 唯一生效的着色方式是每张表一条 `style 表名 fill:...,stroke:...,color:#000000`，
+%%   该写法对 namespace 内部的表同样生效（已验证）。
+%% ======================================
+%% -
+%% ===== 配色含义（classDiagram 不支持 subgraph 图例，故以注释说明）=====
+%%   浅蓝 #E3F2FD tableCls    —— 本模块常规业务表
+%%   浅橙 #FFF3E0 templateCls —— 动态分表模板（按 code_name 派生出多张同构表）
+%%   浅黄 #FFF9C4 lookupCls   —— 字典表 / 配置表 / 枚举落库表
+%%   浅灰 #F5F5F5 refTableCls —— 跨库引用表（权威定义在其他模块的数据库）
+%% ======================================
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "background": "#FFFFFF",
+    "primaryColor": "#E3F2FD",
+    "primaryTextColor": "#000000",
+    "primaryBorderColor": "#1565C0",
+    "lineColor": "#333333",
+    "textColor": "#000000",
+    "titleColor": "#000000",
+    "classText": "#000000",
+    "clusterBkg": "#FAFAFA",
+    "clusterBorder": "#CCCCCC",
+    "edgeLabelBackground": "#FFFFFF",
+    "fontFamily": "Arial, sans-serif",
+    "fontSize": "12px"
+  }
+}}%%
+
+classDiagram
+    direction TB
+
+    %% ========== 数据库 1：主业务库 ==========
+    namespace main_db {
+        class main_object {
+            <<Table>>
+            +INT_PK object_id
+            +TEXT_UK display_name
+            +TEXT_UK code_name
+            +TEXT object_type
+            +TEXT object_url
+            +TEXT description
+            +JSONB metrics
+            +JSONB tag_list
+            +INT retry_count
+            +BOOLEAN is_active
+            +TIMESTAMPTZ? deleted_at
+            +TIMESTAMPTZ created_at
+            +TIMESTAMPTZ updated_at
+        }
+
+        class main_object_detail {
+            <<Table>>
+            +INT_PK detail_id
+            +INT_FK object_id
+            +TEXT title
+            +TEXT content
+            +TEXT lang
+            +TIMESTAMPTZ? processed_at
+            +TIMESTAMPTZ created_at
+            +TIMESTAMPTZ updated_at
+        }
+
+        class object_type_lookup {
+            <<Table - lookup>>
+            +TEXT_PK type_code
+            +TEXT type_label
+            +INT sort_order
+            +BOOLEAN is_active
+        }
+    }
+
+    %% ========== 数据库 2：动态分表库 ==========
+    %% 每个 code_name 派生一组同构表：code_name_mrecord / code_name_plan / code_name_done
+    namespace shard_db {
+        class code_name_mrecord {
+            <<template: code_name_mrecord>>
+            +INT_PK rec_id
+            +TEXT object_code_name
+            +TEXT title
+            +TEXT summary
+            +TEXT full_text
+            +TEXT link
+            +TEXT link_md5
+            +JSONB metrics
+            +TIMESTAMPTZ? pub_date
+            +TIMESTAMPTZ first_seen_at
+            +TIMESTAMPTZ? processed_at
+        }
+
+        class code_name_plan {
+            <<template: code_name_plan>>
+            +INT_PK task_id
+            +TEXT exe_name
+            +TEXT exe_status
+            +TEXT task_param
+            +TIMESTAMPTZ task_create
+            +TIMESTAMPTZ? exe_start
+        }
+
+        class code_name_done {
+            <<template: code_name_done>>
+            +INT_PK task_id
+            +TEXT exe_name
+            +TEXT exe_status
+            +TEXT exe_message
+            +TIMESTAMPTZ task_create
+            +TIMESTAMPTZ exe_start
+            +TIMESTAMPTZ exe_end
+        }
+    }
+
+    %% ========== 跨库引用表（权威定义在其他模块）==========
+    namespace other_module_db {
+        class ref_table {
+            <<Table - ref: other_module>>
+            +INT_PK ref_id
+            +TEXT_UK code_name
+            +BOOLEAN is_active
+        }
+    }
+
+    %% ========== 表间关系 ==========
+    main_object "1" --> "0..*" main_object_detail : object_id 外键
+    main_object "0..*" --> "1" object_type_lookup : object_type 取值约束
+    main_object "1" ..> "1" code_name_mrecord : 按 code_name 派生分表
+    main_object "1" ..> "1" code_name_plan : 按 code_name 派生分表
+    code_name_plan "1" --> "0..1" code_name_done : 任务执行完毕后归档
+    main_object "0..*" ..> "1" ref_table : 跨库逻辑关联（无 FK 约束）
+
+    %% ========== 分类着色（每张表一条 style，按分类分组，不得遗漏任何表）==========
+    %% ----- tableCls 常规业务表：浅蓝 -----
+    style main_object        fill:#E3F2FD,stroke:#1565C0,color:#000000
+    style main_object_detail fill:#E3F2FD,stroke:#1565C0,color:#000000
+    %% ----- templateCls 动态分表模板：浅橙 -----
+    style code_name_mrecord  fill:#FFF3E0,stroke:#EF6C00,color:#000000
+    style code_name_plan     fill:#FFF3E0,stroke:#EF6C00,color:#000000
+    style code_name_done     fill:#FFF3E0,stroke:#EF6C00,color:#000000
+    %% ----- lookupCls 字典 / 配置表：浅黄 -----
+    style object_type_lookup fill:#FFF9C4,stroke:#F9A825,color:#000000
+    %% ----- refTableCls 跨库引用表：浅灰 -----
+    style ref_table          fill:#F5F5F5,stroke:#616161,color:#000000

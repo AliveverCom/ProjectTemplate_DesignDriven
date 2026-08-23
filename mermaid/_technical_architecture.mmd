@@ -1,0 +1,135 @@
+---
+title: "{平台中文名} — 技术架构概览"
+---
+%% ===== 模板说明（使用时整块删除）=====
+%% 图表用途：技术架构图。按「架构分层」分组着色，展示各层组成与调用方向。
+%% 存放目录：docs/（平台级图表，不带组件前缀）
+%% 文件命名：technical_architecture.mmd；PNG 与 .mmd 同名同目录。
+%% 渲染命令：mmdc -i technical_architecture.mmd -o technical_architecture.png -b white -s 3
+%% 引用位置：technical_overview.md §1.1 架构概览图
+%% 样式规范：见 templates/mermaid/mmd_style_guide.md
+%%           ① 白色画布 ② 方框按所属层归类着浅色 ③ 全部文字为黑色
+%% 注意事项：YAML front-matter（--- title ---）必须位于文件最开头，其前不得有任何内容。
+%% 使用提示：所有 {花括号} 占位符必须替换；组件层节点按实际组件数量增删，
+%%           但每个节点必须保留 :::xxxCls 归类。
+%% ======================================
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "background": "#FFFFFF",
+    "primaryColor": "#E3F2FD",
+    "primaryTextColor": "#000000",
+    "primaryBorderColor": "#1565C0",
+    "secondaryColor": "#E8F5E9",
+    "tertiaryColor": "#FFF9C4",
+    "lineColor": "#555555",
+    "textColor": "#000000",
+    "titleColor": "#000000",
+    "clusterBkg": "#FAFAFA",
+    "clusterBorder": "#CCCCCC",
+    "edgeLabelBackground": "#FFFFFF",
+    "fontFamily": "Arial, sans-serif",
+    "fontSize": "14px"
+  }
+}}%%
+graph TB
+
+    %% ========== 分类样式定义（每层一个浅色系背景，文字一律黑色）==========
+    classDef clientCls    fill:#E3F2FD,stroke:#1565C0,color:#000000
+    classDef gatewayCls   fill:#FFF3E0,stroke:#EF6C00,color:#000000
+    classDef portalCls    fill:#E0F7FA,stroke:#00838F,color:#000000
+    classDef componentCls fill:#E8F5E9,stroke:#2E7D32,color:#000000
+    classDef serviceCls   fill:#F3E5F5,stroke:#6A1B9A,color:#000000
+    classDef dataCls      fill:#FADBD8,stroke:#C0392B,color:#000000
+    classDef externalCls  fill:#F5F5F5,stroke:#616161,color:#000000
+
+    %% ========== 客户端层 ==========
+    subgraph client_layer["客户端层"]
+        direction LR
+        CL1["🌐 {Web 浏览器}"]:::clientCls
+        CL2["📱 {移动端 / 其他客户端}"]:::clientCls
+    end
+
+    %% ========== 网关层 ==========
+    subgraph gateway_layer["网关层"]
+        direction LR
+        GW1["{API Gateway}<br/>{路由 · 限流 · 转发}"]:::gatewayCls
+        GW2["{认证与权限服务}<br/>{OAuth · JWT}"]:::gatewayCls
+        GW1 <--> GW2
+    end
+
+    %% ========== Portal 层 ==========
+    subgraph portal_layer["Portal 层"]
+        PT1["{统一入口 unified_portal}<br/>{统一菜单 · 视图框架 · Dashboard}"]:::portalCls
+    end
+
+    %% ========== 产品组件层 ==========
+    subgraph comp_layer["产品组件层 — 每组件拥有独立前端、后端与数据库"]
+        direction LR
+        CP1["{组件1中文名}<br/>{component_code_name_1}"]:::componentCls
+        CP2["{组件2中文名}<br/>{component_code_name_2}"]:::componentCls
+        CP3["{组件3中文名}<br/>{component_code_name_3}"]:::componentCls
+    end
+
+    %% ========== 共享服务层 ==========
+    subgraph service_layer["共享服务层"]
+        direction LR
+        SV1["{Workflow 编排器}"]:::serviceCls
+        SV2["{AI Agent 服务}"]:::serviceCls
+    end
+
+    %% ========== 数据层 ==========
+    subgraph data_layer["数据层"]
+        direction LR
+        DB1[("{PostgreSQL}<br/>{每组件独立数据库}")]:::dataCls
+        DB2[("{文件存储}<br/>{视频 · 音频 · 图片}")]:::dataCls
+        DB3[("{Redis 缓存}")]:::dataCls
+    end
+
+    %% ========== 外部系统 ==========
+    subgraph ext_layer["外部系统"]
+        direction LR
+        EX1["☁️ {云认证服务}"]:::externalCls
+        EX2["🌍 {外部数据源}"]:::externalCls
+        EX3["📡 {对外发布平台}"]:::externalCls
+    end
+
+    %% ========== 图例 ==========
+    subgraph legend["图例"]
+        direction LR
+        LG1["客户端层"]:::clientCls
+        LG2["网关层"]:::gatewayCls
+        LG3["Portal 层"]:::portalCls
+        LG4["产品组件层"]:::componentCls
+        LG5["共享服务层"]:::serviceCls
+        LG6[("数据层")]:::dataCls
+        LG7["外部系统"]:::externalCls
+    end
+
+    %% ========== 层间调用关系 ==========
+    CL1 --> GW1
+    CL2 --> GW1
+    GW1 --> PT1
+    PT1 --> CP1
+    PT1 --> CP2
+    PT1 --> CP3
+    CP1 --> SV1
+    CP2 --> SV1
+    CP3 --> SV2
+    CP1 --> DB1
+    CP2 --> DB1
+    CP3 --> DB2
+    SV1 --> DB3
+    GW2 -.->|"{认证委托}"| EX1
+    CP2 -.->|"{抓取}"| EX2
+    CP3 -.->|"{发布}"| EX3
+
+    %% ========== 容器底色（必须比节点更浅，且显式声明黑色文字）==========
+    style client_layer  fill:#F5FAFE,stroke:#1565C0,color:#000
+    style gateway_layer fill:#FFFAF3,stroke:#EF6C00,color:#000
+    style portal_layer  fill:#F2FBFC,stroke:#00838F,color:#000
+    style comp_layer    fill:#F5FCF7,stroke:#2E7D32,color:#000
+    style service_layer fill:#FBF6FD,stroke:#6A1B9A,color:#000
+    style data_layer    fill:#FEF7F6,stroke:#C0392B,color:#000
+    style ext_layer     fill:#FAFAFA,stroke:#CCCCCC,color:#000
+    style legend        fill:#F8F9FA,stroke:#CCCCCC,color:#000
