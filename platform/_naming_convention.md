@@ -1,29 +1,29 @@
-# 项目命名规范（Naming Convention）
+# Project Naming Convention
 
 **Document Version**: {x.y.z}
 
 <!--
-模板说明（使用时删除本注释块）
-- 层级：**平台级命名规范**。放在 `docs/` 根目录，文件名去掉前导下划线 → `naming_convention.md`。
-- 本文是**唯一权威**的缩写表和类型前缀表。组件级文档不得自定义缩写或前缀；
-  需要新缩写时**先更新本文**，再在组件文档和代码中使用。
-- 与其它平台级文档的分工：
-  - 本文管**标识符怎么起名**（缩写、C/E/I/cfg 前缀、变量与列名）。
-  - `technical_overview.md` §4 管**技术规范**（API 形状、表设计规则）。
-  - `project_directory_plan.md` §1.1 管**目录与文件名的大小写风格**（snake_case / kebab-case）。
-  三者不重叠，交叉引用即可。
-- 注意本文有**适用范围限制**：C/E/I/cfg 前缀只用于技术文档和代码，
-  business_desc / business_process / uiux 等业务文档使用自然名称，不加前缀。
+TEMPLATE NOTES (delete this comment block when using)
+- Level: **platform-level naming convention**. Place in the `docs/` root directory; drop the leading underscore from the filename → `naming_convention.md`.
+- This document is the **single authoritative** source for the abbreviation table and type-prefix table. Component-level documents must not invent their own abbreviations or prefixes;
+  when a new abbreviation is needed, **update this document first**, then use it in component documents and code.
+- Division of labor with other platform-level documents:
+  - This document governs **how identifiers are named** (abbreviations, C/E/I/cfg prefixes, variable and column naming).
+  - `technical_overview.md` §4 governs **technical specifications** (API shapes, table design rules).
+  - `project_directory_plan.md` §1.1 governs **directory and filename casing style** (snake_case / kebab-case).
+  The three do not overlap; cross-reference as needed.
+- Note this document has a **scope limitation**: the C/E/I/cfg prefixes are used only in technical documents and code;
+  business documents such as business_desc / business_process / uiux use natural names, without prefixes.
 -->
 
-> 本文档定义项目在**技术设计（tech_design）和代码实现**中应统一遵循的命名规范。
+> This document defines the naming conventions that the project's **technical design (tech_design) and code implementation** must consistently follow.
 >
-> **适用范围**：`tech_design` 文档、数据库 schema、类图（`class_diagram.mmd`）、
-> ER 图（`db_schema.mmd`）、源代码。
+> **Scope**: `tech_design` documents, database schemas, class diagrams (`class_diagram.mmd`),
+> ER diagrams (`db_schema.mmd`), source code.
 >
-> **不适用范围**：`business_desc` 文档、`business_process` 图、`uiux` 文档及页面显示文字。
-> 在业务文档中，业务对象应使用其**自然名称**（如 `{MediaBase}`、`{Channel}`、`{MediaType}`），
-> **不加** C / E / I 等技术前缀。
+> **Out of scope**: `business_desc` documents, `business_process` diagrams, `uiux` documents, and page display text.
+> In business documents, business objects should use their **natural names** (such as `{MediaBase}`, `{Channel}`, `{MediaType}`),
+> **without** technical prefixes such as C / E / I.
 
 ---
 
@@ -47,117 +47,117 @@
 
 ## 2 Common Abbreviations
 
-> 缩写表适用于**所有文档类型**（含 business 和 tech）。
-> 但 §3 的类型定义前缀（C / E / I / cfg）**仅用于技术文档和代码**。
+> This abbreviation table applies to **all document types** (including both business and tech).
+> However, the type-definition prefixes in §3 (C / E / I / cfg) are used **only in technical documents and code**.
 
 ### 2.1 Business Domain
 
-以下缩写用于项目中的业务领域术语，在变量名、列名、文件名等场景中统一使用。
+The following abbreviations are used for business-domain terms in the project, consistently applied in variable names, column names, file names, and similar contexts.
 
-| English Full Name | Abbreviation | 中文 | Examples |
+| English Full Name | Abbreviation | Description | Examples |
 |-------------------|-------------|------|----------|
-| {channel} | `{chn}` | {频道} | `{chn_id}`, `{chn_tags}` |
-| {program} | `{prog}` | {栏目 / 节目} | `{prog_id}`, `{prog_tags}` |
-| {media} | `{media}` | {媒体} | `{media_id}`, `{media_type}`（不缩写） |
-| {source} | `{src}` | {信息源 / 来源} | `{src_medias}` |
-| {target} | `{tgt}` | {目标} | `{tgt_medias}` |
-| {material} | `{mtrl}` | {素材} | `{mtrl_id}`, `{mtrl_status}` |
-| {collector} | `{cltr}` | {采集器} | `{cltr_status}` |
-| {业务术语} | `{缩写}` | {中文} | `{示例}` |
+| {channel} | `{chn}` | {Broadcast channel} | `{chn_id}`, `{chn_tags}` |
+| {program} | `{prog}` | {Program / show} | `{prog_id}`, `{prog_tags}` |
+| {media} | `{media}` | {Media} | `{media_id}`, `{media_type}` (not abbreviated) |
+| {source} | `{src}` | {Source} | `{src_medias}` |
+| {target} | `{tgt}` | {Target} | `{tgt_medias}` |
+| {material} | `{mtrl}` | {Material} | `{mtrl_id}`, `{mtrl_status}` |
+| {collector} | `{cltr}` | {Collector} | `{cltr_status}` |
+| {Business Term} | `{Abbreviation}` | {Description} | `{Example}` |
 
-> 按项目实际业务域补充行。**每新增一个缩写都必须先写进本表**，才允许在代码中使用。
+> Add rows according to the project's actual business domain. **Any new abbreviation must be added to this table first** before it may be used in code.
 
 ### 2.2 General Purpose
 
-以下为通用（非业务域）缩写。
+The following are general-purpose (non-business-domain) abbreviations.
 
-| English Full Name | Abbreviation | 中文 | Examples |
+| English Full Name | Abbreviation | Description | Examples |
 |-------------------|-------------|------|----------|
-| {configuration} | `{cfg}` | {配置} | `{cfg_scraper}` |
-| {execution} | `{exe}` | {执行} | `{exe_status}`, `{exe_start}` |
-| {record} | `{rec}` | {记录} | `{rec_id}` |
-| {instance} | `{ins}` | {实例} | `{ins_id}` |
-| {pipeline} | `{pip}` | {流水线} | `{pip_task}` |
-| {description} | `{desc}` | {描述} | `{media_desc}` |
-| {通用术语} | `{缩写}` | {中文} | `{示例}` |
+| {configuration} | `{cfg}` | {Configuration} | `{cfg_scraper}` |
+| {execution} | `{exe}` | {Execution} | `{exe_status}`, `{exe_start}` |
+| {record} | `{rec}` | {Record} | `{rec_id}` |
+| {instance} | `{ins}` | {Instance} | `{ins_id}` |
+| {pipeline} | `{pip}` | {Pipeline} | `{pip_task}` |
+| {description} | `{desc}` | {Description} | `{media_desc}` |
+| {General Term} | `{Abbreviation}` | {Description} | `{Example}` |
 
 ### 2.3 Usage Rules
 
-| # | 规则 | 说明 |
+| # | Rule | Description |
 |---|------|------|
-| 1 | **变量名 / 列名** | 使用小写 `snake_case`，缩写也不大写（如 `{chn_id}`、`{prog_tags}`） |
-| 2 | **类名 / 枚举名 / 接口名** | 使用 `PascalCase`，缩写首字母大写（如 `{CChannel}`、`{EMediaType}`） |
-| 3 | **一致性优先** | 同一概念在整个项目中必须使用**相同的缩写**，不允许混用（如 channel 统一用 `{chn}`，不允许出现 `ch` 或 `chan`） |
-| 4 | **可读性优先** | 缩写不在本文列表中时优先使用**全称**，避免自创不直观的缩写。**新缩写需先添加到本文档后再使用** |
-| 5 | **布尔型属性** | 以 `is_`、`has_`、`can_`、`need_` 等前缀开头，后面的词**不缩写**（如 `is_active`、`need_login`） |
-| 6 | **跨模块一致** | 同一业务对象在不同模块中的字段名必须完全一致；发现分歧时以**权威定义模块**为准，并同步修正其它模块文档 |
+| 1 | **Variable / Column Names** | Use lowercase `snake_case`; abbreviations are not capitalized (e.g., `{chn_id}`, `{prog_tags}`) |
+| 2 | **Class / Enum / Interface Names** | Use `PascalCase`; the first letter of abbreviations is capitalized (e.g., `{CChannel}`, `{EMediaType}`) |
+| 3 | **Consistency First** | The same concept must use the **same abbreviation** throughout the entire project — mixing is not allowed (e.g., channel must always use `{chn}`; `ch` or `chan` must not appear) |
+| 4 | **Readability First** | If an abbreviation is not in this document's list, prefer the **full word** rather than inventing a non-obvious abbreviation. **New abbreviations must be added to this document before use** |
+| 5 | **Boolean Properties** | Prefixed with `is_`, `has_`, `can_`, `need_`, etc.; the following word is **not abbreviated** (e.g., `is_active`, `need_login`) |
+| 6 | **Cross-Module Consistency** | The same business object must use exactly the same field name across all modules; when a discrepancy is found, the **authoritative module** governs, and the other module's documents must be updated to match |
 
 ---
 
 ## 3 Type Definition Naming Convention
 
-> **重要**：本节的 C / E / I / cfg 前缀规则**仅适用于** tech_design 文档、数据库 schema、
-> 类图、ER 图和源代码。
-> 在 business_desc、business_process、uiux 等非技术文档中，业务对象和枚举使用**自然名称，不加前缀**。
+> **Important**: The C / E / I / cfg prefix rules in this section apply **only to** tech_design documents, database schemas,
+> class diagrams, ER diagrams, and source code.
+> In non-technical documents such as business_desc, business_process, and uiux, business objects and enums use **natural names, without prefixes**.
 
 ### 3.1 Class Prefix: C
 
-所有类定义的名称以大写字母 **C** 开头，表示 Class。
+All class definitions are named starting with the uppercase letter **C**, denoting Class.
 
 | Convention | Format | Example |
 |-----------|--------|---------|
-| 类名 | `C` + PascalCase | `{CMediaBase}`, `{CSourceMedia}`, `{CChannel}` |
-| 数据库模型类 | `C` + PascalCase + `Model` | `{CChannelModel}` |
-| 服务类 | `C` + PascalCase + `Service` | `{CChannelService}` |
-| 仓库类 | `C` + PascalCase + `Repo` | `{CChannelRepo}` |
+| Class Name | `C` + PascalCase | `{CMediaBase}`, `{CSourceMedia}`, `{CChannel}` |
+| Database Model Class | `C` + PascalCase + `Model` | `{CChannelModel}` |
+| Service Class | `C` + PascalCase + `Service` | `{CChannelService}` |
+| Repository Class | `C` + PascalCase + `Repo` | `{CChannelRepo}` |
 
 ### 3.2 Enum Prefix: E
 
-所有枚举类型的定义名以大写字母 **E** 开头，表示 Enum。
+All enum type definitions are named starting with the uppercase letter **E**, denoting Enum.
 
 | Convention | Format | Example |
 |-----------|--------|---------|
-| 枚举名 | `E` + PascalCase | `{EMediaType}`, `{ETriggerStrategy}`, `{EExeStatus}` |
+| Enum Name | `E` + PascalCase | `{EMediaType}`, `{ETriggerStrategy}`, `{EExeStatus}` |
 
-枚举**值**本身使用全大写 `UPPER_SNAKE_CASE`（如 `{NEWS_FEED}`、`{WHOLE_SITE}`），**不加前缀**。
+Enum **values** themselves use all-uppercase `UPPER_SNAKE_CASE` (e.g., `{NEWS_FEED}`, `{WHOLE_SITE}`), **without any prefix**.
 
-> **枚举归属规则**：每个枚举有且仅有一个**权威定义模块**，在该模块的 `tech_design.md` §2 中定义。
-> 其它模块的类图中以「引用」形式（虚线框 + `<<enumeration - ref: {module}>>`）出现，
-> 并在注释中标明权威定义位置。
+> **Enum Ownership Rule**: Each enum has exactly one **authoritative defining module**, defined in that module's `tech_design.md` §2.
+> In other modules' class diagrams, it appears as a "reference" (dashed box + `<<enumeration - ref: {module}>>`),
+> with the authoritative definition location noted in a comment.
 
 ### 3.3 Special Interface Prefix: I
 
-所有**特殊定制接口**（非默认 CRUD）的名称以大写字母 **I** 开头，表示 Interface。
-默认的增删改查接口**不需要** I 前缀。
+All **special custom interfaces** (non-default CRUD) are named starting with the uppercase letter **I**, denoting Interface.
+Default create/read/update/delete interfaces **do not need** the I prefix.
 
 | Convention | Format | Example |
 |-----------|--------|---------|
-| 特殊接口名 | `I` + PascalCase | `{IChannelTags}`, `{IBatchImport}` |
-| 默认 CRUD | 不加前缀 | `{CreateChannel}`, `{GetMediaBase}`, `{UpdateProgram}`, `{DeleteSourceMedia}` |
+| Special Interface Name | `I` + PascalCase | `{IChannelTags}`, `{IBatchImport}` |
+| Default CRUD | No prefix | `{CreateChannel}`, `{GetMediaBase}`, `{UpdateProgram}`, `{DeleteSourceMedia}` |
 
-> **判断标准**：如果一个接口是对**单一业务对象**的 Create / Read / Update / Delete 操作，
-> 则属于默认 CRUD，不加 `I` 前缀。其它所有接口（聚合查询、批量操作、跨对象关联、虚拟属性计算等）均加 `I` 前缀。
+> **Criterion**: If an interface performs a Create / Read / Update / Delete operation on a **single business object**,
+> it is a default CRUD interface and does not take the `I` prefix. All other interfaces (aggregate queries, batch operations, cross-object associations, virtual property computation, etc.) take the `I` prefix.
 
 ### 3.4 Configuration Property Prefix: cfg
 
-类中用于表示**配置**的属性以小写 `cfg` 开头，表示 Configuration。
-配置类本身的**内部属性不需要**再加 `cfg` 前缀。
+Properties within a class that represent **configuration** start with lowercase `cfg`, denoting Configuration.
+The **internal properties of a configuration class itself do not need** the `cfg` prefix again.
 
 | Convention | Format | Example |
 |-----------|--------|---------|
-| 类中的配置属性 | `cfg` + PascalCase（snake_case 语境下为 `cfg_xxx`） | `{cfg_retry_policy}`, `{cfg_scraper}` |
-| 配置类名 | `C` + `Cfg` + PascalCase | `{CCfgRetryPolicy}`, `{CCfgScraper}` |
-| 配置类内部属性 | 正常命名，**不加** cfg 前缀 | `{max_retries}`, `{timeout_ms}`, `{base_url}` |
+| Configuration Property in a Class | `cfg` + PascalCase (in a snake_case context, `cfg_xxx`) | `{cfg_retry_policy}`, `{cfg_scraper}` |
+| Configuration Class Name | `C` + `Cfg` + PascalCase | `{CCfgRetryPolicy}`, `{CCfgScraper}` |
+| Internal Property of a Configuration Class | Named normally, **no** `cfg` prefix | `{max_retries}`, `{timeout_ms}`, `{base_url}` |
 
-**示例**：
+**Example**:
 
 ```
 {CSourceMedia}:
     ...
-    cfg_scraper: {CCfgScraper}      # 配置属性，以 cfg 开头
+    cfg_scraper: {CCfgScraper}      # Configuration property, starts with cfg
 
-{CCfgScraper}:                      # 配置类，以 CCfg 开头
-    max_retries: int                # 配置类内部属性，不加 cfg
+{CCfgScraper}:                      # Configuration class, starts with CCfg
+    max_retries: int                # Internal property of configuration class, no cfg prefix
     timeout_ms: int
     user_agent: string
 ```
@@ -171,9 +171,9 @@
 | Special Interface | `I` | PascalCase | `{IChannelTags}`, `{IBatchImport}` |
 | Config Property | `cfg` | snake_case or camelCase | `{cfg_retry_policy}`, `{cfgAuth}` |
 | Config Class | `CCfg` | PascalCase | `{CCfgScraper}` |
-| CRUD Interface | （无） | PascalCase | `{CreateChannel}`, `{GetMediaBase}` |
-| Variable / Column | （无） | snake_case | `{chn_id}`, `{prog_tags}` |
-| Enum Value | （无） | UPPER_SNAKE_CASE | `{NEWS_FEED}`, `{WHOLE_SITE}` |
+| CRUD Interface | (none) | PascalCase | `{CreateChannel}`, `{GetMediaBase}` |
+| Variable / Column | (none) | snake_case | `{chn_id}`, `{prog_tags}` |
+| Enum Value | (none) | UPPER_SNAKE_CASE | `{NEWS_FEED}`, `{WHOLE_SITE}` |
 
 ---
 
@@ -181,19 +181,19 @@
 
 | Rule | Description | Example |
 |------|-------------|---------|
-| snake_case | 变量名和数据库列名统一使用小写下划线格式 | `{media_id}`, `{chn_timezone}` |
-| 前缀表示归属 | 属性名以所属对象的缩写为前缀（当属性在上下文中可能产生歧义时） | `{chn_id}`, `{prog_id}` |
-| 无歧义时省略前缀 | 通用属性无需前缀 | `{display_name}`, `{code_name}`, `{is_active}` |
-| 外键命名 | 目标对象缩写 + `_id` | `{chn_id}`（→ Channel）, `{media_id}`（→ MediaBase） |
-| 布尔字段 | 以 `is_` / `has_` / `can_` / `need_` 开头 | `{is_active}`, `{need_login}` |
-| 时间字段 | 以 `_at` 结尾表示时间点 | `{created_at}`, `{updated_at}`, `{deleted_at}` |
-| 列表 / 数组字段 | 使用**复数**形式 | `{programs}`, `{src_medias}` |
-| 唯一代码名 | 用作分表名或对外唯一标识的字段统一命名为 `code_name`，格式 `{^[a-z][a-z0-9_]*$}`，**创建后不可修改** | `{code_name}` |
-| 显示名 | 面向用户展示的名称统一命名为 `display_name` | `{display_name}` |
-| 状态字段 | 枚举型状态统一以 `_status` 结尾 | `{exe_status}`, `{dist_status}` |
+| snake_case | Variable names and database column names uniformly use lowercase with underscores | `{media_id}`, `{chn_timezone}` |
+| Prefix Indicates Ownership | Property names are prefixed with the abbreviation of their owning object (when the property could be ambiguous in context) | `{chn_id}`, `{prog_id}` |
+| Omit Prefix When Unambiguous | Generic properties do not need a prefix | `{display_name}`, `{code_name}`, `{is_active}` |
+| Foreign Key Naming | Target object abbreviation + `_id` | `{chn_id}` (→ Channel), `{media_id}` (→ MediaBase) |
+| Boolean Fields | Start with `is_` / `has_` / `can_` / `need_` | `{is_active}`, `{need_login}` |
+| Timestamp Fields | End with `_at` to indicate a point in time | `{created_at}`, `{updated_at}`, `{deleted_at}` |
+| List / Array Fields | Use the **plural** form | `{programs}`, `{src_medias}` |
+| Unique Code Name | Fields used as sharding table names or externally unique identifiers are uniformly named `code_name`, format `{^[a-z][a-z0-9_]*$}`, **immutable after creation** | `{code_name}` |
+| Display Name | Fields shown to end users are uniformly named `display_name` | `{display_name}` |
+| Status Fields | Enum-typed status fields uniformly end with `_status` | `{exe_status}`, `{dist_status}` |
 
-> **列名与类成员一一对应**：数据库列名必须与对应类的成员名完全一致（去掉类型前缀后）。
-> 若两者不一致，属于跨文档一致性缺陷，应在 `ai_dev_history/01_DocReviewRefine/` 的 review 中提出。
+> **Column Names Map One-to-One with Class Members**: Database column names must exactly match the corresponding class member names (after removing the type prefix).
+> If the two are inconsistent, this is a cross-document consistency defect and should be raised in a review under `ai_dev_history/01_DocReviewRefine/`.
 
 ---
 
@@ -201,4 +201,4 @@
 
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
-| {x.y.z} | {YYYY-MM-DD} | {Author} | {变更说明} |
+| {x.y.z} | {YYYY-MM-DD} | {Author} | {Change description} |

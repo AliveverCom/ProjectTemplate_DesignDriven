@@ -1,188 +1,188 @@
-# 索引
+# Index
 
 <!--
-模板说明（使用时删除本注释块）
-- 层级：**平台级业务/产品文档**。放在 `docs/` 根目录，文件名 `business_overview.md`。
-- 与组件级 `{component}_business_desc.md` 的区别：
-  本文描述**整个平台**的业务定位、产品组件全景、用户角色和端到端业务流程；
-  组件级文档只描述**单个组件内部**的业务对象与业务流程，不重复平台全景。
-- 本文是所有组件级 business_desc 的上位文档，组件文档应反向链接到本文。
-- 平台级文档使用 `# 一级标题` 做章节（与组件级文档用 `## 2 xxx` 不同），
-  首章为「索引」，第 0 章为「文档说明」。
+TEMPLATE NOTES (delete this comment block when using)
+- Level: **platform-level business/product document**. Place in the `docs/` root directory, filename `business_overview.md`.
+- Difference from the component-level `{component}_business_desc.md`:
+  This document describes the business positioning, full product component landscape, user roles, and end-to-end business process of **the entire platform**;
+  component-level documents describe only the business objects and business processes **inside a single component**, without repeating the platform-level landscape.
+- This document is the parent document of all component-level business_desc documents; component documents should link back to this one.
+- Platform-level documents use `# level-1 headings` for sections (unlike component-level documents, which use `## 2 xxx`),
+  with the first chapter being "Index" and chapter 0 being "Document Description".
 -->
 
-- [0 文档说明](#0-文档说明)
-- [1 平台介绍](#1-平台介绍)
-  - [1.1 平台简介](#11-平台简介)
-  - [1.2 产品形式简介](#12-产品形式简介)
-    - [1.2.1 {组件中文名}（{component_code_name}）](#121-组件中文名component_code_name)
-    - [1.2.2 {组件中文名}（{component_code_name}）](#122-组件中文名component_code_name)
-  - [1.3 主要用户介绍](#13-主要用户介绍)
-    - [1.3.1 {角色1}](#131-角色1)
-    - [1.3.2 {角色2}](#132-角色2)
-- [2 业务流程](#2-业务流程)
-  - [2.1 业务流程图](#21-业务流程图)
-  - [2.2 业务流程简述](#22-业务流程简述)
-- [3 项目目录规划](#3-项目目录规划)
-- [4 附录](#4-附录)
-  - [4.1 名词解释](#41-名词解释)
+- [0 Document Description](#0-document-description)
+- [1 Platform Overview](#1-platform-overview)
+  - [1.1 Platform Introduction](#11-platform-introduction)
+  - [1.2 Product Components Overview](#12-product-components-overview)
+    - [1.2.1 {ComponentName} ({component_code_name})](#121-componentname-component_code_name)
+    - [1.2.2 {ComponentName} ({component_code_name})](#122-componentname-component_code_name)
+  - [1.3 Primary User Roles](#13-primary-user-roles)
+    - [1.3.1 {Role1}](#131-role1)
+    - [1.3.2 {Role2}](#132-role2)
+- [2 Business Process](#2-business-process)
+  - [2.1 Business Process Diagram](#21-business-process-diagram)
+  - [2.2 Business Process Summary](#22-business-process-summary)
+- [3 Project Directory Plan](#3-project-directory-plan)
+- [4 Appendix](#4-appendix)
+  - [4.1 Glossary](#41-glossary)
 
 ---
 
-# 0 文档说明
+# 0 Document Description
 
-| 项目 | 内容 |
+| Item | Content |
 |------|------|
-| **文档名称** | {平台中文名} 业务与产品总览（business_overview.md） |
-| **文档层级** | 平台级 —— 描述整个平台的业务全景 |
-| **文档版本** | {x.y.z} |
-| **适用读者** | 产品经理、架构师、AI 开发者、新加入的工程师 |
-| **下位文档** | 各组件的 `docs/components/{component}/{component}_business_desc.md` |
-| **对应技术文档** | [technical_overview.md](./technical_overview.md) |
+| **Document Name** | {PlatformName} Business & Product Overview (business_overview.md) |
+| **Document Level** | Platform-level — describes the business landscape of the entire platform |
+| **Document Version** | {x.y.z} |
+| **Intended Readers** | Product managers, architects, AI developers, newly onboarded engineers |
+| **Child Documents** | Each component's `docs/components/{component}/{component}_business_desc.md` |
+| **Corresponding Technical Document** | [technical_overview.md](./technical_overview.md) |
 
-> **文档边界**：本文只写"业务是什么、谁来用、怎么流转"，不写任何技术实现细节
-> （技术栈、数据库、API 一律放入 `technical_overview.md`）。
+> **Document Boundary**: This document only describes "what the business is, who uses it, how it flows" and contains no technical implementation detail
+> (technology stack, database, API all belong in `technical_overview.md`).
 
 ---
 
-# 1 平台介绍
+# 1 Platform Overview
 
-## 1.1 平台简介
+## 1.1 Platform Introduction
 
-{用 3–8 段文字说明：平台要解决什么业务问题、面向什么行业/场景、核心价值主张、
-与传统做法相比的差异。避免技术词汇。}
+{Use 3–8 paragraphs to explain: what business problem the platform solves, what industry/scenario it targets, its core value proposition,
+and how it differs from traditional approaches. Avoid technical jargon.}
 
-**平台核心能力**：
+**Core Platform Capabilities**:
 
-| # | 能力 | 说明 |
+| # | Capability | Description |
 |---|------|------|
-| 1 | {能力1} | {说明} |
-| 2 | {能力2} | {说明} |
+| 1 | {Capability 1} | {Description} |
+| 2 | {Capability 2} | {Description} |
 
-## 1.2 产品形式简介
+## 1.2 Product Components Overview
 
-平台由以下产品组件构成，每个组件均可独立设计、独立开发、独立发布：
+The platform consists of the following product components, each of which can be designed, developed, and released independently:
 
-| # | 组件中文名 | 组件代码名 | 一句话职责 | 主要使用角色 |
+| # | Component Name | Component Code Name | One-line Responsibility | Primary User Roles |
 |---|-----------|-----------|-----------|-------------|
-| 1 | {统一入口} | `unified_portal` | {职责} | {角色} |
-| 2 | {组件2} | `{component_code_name}` | {职责} | {角色} |
+| 1 | {Unified Portal} | `unified_portal` | {Responsibility} | {Role} |
+| 2 | {Component 2} | `{component_code_name}` | {Responsibility} | {Role} |
 
-### 1.2.1 {组件中文名}（{component_code_name}）
+### 1.2.1 {ComponentName} ({component_code_name})
 
-{2–5 段业务描述：该组件在整个业务链条中承担什么职责、它的上游是谁、下游是谁。}
+{2–5 paragraphs of business description: what responsibility this component holds in the overall business chain, who its upstream is, who its downstream is.}
 
-**主要功能**：
+**Key Features**:
 
-- {功能1}
-- {功能2}
+- {Feature 1}
+- {Feature 2}
 
-**上下游关系**：
+**Upstream/Downstream Relationships**:
 
-| 方向 | 对接组件 | 交互内容 |
+| Direction | Connected Component | Interaction Content |
 |------|---------|---------|
-| 上游 | {component_x} | {输入内容} |
-| 下游 | {component_y} | {输出内容} |
+| Upstream | {component_x} | {Input content} |
+| Downstream | {component_y} | {Output content} |
 
-> 详细业务描述见 [{component_code_name}_business_desc.md](./components/{component_code_name}/{component_code_name}_business_desc.md)。
+> For a detailed business description, see [{component_code_name}_business_desc.md](./components/{component_code_name}/{component_code_name}_business_desc.md).
 
-### 1.2.2 {组件中文名}（{component_code_name}）
+### 1.2.2 {ComponentName} ({component_code_name})
 
-{同上结构}
+{Same structure as above}
 
-> 按组件数量重复 1.2.x 小节。
+> Repeat section 1.2.x for each component.
 
-## 1.3 主要用户介绍
+## 1.3 Primary User Roles
 
-| 角色 | 英文标识 | 核心诉求 | 主要使用的组件 |
+| Role | English Identifier | Core Needs | Primary Components Used |
 |------|---------|---------|---------------|
-| {角色1} | `{role_1}` | {诉求} | {组件列表} |
-| {角色2} | `{role_2}` | {诉求} | {组件列表} |
+| {Role1} | `{role_1}` | {Need} | {Component list} |
+| {Role2} | `{role_2}` | {Need} | {Component list} |
 
-### 1.3.1 {角色1}
+### 1.3.1 {Role1}
 
-{该角色的画像、日常工作内容、在平台中的典型操作序列。}
+{This role's profile, day-to-day work, and typical sequence of operations on the platform.}
 
-**典型任务**：
+**Typical Tasks**:
 
-| # | 任务 | 涉及组件 | 频率 |
+| # | Task | Involved Component | Frequency |
 |---|------|---------|------|
-| 1 | {任务} | {组件} | {每日/每周/按需} |
+| 1 | {Task} | {Component} | {Daily/Weekly/On demand} |
 
-### 1.3.2 {角色2}
+### 1.3.2 {Role2}
 
-{同上结构}
+{Same structure as above}
 
 ---
 
-# 2 业务流程
+# 2 Business Process
 
-## 2.1 业务流程图
+## 2.1 Business Process Diagram
 
-![业务流程图](./business_process.png)
+![Business Process Diagram](./business_process.png)
 
-> 源文件：[business_process.mmd](./business_process.mmd)
-> 绘制规范见 [templates/mermaid/mmd_style_guide.md](../templates/mermaid/mmd_style_guide.md)：
-> 白色画布、按角色/类型分类着色的浅色系方框、全部文字为黑色。
+> Source file: [business_process.mmd](./business_process.mmd)
+> Drawing conventions: see [templates/mermaid/mmd_style_guide.md](../templates/mermaid/mmd_style_guide.md):
+> white canvas, light-colored boxes categorized by role/type, all text in black.
 
-## 2.2 业务流程简述
+## 2.2 Business Process Summary
 
-端到端业务流程按步骤编号，每一步标明**执行角色**和**所属组件**：
+The end-to-end business process is numbered by step, with each step indicating the **executing role** and **owning component**:
 
-| 步骤 | 名称 | 执行角色 | 所属组件 | 输入 | 输出 |
+| Step | Name | Executing Role | Owning Component | Input | Output |
 |------|------|---------|---------|------|------|
-| 1 | {步骤名} | {角色} | {组件} | {输入} | {输出} |
-| 2 | {步骤名} | {角色} | {组件} | {输入} | {输出} |
+| 1 | {StepName} | {Role} | {Component} | {Input} | {Output} |
+| 2 | {StepName} | {Role} | {Component} | {Input} | {Output} |
 
-**步骤 1 — {步骤名}**
+**Step 1 — {StepName}**
 
-{该步骤的业务说明：角色做了什么、系统做了什么、产出什么、什么条件下进入下一步。}
+{Business description of this step: what the role did, what the system did, what was produced, and under what conditions it proceeds to the next step.}
 
-**步骤 2 — {步骤名}**
+**Step 2 — {StepName}**
 
-{同上}
+{Same as above}
 
-> 按步骤数量重复。若流程存在分支或回路（如审核不通过退回修改），必须在此明确说明
-> 分支条件与回退目标步骤，并与 `business_process.mmd` 中的连线保持一致。
+> Repeat for each step. If the process has branches or loops (e.g., a review that fails and is sent back for revision), the branch condition
+> and the target step to roll back to must be explicitly stated here, and must stay consistent with the connections in `business_process.mmd`.
 
 ---
 
-# 3 项目目录规划
+# 3 Project Directory Plan
 
-平台的完整目录规划（源码、文档、部署）见根目录的
-[project_directory_plan.md](../project_directory_plan.md)。
+For the platform's complete directory plan (source code, documentation, deployment), see the root-level
+[project_directory_plan.md](../project_directory_plan.md).
 
-本文只列出与业务理解相关的文档目录：
+This document only lists the documentation directories relevant to understanding the business:
 
 ```
 docs/
-├── business_overview.md              # 本文件 —— 平台级业务总览
-├── technical_overview.md             # 平台级技术总览
-├── uiux_design_specification.md      # 平台级 UI/UX 规范
-├── naming_convention.md              # 平台级命名规范
+├── business_overview.md              # This file — platform-level business overview
+├── technical_overview.md             # Platform-level technical overview
+├── uiux_design_specification.md      # Platform-level UI/UX specification
+├── naming_convention.md              # Platform-level naming convention
 └── components/
     └── {component_code_name}/
-        └── {component_code_name}_business_desc.md   # 组件级业务描述
+        └── {component_code_name}_business_desc.md   # Component-level business description
 ```
 
 ---
 
-# 4 附录
+# 4 Appendix
 
-## 4.1 名词解释
+## 4.1 Glossary
 
-| 术语 | 英文 / 代码名 | 定义 |
+| Term | English / Code Name | Definition |
 |------|--------------|------|
-| {术语1} | `{term_1}` | {定义} |
-| {术语2} | `{term_2}` | {定义} |
+| {Term1} | `{term_1}` | {Definition} |
+| {Term2} | `{term_2}` | {Definition} |
 
-> 平台级名词表是**权威定义**。组件级文档中若出现同名术语，必须与此处一致；
-> 组件私有的术语才写在组件文档的 Glossary 中。
+> The platform-level glossary is the **authoritative** definition. If the same term appears in component-level documents, it must be consistent with this table;
+> component-private terms should be placed in that component document's own Glossary.
 
 ---
 
 ## Change Log
 
-| 版本 | 日期 | 变更内容 |
+| Version | Date | Change Description |
 |------|------|---------|
-| {x.y.z} | {YYYY-MM-DD} | {变更说明} |
+| {x.y.z} | {YYYY-MM-DD} | {Change description} |

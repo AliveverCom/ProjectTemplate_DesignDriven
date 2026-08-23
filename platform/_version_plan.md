@@ -49,17 +49,23 @@ vA.B.C.D.E
 
 The standard milestones every product component passes through, from documentation to integration:
 
-| Version | Milestone | Description |
-|---------|-----------|-------------|
-| `v0.1` | **Baseline design docs** | First generation of the component's business description, technical design and UI/UX requirement documents, plus the page UI designs. |
-| `v0.2` | **First source code** | First frontend code for the component. The frontend runs on hardcoded data; backend and database are not built yet. |
-| `v0.3` | **Design completed, backend built** | The technical design is completed (`v0.3.1`) and the whole backend plus database is implemented in one pass (`v0.3.2`). Frontend, backend and database exist but are **not yet wired together**. |
-| `v0.4` | **First integration** | The component **first wires frontend, backend and database together**, enabling component-level integration testing. This is the first complete runnable version of the component. |
-| `v0.5` – `v0.6` | **Pipelines and platform integration** | Data/compute pipelines and daemons are implemented, then the component is integrated end to end with the platform framework. |
-| `v0.7` – `v0.8` | **Reserve** | Continuous iteration: features added mid-course, requirement changes, bug fixes and code refactoring. |
-| `v1.0` | **First official release** | First official release of the system. |
-| `v1.0.x+` | **Continuous iteration** | Bug fixes, feature polishing and performance tuning on top of the first release. |
-| `v1.1.0+` | **Feature expansion** | New sub-business features, or substantial changes to existing features. |
+| Version | Milestone | What Changes at This Milestone |
+|---------|-----------|--------------------------------|
+| `v0.1` | **Baseline Design Docs** | The component's business, technical and UI/UX documents exist for the first time, together with the page UI designs. No source code yet. |
+| `v0.2` | **First Source Code** | Frontend code exists for the first time, running on hardcoded data. No backend, no database. |
+| `v0.3.1` | **Technical Design Completed** | The technical design stops being partial: classes, database, backend logic, CRUD APIs and special queries are all specified, and the UI/UX document specifies how every feature calls the API. Still no new code. |
+| `v0.3.2` | **Backend Implementation** | Backend and database exist for the first time, implemented in one pass from the completed design. Frontend, backend and database all exist but are **not yet wired together**. |
+| `v0.4` | **First Integration** | The three tiers are wired together for the first time, making this the first fully runnable version of the component. |
+| `v0.5` | **Pipelines & Daemons** | Long-running and batch processing exists for the first time — design document first, then implementation. |
+| `v0.6` | **Platform Integration** | The component stops being standalone: it is mounted into the platform framework, respects the shared login, and its cross-component calls work. |
+| `v0.7` – `v0.8` | **Reserve** | No fixed milestone. Used for features added mid-course, requirement changes and refactoring. |
+| `v1.0` | **First Official Release** | First official release of the system. |
+| `v1.0.x+` | **Continuous Iteration** | Bug fixes, feature polishing and performance tuning on top of the first release. |
+| `v1.1.0+` | **Feature Expansion** | New sub-business features, or substantial changes to existing ones. |
+
+> The milestone names in this table are the **same names** used in §3 and in every component-level
+> version plan. One version never carries two different names — if you find a document using a
+> different label for the same version, that document is the defect.
 
 ---
 

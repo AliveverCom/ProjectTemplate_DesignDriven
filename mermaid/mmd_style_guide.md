@@ -21,7 +21,7 @@ files in this directory whose names start with `_` are copyable diagram template
 
 Hence three hard rules apply to every `.mmd` in this project:
 
-> **(1) White canvas　(2) Every box classified by type, one light fill per type　(3) All text black**
+> **(1) White canvas  (2) Every box classified by type, one light fill per type  (3) All text black**
 
 ---
 

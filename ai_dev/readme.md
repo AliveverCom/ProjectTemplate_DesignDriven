@@ -103,6 +103,11 @@ v{version}_{DocType}[_{YYYYMMDD}].md
 
 - When there are multiple documents of the same type within one version, append a date suffix:
   `v0.3_Snapshot_20260320.md`.
+- When one plan deliberately spans **two versions** — typically finishing off leftovers from the
+  previous version while delivering the next one — chain the version numbers in ascending order:
+  `v0.1_v0.2_FE_DevPlan.md`. The name still starts with a version number, so the file still sorts
+  and groups correctly. Do not use this form to avoid deciding which version work belongs to;
+  use it only when the plan genuinely delivers both.
 - The version number is taken from the component's `{component}_version_plan.md`; cross-version
   reorganization-type plans use the **current version number at the time the plan is
   initiated**.
