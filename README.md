@@ -1,201 +1,215 @@
 # ProjectTemplate_DesignDriven
 
-**设计驱动开发（Design-Driven Development）的全量文档模板库**
+**A complete documentation template library for design-driven development**
 
-**Templates Version**: 见 [VERSION](./VERSION)
+**Templates Version**: see [VERSION](./VERSION) · **License**: [MIT-0](./LICENSE)
 
 ---
 
-## 0 关于本仓库
+## 0 About This Repository
 
-本仓库是一套**面向 AI 协作开发的文档模板库**：先把业务、技术、UI/UX 设计写成结构化文档，
-再由 AI 依据这些文档产出代码——文档是唯一权威，代码是文档的实现。
+This repository is a **documentation template library built for AI-assisted development**: you write
+the business, technical and UI/UX design as structured documents first, then let an AI produce the
+code from those documents. The documents are the single source of truth; the code is their
+implementation.
 
-所有模板都不是凭空设计的，而是从一个真实运行中的多组件平台项目里**反向总结提炼**而来：
-先按早期模板写出上万行真实设计文档，在书写和多轮 review 过程中不断优化模板结构，
-最后把这些优化固化回模板。因此每份模板里的章节划分、表格列、硬性规则，
-都对应着实际踩过的坑（详见各模板顶部的说明注释块）。
+None of these templates were designed in the abstract. They were **reverse-engineered from a real,
+running multi-component platform**: tens of thousands of lines of real design documents were written
+against early drafts of these templates, the template structure was refined over many rounds of
+writing and review, and those refinements were folded back into the templates. Every section
+heading, table column and hard rule you find here corresponds to a problem actually hit in practice
+(each template's header comment block records the reasoning).
 
-### 0.1 怎么用
+### 0.1 How to Use It
 
-把本仓库的内容整体放进你项目的 `templates/` 目录：
+Drop the contents of this repository into your project's `templates/` directory:
 
 ```bash
 git clone https://github.com/AliveverCom/ProjectTemplate_DesignDriven.git templates
 rm -rf templates/.git
 ```
 
-之后按 [§7 使用流程](#7-使用流程) 复制模板到 `docs/` 与 `docs/components/{组件}/` 下并改名填写。
-**本仓库的根目录 == 你项目中的 `templates/` 目录**，下文出现的 `templates/xxx` 路径
-指的就是本仓库的 `xxx`。
+Then follow [§7 Workflow](#7-workflow) to copy templates into `docs/` and
+`docs/components/{component}/`, rename them and fill them in.
+**The root of this repository == the `templates/` directory of your project**, so every
+`templates/xxx` path mentioned below refers to `xxx` in this repository.
 
-### 0.2 仓库内容一览
+### 0.2 What Is Inside
 
-| 目录 | 份数 | 内容 |
-|------|------|------|
-| `platform/` | 7 | 平台级文档模板 → 落盘到 `docs/` 根目录 |
-| `component/` | 6 | 组件级文档模板 → 落盘到 `docs/components/{组件}/` |
-| `mermaid/` | 7 | 绘图规范 + 6 种 `.mmd` 图模板（白底 / 分类浅色 / 全黑字） |
-| `ai_dev/` | 18 | AI 开发过程文档模板 → 落盘到 `ai_dev_history/` |
+| Directory | Count | Content |
+|-----------|-------|---------|
+| `platform/` | 7 | Platform-level document templates → land in the `docs/` root |
+| `component/` | 6 | Component-level document templates → land in `docs/components/{component}/` |
+| `mermaid/` | 7 | Drawing conventions + 6 `.mmd` diagram templates (white canvas, category-coloured light fills, all-black text) |
+| `ai_dev/` | 18 | AI development-process document templates → land in `ai_dev_history/` |
 
 ---
 
 ## 1 Table of Contents
 
-- [0 关于本仓库](#0-关于本仓库)
+- [0 About This Repository](#0-about-this-repository)
 - [1 Table of Contents](#1-table-of-contents)
-- [2 四大类模板](#2-四大类模板)
-- [3 平台级 vs 组件级：最容易搞混的一件事](#3-平台级-vs-组件级最容易搞混的一件事)
-- [4 目录结构](#4-目录结构)
-- [5 命名约定](#5-命名约定)
-- [6 文档通用写作约定](#6-文档通用写作约定)
-- [7 使用流程](#7-使用流程)
-- [8 模板与真实文档的对应关系](#8-模板与真实文档的对应关系)
+- [2 The Four Template Categories](#2-the-four-template-categories)
+- [3 Platform-Level vs Component-Level: The Easiest Thing to Get Wrong](#3-platform-level-vs-component-level-the-easiest-thing-to-get-wrong)
+- [4 Directory Structure](#4-directory-structure)
+- [5 Naming Conventions](#5-naming-conventions)
+- [6 General Writing Conventions](#6-general-writing-conventions)
+- [7 Workflow](#7-workflow)
+- [8 Where Each Template Came From](#8-where-each-template-came-from)
+- [9 License](#9-license)
 
 ---
 
-## 2 四大类模板
+## 2 The Four Template Categories
 
-| # | 类别 | 目录 | 落盘位置 | 说明 |
-|---|------|------|---------|------|
-| 1 | **平台级**产品/业务/技术文档 | `platform/` | `docs/` 根目录、项目根目录 | 描述**整个平台**的业务全景、技术架构与**全局规范** |
-| 2 | **组件级**产品/业务/技术文档 | `component/` | `docs/components/{component}/` | 描述**单个组件内部**的业务对象、类、表、API、页面 |
-| 3 | **Mermaid 图**模板 | `mermaid/` | 与所属文档同目录 | 统一的白底黑字、按类型浅色分类着色的绘图规范与模板 |
-| 4 | **AI 开发过程**文档 | `ai_dev/` | `docs/ai_dev_history/`、`docs/components/{component}/ai_dev_history/` | Review 报告、开发计划、进度审查、改进计划、原始 Prompt |
-
----
-
-## 3 平台级 vs 组件级：最容易搞混的一件事
-
-平台级和组件级的文件名非常像，但**是两个不同层面的产品文档**，职责边界必须严格区分：
-
-| 主题 | 平台级（`docs/` 根目录） | 组件级（`docs/components/{component}/`） |
-|------|------------------------|----------------------------------------|
-| **业务** | `business_overview.md`<br>平台定位、产品组件全景、用户角色、端到端业务流程 | `{component}_business_desc.md`<br>本组件的业务对象、属性、本组件内部的业务流程 |
-| **技术** | `technical_overview.md`<br>分层架构、**全局规范**（API/DB/前端/后端/日志/安全/版本）、依赖版本锁定、部署 | `{component}_tech_design.md`<br>本组件的类、枚举、表、API 端点、源码目录 |
-| **UI/UX** | `uiux_design_specification.md`<br>**设计模式**（单/双列表页、详情页、弹出框）、通用控件、配色、状态管理、格式化规则 | `{component}_uiux.md`<br>本组件的页面清单、菜单、逐页布局元素与行为、路由 |
-| **版本** | `version_plan.md`<br>通用版本号规范（vA.B.C.D.E 五段语义、里程碑、VERSION 文件策略） | `{component}_version_plan.md`<br>本组件 v0.1→v1.0 每个版本的功能范围与技术栈 |
-| **命名/目录** | `naming_convention.md`、`project_directory_plan.md` | 无（组件不重复定义，只遵守） |
-
-### 三条硬规则
-
-1. **规范只在平台级定义一次。** 组件级文档遇到全局规范时**只引用章节号**
-   （例："本组件 API 遵循 `technical_overview.md` §4.1"），**不得重新定义**。
-2. **冲突时以平台级为准。** 若组件文档与平台文档矛盾，视为组件文档的缺陷，
-   应在 `01_DocReviewRefine` review 中提出并修正。
-3. **上升路径。** 组件里发现的通用模式，先写
-   `ai_dev/01_DocReviewRefine/_uiux_pattern_summary.md` 提案，经工程师确认后
-   才写入平台级 `uiux_design_specification.md`，然后组件文档改为引用。
+| # | Category | Directory | Lands In | Purpose |
+|---|----------|-----------|----------|---------|
+| 1 | **Platform-level** product / business / technical docs | `platform/` | `docs/` root, project root | Describe the **whole platform**: business landscape, technical architecture and **global conventions** |
+| 2 | **Component-level** product / business / technical docs | `component/` | `docs/components/{component}/` | Describe the **inside of a single component**: business objects, classes, tables, APIs, pages |
+| 3 | **Mermaid diagram** templates | `mermaid/` | Alongside the document that references them | Uniform white-canvas, black-text, category-coloured drawing conventions and templates |
+| 4 | **AI development-process** docs | `ai_dev/` | `docs/ai_dev_history/`, `docs/components/{component}/ai_dev_history/` | Review reports, dev plans, dev reports, improve plans, prompt history |
 
 ---
 
-## 4 目录结构
+## 3 Platform-Level vs Component-Level: The Easiest Thing to Get Wrong
+
+Platform-level and component-level documents have very similar names, but they are **two different
+layers of product documentation**. The boundary must be held strictly:
+
+| Topic | Platform-level (`docs/` root) | Component-level (`docs/components/{component}/`) |
+|-------|------------------------------|--------------------------------------------------|
+| **Business** | `business_overview.md`<br>Platform positioning, component landscape, user roles, end-to-end business process | `{component}_business_desc.md`<br>This component's business objects and attributes, and its internal business process |
+| **Technical** | `technical_overview.md`<br>Layered architecture, **global conventions** (API / DB / frontend / backend / logging / security / versioning), dependency version locks, deployment | `{component}_tech_design.md`<br>This component's classes, enums, tables, API endpoints, source layout |
+| **UI/UX** | `uiux_design_specification.md`<br>**Design patterns** (single/dual list pages, detail pages, dialogs), shared controls, colour, state management, formatting rules | `{component}_uiux.md`<br>This component's page list, menu, per-page layout, elements, behaviours and routes |
+| **Versioning** | `version_plan.md`<br>General version numbering convention (five-segment `vA.B.C.D.E` semantics, milestone ladder, `VERSION` file strategy) | `{component}_version_plan.md`<br>What this component ships in each version from v0.1 to v1.0 |
+| **Naming / layout** | `naming_convention.md`, `project_directory_plan.md` | None — components do not redefine these, they simply comply |
+
+### Three Hard Rules
+
+1. **A convention is defined exactly once, at platform level.** When a component-level document
+   touches a global convention it **only references the section number**
+   (e.g. "this component's APIs follow `technical_overview.md` §4.1"). It **must not redefine it**.
+2. **On conflict, platform level wins.** If a component document contradicts a platform document,
+   the component document is the defect. Raise it in a `01_DocReviewRefine` review and fix it there.
+3. **Promotion path.** A pattern discovered inside one component starts as a proposal in
+   `ai_dev/01_DocReviewRefine/_uiux_pattern_summary.md`. Once the engineer confirms it, it is
+   written into the platform-level `uiux_design_specification.md`, and the component document is
+   changed to a reference.
+
+---
+
+## 4 Directory Structure
 
 ```
 templates/
-├── readme.md                       # 本文件
-├── VERSION                         # 模板库自身版本
+├── readme.md                       # this file
+├── VERSION                         # version of the template library itself
 │
-├── platform/                       # ① 平台级文档模板 → docs/ 根目录
-│   ├── _business_overview.md           # 平台业务与产品总览
-│   ├── _technical_overview.md          # 平台技术总览 + 全局技术规范
-│   ├── _uiux_design_specification.md   # 平台 UI/UX 设计规范
-│   ├── _naming_convention.md           # 平台命名规范
-│   ├── _project_directory_plan.md      # 项目目录规划（落盘在项目根目录）
-│   ├── _version_plan.md                # 通用版本号规范 → docs/version_plan.md
-│   └── _api_endpoint_list.md           # 全平台 API 端点汇总 → docs/APIs/
+├── platform/                       # (1) platform-level templates -> docs/ root
+│   ├── _business_overview.md           # platform business and product overview
+│   ├── _technical_overview.md          # platform technical overview + global conventions
+│   ├── _uiux_design_specification.md   # platform UI/UX design specification
+│   ├── _naming_convention.md           # platform naming convention
+│   ├── _project_directory_plan.md      # project directory plan (lands in the project root)
+│   ├── _version_plan.md                # general version convention -> docs/version_plan.md
+│   └── _api_endpoint_list.md           # platform-wide API endpoint index -> docs/APIs/
 │
-├── component/                      # ② 组件级文档模板 → docs/components/{component}/
-│   ├── _business_desc.md               # 组件业务描述
-│   ├── _tech_design.md                 # 组件技术设计
-│   ├── _uiux.md                        # 组件 UI/UX 设计
-│   ├── _version_plan.md                # 组件版本规划
-│   ├── _sub_module_design.md           # 子模块/daemon 设计 → sub_{module}/
-│   └── _migration_plan.md              # 老系统数据迁移 → old_projects_migration/
+├── component/                      # (2) component-level templates -> docs/components/{component}/
+│   ├── _business_desc.md               # component business description
+│   ├── _tech_design.md                 # component technical design
+│   ├── _uiux.md                        # component UI/UX design
+│   ├── _version_plan.md                # component version plan
+│   ├── _sub_module_design.md           # sub-module / daemon design -> sub_{module}/
+│   └── _migration_plan.md              # legacy data migration -> old_projects_migration/
 │
-├── mermaid/                        # ③ Mermaid 图模板 → 与所属文档同目录
-│   ├── mmd_style_guide.md              # 绘图规范（白底 / 分类浅色 / 黑字）
-│   ├── _business_process.mmd           # 业务流程图
-│   ├── _technical_architecture.mmd     # 技术架构图
-│   ├── _class_diagram.mmd              # 类图
-│   ├── _db_schema.mmd                  # 数据库表结构图
-│   ├── _api_diagram.mmd                # API 调用关系图
-│   └── _page_flow.mmd                  # 页面流转图 → ui_page_design/
+├── mermaid/                        # (3) Mermaid templates -> next to the owning document
+│   ├── mmd_style_guide.md              # drawing conventions (white canvas / light fills / black text)
+│   ├── _business_process.mmd           # business process diagram
+│   ├── _technical_architecture.mmd     # technical architecture diagram
+│   ├── _class_diagram.mmd              # class diagram
+│   ├── _db_schema.mmd                  # database schema diagram
+│   ├── _api_diagram.mmd                # API call graph
+│   └── _page_flow.mmd                  # page flow diagram -> ui_page_design/
 │
-└── ai_dev/                         # ④ AI 开发过程文档模板 → ai_dev_history/
-    ├── readme.md                       # ai_dev 模板总说明 + Review 迭代协议
-    ├── _prompt_history.md              # 原始 Prompt 归档 → ai_dev_history/ 根目录
-    ├── 01_DocReviewRefine/             # 文档级 review 与 refine
-    ├── 02_DevPlanAndReport/            # 开发计划 / 报告 / 保存现场 / AI 交接 / 改进计划
-    ├── 03_CodeReviewRefine/            # 代码级 review 与 refine
-    ├── 04_DebugFix/                    # 调试与缺陷修复
-    └── 99_Prompts/                     # 可复用 Prompt 库
+└── ai_dev/                         # (4) AI development-process templates -> ai_dev_history/
+    ├── readme.md                       # ai_dev overview + Review Iteration Protocol
+    ├── _prompt_history.md              # prompt archive -> root of ai_dev_history/
+    ├── 01_DocReviewRefine/             # document-level review and refine
+    ├── 02_DevPlanAndReport/            # dev plan / report / snapshot / handover / improve plan
+    ├── 03_CodeReviewRefine/            # code-level review and refine
+    ├── 04_DebugFix/                    # debugging and defect fixing
+    └── 99_Prompts/                     # reusable prompt library
 ```
 
-`ai_dev/` 的编号目录代表 **AI 开发生命周期的阶段**，落盘时**编号目录名原样保留**，
-建在 `docs/ai_dev_history/`（平台级）或
-`docs/components/{component}/ai_dev_history/`（组件级）下。
+The numbered directories under `ai_dev/` represent **stages of the AI development lifecycle**. When
+they land in a project the **numbered directory names are kept verbatim**, under
+`docs/ai_dev_history/` (platform level) or
+`docs/components/{component}/ai_dev_history/` (component level).
 
-两条特别规则：
+Two special rules:
 
-- `02_DevPlanAndReport/` 下**所有文档一律以所在版本号开头**：
-  `v0.3_DevPlan.md`、`v0.3_BE_DevPlan.md`、`v0.3_DevReport.md`、`v0.3_Snapshot.md`、
-  `v0.3_Handover.md`、`v0.3_ImprovePlan.md`。
-- `prompt_history.md` 放在 `ai_dev_history/` **根目录**，不进任何编号子目录——
-  它是贯穿整个开发周期的单一累积文件，每个组件各一份，只追加不新建。
+- Every document under `02_DevPlanAndReport/` is **named starting with the version it belongs to**:
+  `v0.3_DevPlan.md`, `v0.3_BE_DevPlan.md`, `v0.3_DevReport.md`, `v0.3_Snapshot.md`,
+  `v0.3_Handover.md`, `v0.3_ImprovePlan.md`.
+- `prompt_history.md` lives in the **root** of `ai_dev_history/`, not in any numbered subdirectory —
+  it is a single accumulating file that spans the whole development cycle, one per component,
+  appended to and never recreated.
 
-详见 [ai_dev/readme.md](./ai_dev/readme.md)。
+See [ai_dev/readme.md](./ai_dev/readme.md) for details.
 
 ---
 
-## 5 命名约定
+## 5 Naming Conventions
 
-### 5.1 模板文件名
+### 5.1 Template File Names
 
-- **前导 `_`** 表示"文件名后缀"：使用时把 `_` 替换为组件代码名。
+- A **leading `_`** marks a "filename suffix": replace the `_` with the component code name when
+  you use it.
   - `_business_desc.md` → `material_collector_business_desc.md`
   - `_tech_design.md` → `material_collector_tech_design.md`
   - `_class_diagram.mmd` → `material_collector_class_diagram.mmd`
-- **平台级模板**同样带 `_`，但落盘时直接**去掉** `_`（不加前缀）。
+- **Platform-level templates** also carry the `_`, but you simply **drop it** when they land
+  (no prefix is added).
   - `_business_overview.md` → `business_overview.md`
-- **不带 `_` 的文件**（`readme.md`、`mmd_style_guide.md`、`VERSION`）是模板库自身的说明文件，
-  不参与复制。
+- **Files without a `_`** (`readme.md`, `mmd_style_guide.md`, `VERSION`) document the template
+  library itself and are not copied into your project.
 
-### 5.2 落盘文件名规则
+### 5.2 Target File Naming Rules
 
-| 范围 | 规则 | 示例 |
-|------|------|------|
+| Scope | Rule | Example |
+|-------|------|---------|
 | `docs/` | snake_case | `material_collector_tech_design.md` |
 | `src/backend/` | snake_case | `material_collector/` |
 | `src/frontend/` | kebab-case | `material-collector/` |
-| `ui_page_design/` 子目录 | `P{nn}  {页面中文名}`（两个空格） | `P01  信息源列表页` |
-| `.mmd` / `.png` | 与所属文档同前缀 | `material_collector_page_flow.mmd` |
-| ai_dev 文档 | `{类型}_{YYYYMMDD}[_v{版本}][-r{轮次}].md` | `docs_review_20260314-r10.md` |
+| `ui_page_design/` subdirectories | `P{nn}  {PageName}` (two spaces) | `P01  Source Media List` |
+| `.mmd` / `.png` | Same prefix as the owning document | `material_collector_page_flow.mmd` |
+| `02_DevPlanAndReport/` documents | `v{version}_{DocType}[_{YYYYMMDD}].md` | `v0.3_BE_DevPlan.md` |
+| Other ai_dev documents | `{type}_{YYYYMMDD}[-r{round}].md` | `docs_review_20260314-r10.md` |
 
 ---
 
-## 6 文档通用写作约定
+## 6 General Writing Conventions
 
-| # | 约定 | 说明 |
-|---|------|------|
-| 1 | **首章是目录** | 每份文档第一章必须是 Table of Contents / 索引 |
-| 2 | **数字编号** | 所有章节使用 `1` / `1.1` / `1.1.1` 数字编号，锚点链接与标题一致 |
-| 3 | **占位符** | `{花括号}` 内为待替换内容；发布前不得残留 |
-| 4 | **表格优先** | 能用表格表达的不写长段落；属性、参数、行为一律用表 |
-| 5 | **图文分离** | 图放 `.mmd` 源文件 + 渲染的 `.png`，Markdown 里引用 png 并给出 mmd 源链接 |
-| 6 | **交叉引用** | 引用其它文档用相对路径 + 章节号，例：`[technical_overview.md](../../technical_overview.md) §4.3` |
-| 7 | **可选章节** | 模板中标注 `> **可选章节**：...` 的部分按需保留或整节删除，删除后重排编号 |
-| 8 | **版本号** | 文档头 `**Document Version**: {x.y.z}`，文末 `## Change Log` 记录每次变更 |
-| 9 | **严重度色标** | 🔴 致命/高 · 🟠 高/中 · 🟡 中 · 🔵 低 |
-| 10 | **进度色标** | 🟢 已完成 · 🟡 部分完成 · 🔴 未实现 · ⚪ 计划外 |
-| 11 | **待办标记** | `> **⚠️ 待完善（{问题ID}）**：{说明}` |
-| 12 | **人工填写列** | Review 类表格最后一列固定为「工程师的答复」，AI 生成时留空 |
+| # | Convention | Detail |
+|---|-----------|--------|
+| 1 | **Chapter 1 is the table of contents** | Every document opens with a Table of Contents / Index |
+| 2 | **Numeric section numbers** | All sections use `1` / `1.1` / `1.1.1`; anchor links must match the headings |
+| 3 | **Placeholders** | Anything inside `{curly braces}` is to be replaced; none may survive into a published document |
+| 4 | **Tables over prose** | If it can be a table, it is a table — attributes, parameters and behaviours always are |
+| 5 | **Diagrams live in their own files** | A `.mmd` source plus a rendered `.png`; Markdown embeds the png and links the mmd source |
+| 6 | **Cross references** | Relative path plus section number, e.g. `[technical_overview.md](../../technical_overview.md) §4.3` |
+| 7 | **Optional sections** | Sections marked `> **OPTIONAL SECTION**: ...` are kept or deleted whole; renumber after deleting |
+| 8 | **Version numbers** | `**Document Version**: {x.y.z}` in the header, `## Change Log` at the end |
+| 9 | **Severity markers** | 🔴 Critical / High · 🟠 High / Medium · 🟡 Medium · 🔵 Low |
+| 10 | **Progress markers** | 🟢 Done · 🟡 Partial · 🔴 Not Implemented · ⚪ Out of Scope |
+| 11 | **To-do markers** | `> **⚠️ To Be Completed ({IssueID})**: {description}` |
+| 12 | **Human-filled columns** | The last column of a review table is always "Engineer's Response"; an AI leaves it empty |
 
 ---
 
-## 7 使用流程
+## 7 Workflow
 
-### 7.1 新建一个产品组件的文档
+### 7.1 Starting the Documents for a New Component
 
 ```
 1. mkdir -p docs/components/{component}/{ai_dev_history,ui_page_design}
@@ -204,55 +218,58 @@ templates/
    cp templates/component/_uiux.md           docs/components/{component}/{component}_uiux.md
    cp templates/component/_version_plan.md   docs/components/{component}/{component}_version_plan.md
 3. echo 0.1.0 > docs/components/{component}/VERSION
-4. 删除每个文件顶部的「模板说明」注释块，删除不需要的可选章节
-5. 按需从 templates/mermaid/ 复制 .mmd 模板并改名，渲染 png
-6. 逐节替换 {占位符}
+4. Delete the TEMPLATE NOTES comment block at the top of each file, and delete
+   any optional sections you do not need
+5. Copy the .mmd templates you need from templates/mermaid/, rename them, render the png
+6. Replace the {placeholders} section by section
 ```
 
-### 7.2 新建平台级文档
+### 7.2 Starting the Platform-Level Documents
 
 ```
 cp templates/platform/_business_overview.md  docs/business_overview.md
 cp templates/platform/_technical_overview.md docs/technical_overview.md
-（去掉前导下划线，不加任何前缀）
+(drop the leading underscore; add no prefix)
 ```
 
-### 7.3 AI 开发过程中
+### 7.3 During AI Development
 
-按生命周期从 `templates/ai_dev/{编号目录}/` 取对应模板，
-按 `ai_dev/readme.md` 的命名规则和 Review 迭代协议产出报告。
+Take the matching template from `templates/ai_dev/{numbered directory}/` according to the current
+lifecycle stage, and produce the report following the naming rules and the Review Iteration Protocol
+in [ai_dev/readme.md](./ai_dev/readme.md).
 
 ---
 
-## 8 模板与真实文档的对应关系
+## 8 Where Each Template Came From
 
-每个模板都是从来源项目里一份真实文档反向提炼出来的。下表给出**提炼来源**——
-这些路径指的是来源项目（一个多组件内容生产平台）中的文件，不在本仓库内。
-填写模板时若不确定某一节该写到什么颗粒度，可参照本表理解该节的设计意图。
+Every template was reverse-engineered from a real document in the source project. The table below
+records that **origin** — these paths refer to files in the source project (a multi-component content
+production platform), not to files in this repository. When you are unsure how much detail a section
+expects, this table tells you which real document to think of.
 
-| 模板 | 提炼来源（来源项目中最完整的那份） |
-|------|---------------------|
+| Template | Origin (the most complete instance in the source project) |
+|----------|---------------------|
 | `platform/_business_overview.md` | `docs/business_overview.md` |
 | `platform/_technical_overview.md` | `docs/technical_overview.md` |
 | `platform/_uiux_design_specification.md` | `docs/uiux_design_specification.md` |
 | `platform/_naming_convention.md` | `docs/naming_convention.md` |
 | `platform/_project_directory_plan.md` | `project_directory_plan.md` |
-| `platform/_version_plan.md` | `docs/templates/_version_plan.md`（旧位置，建议迁到 `docs/version_plan.md`） |
+| `platform/_version_plan.md` | `docs/version_plan.md` |
 | `platform/_api_endpoint_list.md` | `docs/APIs/api_endpoint_list.md` |
-| `component/_business_desc.md` | `docs/components/material_collector/material_collector_business_desc.md` |
-| `component/_tech_design.md` | `docs/components/material_collector/material_collector_tech_design.md` |
-| `component/_uiux.md` | `docs/components/material_collector/material_collector_uiux.md` |
-| `component/_version_plan.md` | `docs/components/material_collector/material_collector_version_plan.md` |
-| `component/_sub_module_design.md` | `docs/components/material_collector/sub_unified_feed_cltr/unified_feed_cltr_design.md` |
-| `component/_migration_plan.md` | `docs/components/material_collector/old_projects_migration/data_migration_plan.md` |
-| `mermaid/_business_process.mmd` | `docs/business_process.mmd`、`channel_management_business_process.mmd` |
+| `component/_business_desc.md` | `docs/components/{component}/{component}_business_desc.md` |
+| `component/_tech_design.md` | `docs/components/{component}/{component}_tech_design.md` |
+| `component/_uiux.md` | `docs/components/{component}/{component}_uiux.md` |
+| `component/_version_plan.md` | `docs/components/{component}/{component}_version_plan.md` |
+| `component/_sub_module_design.md` | `docs/components/{component}/sub_{program}/{program}_design.md` |
+| `component/_migration_plan.md` | `docs/components/{component}/old_projects_migration/data_migration_plan.md` |
+| `mermaid/_business_process.mmd` | `docs/business_process.mmd`, `{component}_business_process.mmd` |
 | `mermaid/_technical_architecture.mmd` | `docs/technical_architecture.mmd` |
-| `mermaid/_class_diagram.mmd` | `material_collector_class_diagram.mmd` |
-| `mermaid/_db_schema.mmd` | `material_collector_db_schema.mmd` |
-| `mermaid/_api_diagram.mmd` | `material_collector_api.mmd` |
-| `mermaid/_page_flow.mmd` | `ui_page_design/material_collector_page_flow.mmd` |
-| `ai_dev/01_DocReviewRefine/` | `ai_dev_history/review/docs_review_*.md`、`tech_design_review_*.md`、`FE_BE_review_*.md`、`html_review_*.md`、`uiux_design_summary_*.md` |
-| `ai_dev/02_DevPlanAndReport/` | `ai_dev_history/dev_plan/BE_dev_plan_*.md`、`FE_dev_plan_*.md`、`*_implementation_*.md`、`dev_progress_review_*.md`、`*_improvement_plan_*.md`、`naming_convention_rename_plan_*.md`、`docs_reorganize_plan_*.md` |
+| `mermaid/_class_diagram.mmd` | `{component}_class_diagram.mmd` |
+| `mermaid/_db_schema.mmd` | `{component}_db_schema.mmd` |
+| `mermaid/_api_diagram.mmd` | `{component}_api.mmd` |
+| `mermaid/_page_flow.mmd` | `ui_page_design/{component}_page_flow.mmd` |
+| `ai_dev/01_DocReviewRefine/` | `ai_dev_history/review/docs_review_*.md`, `tech_design_review_*.md`, `FE_BE_review_*.md`, `html_review_*.md`, `uiux_design_summary_*.md` |
+| `ai_dev/02_DevPlanAndReport/` | `ai_dev_history/dev_plan/BE_dev_plan_*.md`, `FE_dev_plan_*.md`, `*_implementation_*.md`, `dev_progress_review_*.md`, `*_improvement_plan_*.md`, `naming_convention_rename_plan_*.md`, `docs_reorganize_plan_*.md` |
 | `ai_dev/03_CodeReviewRefine/` | `ai_dev_history/review/FE_review_*.md` |
 | `ai_dev/04_DebugFix/` | `ai_dev_history/review/debug_*.md` |
 | `ai_dev/99_Prompts/` | `docs/templates_prompt/uiux_prompts.md` |
@@ -260,8 +277,25 @@ cp templates/platform/_technical_overview.md docs/technical_overview.md
 
 ---
 
+## 9 License
+
+Released under **[MIT No Attribution (MIT-0)](./LICENSE)**.
+
+You may use, copy, modify and redistribute these templates for any purpose, commercial or not, with
+**no obligation whatsoever** — you do not need to keep a copyright notice, ship the license text, or
+credit this project anywhere.
+
+If you would like to, a line such as the following in your own `README.md` is appreciated, but it is
+entirely optional and nothing is expected in return:
+
+```markdown
+Documentation structure based on [ProjectTemplate_DesignDriven](https://github.com/AliveverCom/ProjectTemplate_DesignDriven).
+```
+
+---
+
 ## Change Log
 
-| 版本 | 日期 | 变更内容 |
-|------|------|---------|
-| 1.0.0 | 2026-08-23 | 首版：从 `docs/` 下真实文档反向总结，建立平台级 / 组件级 / mermaid / ai_dev 四类模板 |
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0.0 | 2026-08-23 | First release: platform / component / mermaid / ai_dev template categories, reverse-engineered from the real design documents of a multi-component platform |

@@ -1,18 +1,21 @@
-%% ===== 模板说明（使用时整块删除）=====
-%% 图表用途：API 调用关系图。左侧为前端页面，右侧为按 tech_design §5.x 分组的 REST 端点，
-%%           连线表示"哪个页面调用哪个端点"，并标出跨模块调用方。
-%% 存放目录：docs/components/{component_code_name}/
-%% 文件命名：{component_code_name}_api.mmd；PNG 与 .mmd 同名同目录。
-%% 渲染命令：mmdc -i {component_code_name}_api.mmd \
-%%                -o {component_code_name}_api.png -b white -s 3
-%% 引用位置：{component}_tech_design.md §5.0 API Overview Diagram
-%% 样式规范：见 templates/mermaid/mmd_style_guide.md
-%%           ① 白色画布 ② 方框按类型归类着浅色 ③ 全部文字为黑色
-%% 一致性要求（review 必查）：
-%%   本图的端点数量与路径必须与 tech_design §5 逐条一致，
-%%   并与 uiux.md §2.3 Page-Object-API Mapping、P{nn} API 调试页的端点清单三方对齐。
-%% 使用提示：所有 {花括号} 占位符必须替换；节点 ID 保持 `分组前缀_动作` 形式便于检索。
-%% ======================================
+%% ===== TEMPLATE NOTES (delete this whole block when using) =====
+%% Purpose:    API call graph. Frontend pages on the left, REST endpoints grouped by
+%%             tech_design §5.x on the right; edges show which page calls which endpoint, and
+%%             cross-module callers are marked explicitly.
+%% Location:   docs/components/{component_code_name}/
+%% File name:  {component_code_name}_api.mmd; the PNG shares its name and directory.
+%% Render:     mmdc -i {component_code_name}_api.mmd \
+%%                  -o {component_code_name}_api.png -b white -s 3
+%% Referenced: {component}_tech_design.md §5.0 API Overview Diagram
+%% Style spec: see templates/mermaid/mmd_style_guide.md
+%%             (1) white canvas  (2) boxes coloured by type with light fills  (3) all text black
+%% Consistency requirements (checked in review):
+%%   The endpoint count and paths in this diagram must match tech_design §5 item by item, and must
+%%   agree with uiux.md §2.3 Page-Object-API Mapping and the endpoint list on the P{nn} API debug
+%%   page — all three must be in sync.
+%% Usage:      Replace every {curly brace} placeholder; keep node IDs in the `GROUP_ACTION` form so
+%%             they stay searchable.
+%% ===============================================================
 %%{init: {
   "theme": "base",
   "themeVariables": {
@@ -34,48 +37,48 @@
 }}%%
 graph LR
 
-    %% ========== 分类样式定义（每类一个浅色系背景，文字一律黑色）==========
+    %% ========== Category styles (one light fill per category; text is always black) ==========
     classDef pageCls fill:#E0F7FA,stroke:#00838F,color:#000000
     classDef apiCls  fill:#E8F5E9,stroke:#2E7D32,color:#000000
     classDef extCls  fill:#F5F5F5,stroke:#616161,color:#000000
 
-    %% ========== 调用方：本模块前端页面 ==========
-    P01["P01 {页面1名称}"]:::pageCls
-    P02["P02 {页面2名称}"]:::pageCls
-    P03["P03 {页面3名称}"]:::pageCls
-    P04["P04 {监控仪表板}"]:::pageCls
-    P05["P05 API 调试页"]:::pageCls
+    %% ========== Callers: this component's frontend pages ==========
+    P01["P01 {Page1Name}"]:::pageCls
+    P02["P02 {Page2Name}"]:::pageCls
+    P03["P03 {Page3Name}"]:::pageCls
+    P04["P04 {DashboardName}"]:::pageCls
+    P05["P05 API Debug Page"]:::pageCls
 
-    %% ========== 调用方：跨模块 ==========
-    EXT1["{other_module}<br>跨模块调用"]:::extCls
+    %% ========== Callers: cross-module ==========
+    EXT1["{other_module}<br>cross-module caller"]:::extCls
 
-    %% ========== §5.1 {主对象} CRUD ==========
-    subgraph OBJ["§5.1 {主对象} CRUD"]
+    %% ========== §5.1 {MainObject} CRUD ==========
+    subgraph OBJ["§5.1 {MainObject} CRUD"]
         direction TB
-        OBJ_LIST["GET /{resource}<br>获取列表"]:::apiCls
-        OBJ_GET["GET /{resource}/{id}<br>获取单条"]:::apiCls
-        OBJ_POST["POST /{resource}<br>创建"]:::apiCls
-        OBJ_PUT["PUT /{resource}/{id}<br>更新"]:::apiCls
-        OBJ_DEL["DELETE /{resource}/{id}<br>软删除"]:::apiCls
+        OBJ_LIST["GET /{resource}<br>list"]:::apiCls
+        OBJ_GET["GET /{resource}/{id}<br>get one"]:::apiCls
+        OBJ_POST["POST /{resource}<br>create"]:::apiCls
+        OBJ_PUT["PUT /{resource}/{id}<br>update"]:::apiCls
+        OBJ_DEL["DELETE /{resource}/{id}<br>soft delete"]:::apiCls
     end
 
-    %% ========== §5.2 {子对象} 查询 ==========
-    subgraph SUB["§5.2 {子对象} 查询"]
+    %% ========== §5.2 {SubObject} queries ==========
+    subgraph SUB["§5.2 {SubObject} Queries"]
         direction TB
-        SUB_LIST["GET /{sub-resource}<br>查询列表"]:::apiCls
-        SUB_GET["GET /{sub-resource}/{id}<br>获取单条"]:::apiCls
-        SUB_BDEL["POST /{sub-resource}/batch-delete<br>批量删除"]:::apiCls
+        SUB_LIST["GET /{sub-resource}<br>list"]:::apiCls
+        SUB_GET["GET /{sub-resource}/{id}<br>get one"]:::apiCls
+        SUB_BDEL["POST /{sub-resource}/batch-delete<br>batch delete"]:::apiCls
     end
 
-    %% ========== §5.3 {运行状态与统计} ==========
-    subgraph STAT["§5.3 {运行状态与统计}"]
+    %% ========== §5.3 {Run state and statistics} ==========
+    subgraph STAT["§5.3 {Run State and Statistics}"]
         direction TB
-        STAT_STATUS["GET /{daemons}/status<br>获取运行状态"]:::apiCls
-        STAT_SUM["GET /stats/summary<br>获取统计概览"]:::apiCls
-        STAT_ERR["GET /stats/recent-errors<br>获取最近错误"]:::apiCls
+        STAT_STATUS["GET /{daemons}/status<br>run state"]:::apiCls
+        STAT_SUM["GET /stats/summary<br>statistics summary"]:::apiCls
+        STAT_ERR["GET /stats/recent-errors<br>recent errors"]:::apiCls
     end
 
-    %% ========== 页面 → 端点 调用关系 ==========
+    %% ========== Page -> endpoint calls ==========
     P01 --> OBJ_LIST
     P01 --> OBJ_DEL
     P02 --> OBJ_GET
@@ -88,24 +91,24 @@ graph LR
     P04 --> STAT_SUM
     P04 --> STAT_ERR
 
-    %% ========== API 调试页覆盖全部端点（虚线，避免连线过密）==========
-    P05 -.->|"覆盖全部端点"| OBJ
-    P05 -.->|"覆盖全部端点"| SUB
-    P05 -.->|"覆盖全部端点"| STAT
+    %% ========== The API debug page covers every endpoint (dashed, to avoid edge clutter) ==========
+    P05 -.->|"covers all endpoints"| OBJ
+    P05 -.->|"covers all endpoints"| SUB
+    P05 -.->|"covers all endpoints"| STAT
 
-    %% ========== 跨模块调用（虚线 + 说明标签）==========
-    EXT1 -.->|"{调用场景说明}"| OBJ_LIST
-    EXT1 -.->|"{调用场景说明}"| OBJ_GET
+    %% ========== Cross-module calls (dashed, with an explanatory label) ==========
+    EXT1 -.->|"{when and why it calls}"| OBJ_LIST
+    EXT1 -.->|"{when and why it calls}"| OBJ_GET
 
-    %% ========== 图例 ==========
-    subgraph legend["图例"]
+    %% ========== Legend ==========
+    subgraph legend["Legend"]
         direction LR
-        LG1["前端页面"]:::pageCls
-        LG2["REST 端点"]:::apiCls
-        LG3["跨模块调用方"]:::extCls
+        LG1["Frontend page"]:::pageCls
+        LG2["REST endpoint"]:::apiCls
+        LG3["Cross-module caller"]:::extCls
     end
 
-    %% ========== 容器底色（必须比节点更浅，且显式声明黑色文字）==========
+    %% ========== Container fills (lighter than the nodes; black text declared explicitly) ==========
     style OBJ    fill:#F5FCF7,stroke:#2E7D32,color:#000
     style SUB    fill:#F5FCF7,stroke:#2E7D32,color:#000
     style STAT   fill:#F5FCF7,stroke:#2E7D32,color:#000

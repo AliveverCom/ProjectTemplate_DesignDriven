@@ -1,24 +1,28 @@
-%% ===== 模板说明（使用时整块删除）=====
-%% 图表用途：页面流转图。展示菜单入口、各页面之间的导航关系与返回路径。
-%% 存放目录：docs/components/{component_code_name}/ui_page_design/
-%%           （唯一放在 ui_page_design/ 下的图，与各页面的 code.html / screen.png 同级管理）
-%% 文件命名：{component_code_name}_page_flow.mmd；PNG 与 .mmd 同名同目录。
-%% 渲染命令：mmdc -i {component_code_name}_page_flow.mmd \
-%%                -o {component_code_name}_page_flow.png -b white -s 3
-%% 引用位置：{component}_uiux.md 文首 Page Flow Diagram 一节
-%% 样式规范：见 templates/mermaid/mmd_style_guide.md
-%%           ① 白色画布 ② 方框按页面类型归类着浅色 ③ 全部文字为黑色
+%% ===== TEMPLATE NOTES (delete this whole block when using) =====
+%% Purpose:    Page flow diagram. Shows the menu entry points, the navigation between pages and
+%%             the return paths.
+%% Location:   docs/components/{component_code_name}/ui_page_design/
+%%             (the only diagram that lives under ui_page_design/, managed alongside each page's
+%%              code.html / screen.png)
+%% File name:  {component_code_name}_page_flow.mmd; the PNG shares its name and directory.
+%% Render:     mmdc -i {component_code_name}_page_flow.mmd \
+%%                  -o {component_code_name}_page_flow.png -b white -s 3
+%% Referenced: the "Page Flow Diagram" section at the very top of {component}_uiux.md
+%% Style spec: see templates/mermaid/mmd_style_guide.md
+%%             (1) white canvas  (2) boxes coloured by page type with light fills  (3) all text black
 %% -
-%% 连线约定：
-%%   实线 -->   页面间的显式导航（菜单进入、按钮跳转、双击行进入详情、保存后返回）
-%%   虚线 -.->  非导航式跳转（仪表板卡片点击下钻、图表联动等）
-%%   每条连线都必须带触发条件标签 |"..."|，说明"用户做了什么才会发生这次跳转"
+%% Edge conventions:
+%%   solid  -->   explicit navigation between pages (menu entry, button jump, double-click a row to
+%%                open a detail page, return after save)
+%%   dashed -.->  non-navigational jumps (dashboard card drill-down, chart interactions, ...)
+%%   Every edge MUST carry a trigger label |"..."| stating what the user did to cause the jump.
 %% -
-%% 一致性要求（review 必查）：
-%%   本图页面编号与名称必须与 uiux.md §2.1 Page List 完全一致；
-%%   菜单结构必须与 uiux.md §2.2 Navigation Menu 一致。
-%% 使用提示：所有 {花括号} 占位符必须替换；节点 ID 用 P01/P02… 与页面编号对齐。
-%% ======================================
+%% Consistency requirements (checked in review):
+%%   The page IDs and names in this diagram must match uiux.md §2.1 Page List exactly;
+%%   the menu structure must match uiux.md §2.2 Navigation Menu.
+%% Usage:      Replace every {curly brace} placeholder; keep node IDs P01/P02... aligned with the
+%%             page IDs.
+%% ===============================================================
 %%{init: {
   "theme": "base",
   "themeVariables": {
@@ -40,51 +44,51 @@
 }}%%
 flowchart TD
 
-    %% ========== 分类样式定义（每类一个浅色系背景，文字一律黑色）==========
+    %% ========== Category styles (one light fill per category; text is always black) ==========
     classDef menuCls   fill:#FFF3E0,stroke:#EF6C00,color:#000000
     classDef listCls   fill:#E3F2FD,stroke:#1565C0,color:#000000
     classDef detailCls fill:#E8F5E9,stroke:#2E7D32,color:#000000
     classDef dashCls   fill:#F3E5F5,stroke:#6A1B9A,color:#000000
     classDef debugCls  fill:#FBE9E7,stroke:#D84315,color:#000000
 
-    %% ========== 菜单入口 ==========
-    MENU["unified_portal 侧边栏<br/>{组件中文名} 菜单组"]:::menuCls
+    %% ========== Menu entry ==========
+    MENU["Portal sidebar<br/>{ComponentName} menu group"]:::menuCls
 
-    %% ========== 页面节点 ==========
-    P01["P01 {列表页1名称}<br/>(单列表页)"]:::listCls
-    P02["P02 {详情页1名称}<br/>(业务对象详情页)"]:::detailCls
-    P03["P03 {列表页2名称}<br/>(双列表页)"]:::listCls
-    P04["P04 {详情页2名称}<br/>(只读详情页)"]:::detailCls
-    P05["P05 {监控仪表板名称}<br/>(Dashboard)"]:::dashCls
-    P06["P06 API 调试页<br/>(双栏布局)"]:::debugCls
+    %% ========== Page nodes ==========
+    P01["P01 {ListPage1Name}<br/>(Single-List Page)"]:::listCls
+    P02["P02 {DetailPage1Name}<br/>(Business Object Detail Page)"]:::detailCls
+    P03["P03 {ListPage2Name}<br/>(Dual-List Page)"]:::listCls
+    P04["P04 {DetailPage2Name}<br/>(Read-Only Detail Page)"]:::detailCls
+    P05["P05 {DashboardName}<br/>(Dashboard)"]:::dashCls
+    P06["P06 API Debug Page<br/>(Two-Column Layout)"]:::debugCls
 
-    %% ========== 菜单 → 页面（实线，标注菜单项名称）==========
-    MENU -->|"菜单: {监控}"| P05
-    MENU -->|"菜单: {列表1}"| P01
-    MENU -->|"菜单: {列表2}"| P03
-    MENU -->|"菜单: API 调试"| P06
+    %% ========== Menu -> page (solid, labelled with the menu item) ==========
+    MENU -->|"menu: {Monitoring}"| P05
+    MENU -->|"menu: {List1}"| P01
+    MENU -->|"menu: {List2}"| P03
+    MENU -->|"menu: API Debug"| P06
 
-    %% ========== 列表页 ⇄ 详情页（实线往返，标注触发条件）==========
-    P01 -->|"点击创建 / 双击行 / 查看 / 编辑"| P02
-    P02 -->|"创建成功 / 保存后退出 / 取消"| P01
+    %% ========== List page <-> detail page (solid, both ways, with trigger labels) ==========
+    P01 -->|"click Create / double-click row / View / Edit"| P02
+    P02 -->|"created / saved and closed / cancelled"| P01
 
-    P03 -->|"双击记录 / 点击查看"| P04
-    P04 -->|"点击退出 / 删除成功"| P03
+    P03 -->|"double-click record / click View"| P04
+    P04 -->|"click Close / deleted"| P03
 
-    %% ========== 仪表板下钻（虚线，非导航式跳转）==========
-    P05 -.->|"点击: {统计卡片1}"| P01
-    P05 -.->|"点击: {统计卡片2}"| P03
-    P05 -.->|"双击: {最近错误行}"| P04
+    %% ========== Dashboard drill-down (dashed, non-navigational) ==========
+    P05 -.->|"click: {StatCard1}"| P01
+    P05 -.->|"click: {StatCard2}"| P03
+    P05 -.->|"double-click: {recent error row}"| P04
 
-    %% ========== 图例 ==========
-    subgraph legend["图例"]
+    %% ========== Legend ==========
+    subgraph legend["Legend"]
         direction LR
-        LG1["菜单入口"]:::menuCls
-        LG2["列表页"]:::listCls
-        LG3["详情页"]:::detailCls
-        LG4["仪表板"]:::dashCls
-        LG5["调试页"]:::debugCls
+        LG1["Menu entry"]:::menuCls
+        LG2["List page"]:::listCls
+        LG3["Detail page"]:::detailCls
+        LG4["Dashboard"]:::dashCls
+        LG5["Debug page"]:::debugCls
     end
 
-    %% ========== 容器底色（必须比节点更浅，且显式声明黑色文字）==========
+    %% ========== Container fill (lighter than the nodes; black text declared explicitly) ==========
     style legend fill:#F8F9FA,stroke:#CCCCCC,color:#000

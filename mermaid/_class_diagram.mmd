@@ -1,42 +1,48 @@
-%% ===== 模板说明（使用时整块删除）=====
-%% 图表用途：类定义图。展示本模块的业务实体类、值对象、枚举，以及跨模块引用的类。
-%% 存放目录：docs/components/{component_code_name}/
-%% 文件命名：{component_code_name}_class_diagram.mmd；PNG 与 .mmd 同名同目录。
-%% 渲染命令：mmdc -i {component_code_name}_class_diagram.mmd \
-%%                -o {component_code_name}_class_diagram.png -b white -s 3
-%% 引用位置：{component}_tech_design.md §2.1 Class Diagram
-%% 样式规范：见 templates/mermaid/mmd_style_guide.md
-%%           ① 白色画布 ② 类框按类型归类着浅色 ③ 全部文字为黑色
-%% 使用提示：
-%%   - 类名（CBaseObject / CObjectA / EObjectStatus …）请改成真实类名，
-%%     类名中**不要**出现花括号占位符，否则 mermaid 解析失败。
-%%   - 注解 <<...>> 中同样不要使用花括号。
-%%   - 每个类都必须出现在文件末尾的 style 归类语句中。
+%% ===== TEMPLATE NOTES (delete this whole block when using) =====
+%% Purpose:    Class definition diagram. Shows this module's business entity classes, value objects
+%%             and enums, plus the classes it references from other modules.
+%% Location:   docs/components/{component_code_name}/
+%% File name:  {component_code_name}_class_diagram.mmd; the PNG shares its name and directory.
+%% Render:     mmdc -i {component_code_name}_class_diagram.mmd \
+%%                  -o {component_code_name}_class_diagram.png -b white -s 3
+%% Referenced: {component}_tech_design.md §2.1 Class Diagram
+%% Style spec: see templates/mermaid/mmd_style_guide.md
+%%             (1) white canvas  (2) class boxes coloured by type with light fills  (3) all text black
+%% Usage:
+%%   - Rename the classes (CBaseObject / CObjectA / EObjectStatus ...) to your real class names.
+%%     Class names must NOT contain curly-brace placeholders, or mermaid fails to parse.
+%%   - The same applies inside <<...>> annotations: no curly braces there either.
+%%   - Every class must appear in the style statements at the end of the file.
 %% -
-%% ⚠ 重要（已实测，mermaid v11.16）：classDiagram **不支持** classDef / cssClass / :::
-%%   这三种写法不会报错，但会被静默忽略，结果所有类框都是同一个主题色。
-%%   classDiagram 唯一生效的着色方式是每个类一条 `style 类名 fill:...,stroke:...,color:#000000`。
-%%   （flowchart / graph 则相反，用 classDef + ::: 即可。）
-%% ======================================
+%% IMPORTANT (verified against mermaid v11.16): classDiagram does NOT support classDef / cssClass /
+%%   the ::: operator. None of them raise an error, but all three are silently ignored, leaving
+%%   every class box in the same theme colour.
+%%   The only colouring that works in a classDiagram is one statement per class:
+%%   `style ClassName fill:...,stroke:...,color:#000000`.
+%%   (flowchart / graph are the opposite: there, classDef + ::: is the correct approach.)
+%% ===============================================================
 %% -
-%% ===== 归属声明（必写，替换为真实内容后保留）=====
-%% 本模块（{component_code_name}）权威定义的类型：
-%%   - CObjectA、CObjectB、CValueObject、EObjectStatus
-%% 跨模块引用、仅为展示继承/关联关系而画出的类型：
-%%   - CBaseObject  —— 抽象基类，权威定义在 common_lib，见 common_lib_class_diagram.mmd
-%%   - CRefObject   —— 普通实体，权威定义在 other_module，见 other_module_class_diagram.mmd
-%% 引用类不得在本模块修改；若需变更字段，必须先改权威模块并同步所有引用处。
+%% ===== OWNERSHIP DECLARATION (mandatory; keep it after filling in real content) =====
+%% Types authoritatively defined by this module ({component_code_name}):
+%%   - CObjectA, CObjectB, CValueObject, EObjectStatus
+%% Types referenced from other modules, drawn here only to show inheritance / association:
+%%   - CBaseObject  -- abstract base class, authoritative definition in common_lib,
+%%                     see common_lib_class_diagram.mmd
+%%   - CRefObject   -- ordinary entity, authoritative definition in other_module,
+%%                     see other_module_class_diagram.mmd
+%% Referenced classes must never be modified here. To change a field, change the authoritative
+%% module first, then update every place that references it.
 %% -
-%% ===== 配色含义（classDiagram 不支持 subgraph 图例，故以注释说明）=====
-%%   浅蓝 #E3F2FD baseCls   —— 抽象基类
-%%   浅绿 #E8F5E9 entityCls —— 本模块业务实体类
-%%   浅青 #E0F7FA valueCls  —— 值对象 / 嵌套结构（JSONB 等）
-%%   浅黄 #FFF9C4 enumCls   —— 枚举
-%%   浅灰 #F5F5F5 refCls    —— 跨模块引用的普通实体（非本模块权威定义）
-%% 归类优先级：抽象基类即使来自 common_lib 也保持浅蓝 baseCls，
-%%   其"外来"身份由注解 <<abstract - ref: common_lib>> 标明；
-%%   浅灰 refCls 只用于非基类的跨模块引用。
-%% ======================================
+%% ===== COLOUR SEMANTICS (a classDiagram has no subgraph, so the legend lives in comments) =====
+%%   light blue   #E3F2FD baseCls   -- abstract base class
+%%   light green  #E8F5E9 entityCls -- this module's business entity classes
+%%   light cyan   #E0F7FA valueCls  -- value objects / nested structures (JSONB and similar)
+%%   light yellow #FFF9C4 enumCls   -- enums
+%%   light grey   #F5F5F5 refCls    -- ordinary entities referenced from another module
+%% Classification precedence: an abstract base class stays light-blue baseCls even when it comes
+%%   from common_lib; its "foreign" origin is conveyed by the <<abstract - ref: common_lib>>
+%%   annotation. Light-grey refCls is reserved for non-base cross-module references.
+%% ===============================================================
 %%{init: {
   "theme": "base",
   "themeVariables": {
@@ -59,7 +65,7 @@
 classDiagram
     direction TB
 
-    %% ========== 抽象基类（跨模块引用，权威定义在 common_lib）==========
+    %% ========== Abstract base class (cross-module reference; authoritative in common_lib) ==========
     class CBaseObject {
         <<abstract - ref: common_lib>>
         +int object_id  PK auto-increment
@@ -72,7 +78,7 @@ classDiagram
         +datetime updated_at = NOW()
     }
 
-    %% ========== 本模块业务实体类 ==========
+    %% ========== This module's business entity classes ==========
     class CObjectA {
         +EObjectStatus status  NOT NULL
         +CValueObject metrics  NOT NULL
@@ -91,7 +97,7 @@ classDiagram
         +datetime created_at = NOW()
     }
 
-    %% ========== 值对象 / 嵌套结构（以 JSONB 落库）==========
+    %% ========== Value object / nested structure (stored as JSONB) ==========
     class CValueObject {
         <<value object>>
         +int metric_one = -1
@@ -99,7 +105,7 @@ classDiagram
         +int metric_three = -1
     }
 
-    %% ========== 枚举（本模块权威定义）==========
+    %% ========== Enum (authoritatively defined by this module) ==========
     class EObjectStatus {
         <<enumeration>>
         PLANNED
@@ -109,29 +115,29 @@ classDiagram
         CANCELED
     }
 
-    %% ========== 跨模块引用类（仅为补全关系而展示）==========
+    %% ========== Cross-module reference class (drawn only to complete the picture) ==========
     class CRefObject {
         <<ref: other_module>>
         +int ref_id  PK
         +string code_name  NOT NULL UNIQUE
     }
 
-    %% ========== 关系 ==========
-    CBaseObject <|-- CObjectA : 继承
-    CObjectA "1" --> "0..*" CObjectB : 一个 A 拥有多条 B
-    CObjectA "1" *-- "1" CValueObject : 组合（JSONB 内嵌）
-    CObjectA ..> EObjectStatus : 使用
-    CObjectB "0..*" --> "1" CRefObject : 跨模块关联
+    %% ========== Relationships ==========
+    CBaseObject <|-- CObjectA : inherits
+    CObjectA "1" --> "0..*" CObjectB : one A owns many B
+    CObjectA "1" *-- "1" CValueObject : composition (embedded JSONB)
+    CObjectA ..> EObjectStatus : uses
+    CObjectB "0..*" --> "1" CRefObject : cross-module association
 
-    %% ========== 分类着色（每个类一条 style，按分类分组，不得遗漏任何类）==========
-    %% ----- baseCls 抽象基类：浅蓝 -----
+    %% ========== Category colouring (one style per class, grouped; no class may be missed) ==========
+    %% ----- baseCls abstract base class: light blue -----
     style CBaseObject   fill:#E3F2FD,stroke:#1565C0,color:#000000
-    %% ----- entityCls 本模块业务实体类：浅绿 -----
+    %% ----- entityCls this module's business entities: light green -----
     style CObjectA      fill:#E8F5E9,stroke:#2E7D32,color:#000000
     style CObjectB      fill:#E8F5E9,stroke:#2E7D32,color:#000000
-    %% ----- valueCls 值对象 / 嵌套结构：浅青 -----
+    %% ----- valueCls value object / nested structure: light cyan -----
     style CValueObject  fill:#E0F7FA,stroke:#00838F,color:#000000
-    %% ----- enumCls 枚举：浅黄 -----
+    %% ----- enumCls enum: light yellow -----
     style EObjectStatus fill:#FFF9C4,stroke:#F9A825,color:#000000
-    %% ----- refCls 跨模块引用的普通实体：浅灰 -----
+    %% ----- refCls cross-module ordinary entity: light grey -----
     style CRefObject    fill:#F5F5F5,stroke:#616161,color:#000000

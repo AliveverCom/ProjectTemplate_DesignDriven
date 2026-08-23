@@ -1,18 +1,20 @@
 ---
-title: "{平台中文名} — 技术架构概览"
+title: "{PlatformName} — Technical Architecture Overview"
 ---
-%% ===== 模板说明（使用时整块删除）=====
-%% 图表用途：技术架构图。按「架构分层」分组着色，展示各层组成与调用方向。
-%% 存放目录：docs/（平台级图表，不带组件前缀）
-%% 文件命名：technical_architecture.mmd；PNG 与 .mmd 同名同目录。
-%% 渲染命令：mmdc -i technical_architecture.mmd -o technical_architecture.png -b white -s 3
-%% 引用位置：technical_overview.md §1.1 架构概览图
-%% 样式规范：见 templates/mermaid/mmd_style_guide.md
-%%           ① 白色画布 ② 方框按所属层归类着浅色 ③ 全部文字为黑色
-%% 注意事项：YAML front-matter（--- title ---）必须位于文件最开头，其前不得有任何内容。
-%% 使用提示：所有 {花括号} 占位符必须替换；组件层节点按实际组件数量增删，
-%%           但每个节点必须保留 :::xxxCls 归类。
-%% ======================================
+%% ===== TEMPLATE NOTES (delete this whole block when using) =====
+%% Purpose:    Technical architecture diagram. Nodes are grouped and coloured by ARCHITECTURE LAYER,
+%%             showing what each layer contains and the direction of calls between layers.
+%% Location:   docs/ (platform-level diagram, no component prefix)
+%% File name:  technical_architecture.mmd; the PNG shares its name and directory.
+%% Render:     mmdc -i technical_architecture.mmd -o technical_architecture.png -b white -s 3
+%% Referenced: technical_overview.md §1.1 Architecture Overview
+%% Style spec: see templates/mermaid/mmd_style_guide.md
+%%             (1) white canvas  (2) boxes coloured by layer with light fills  (3) all text black
+%% Caution:    The YAML front matter (--- title ---) MUST be the very first thing in the file;
+%%             nothing may precede it.
+%% Usage:      Replace every {curly brace} placeholder. Add or remove component-layer nodes to match
+%%             the real component count, but every node must keep its :::xxxCls classification.
+%% ===============================================================
 %%{init: {
   "theme": "base",
   "themeVariables": {
@@ -34,7 +36,7 @@ title: "{平台中文名} — 技术架构概览"
 }}%%
 graph TB
 
-    %% ========== 分类样式定义（每层一个浅色系背景，文字一律黑色）==========
+    %% ========== Category styles (one light fill per layer; text is always black) ==========
     classDef clientCls    fill:#E3F2FD,stroke:#1565C0,color:#000000
     classDef gatewayCls   fill:#FFF3E0,stroke:#EF6C00,color:#000000
     classDef portalCls    fill:#E0F7FA,stroke:#00838F,color:#000000
@@ -43,70 +45,70 @@ graph TB
     classDef dataCls      fill:#FADBD8,stroke:#C0392B,color:#000000
     classDef externalCls  fill:#F5F5F5,stroke:#616161,color:#000000
 
-    %% ========== 客户端层 ==========
-    subgraph client_layer["客户端层"]
+    %% ========== Client layer ==========
+    subgraph client_layer["Client Layer"]
         direction LR
-        CL1["🌐 {Web 浏览器}"]:::clientCls
-        CL2["📱 {移动端 / 其他客户端}"]:::clientCls
+        CL1["🌐 {Web browser}"]:::clientCls
+        CL2["📱 {Mobile / other clients}"]:::clientCls
     end
 
-    %% ========== 网关层 ==========
-    subgraph gateway_layer["网关层"]
+    %% ========== Gateway layer ==========
+    subgraph gateway_layer["Gateway Layer"]
         direction LR
-        GW1["{API Gateway}<br/>{路由 · 限流 · 转发}"]:::gatewayCls
-        GW2["{认证与权限服务}<br/>{OAuth · JWT}"]:::gatewayCls
+        GW1["{API Gateway}<br/>{routing · rate limiting · forwarding}"]:::gatewayCls
+        GW2["{Auth and permission service}<br/>{OAuth · JWT}"]:::gatewayCls
         GW1 <--> GW2
     end
 
-    %% ========== Portal 层 ==========
-    subgraph portal_layer["Portal 层"]
-        PT1["{统一入口 unified_portal}<br/>{统一菜单 · 视图框架 · Dashboard}"]:::portalCls
+    %% ========== Portal layer ==========
+    subgraph portal_layer["Portal Layer"]
+        PT1["{unified_portal}<br/>{shared menu · view shell · dashboard}"]:::portalCls
     end
 
-    %% ========== 产品组件层 ==========
-    subgraph comp_layer["产品组件层 — 每组件拥有独立前端、后端与数据库"]
+    %% ========== Product component layer ==========
+    subgraph comp_layer["Product Component Layer — each component owns its frontend, backend and database"]
         direction LR
-        CP1["{组件1中文名}<br/>{component_code_name_1}"]:::componentCls
-        CP2["{组件2中文名}<br/>{component_code_name_2}"]:::componentCls
-        CP3["{组件3中文名}<br/>{component_code_name_3}"]:::componentCls
+        CP1["{Component1Name}<br/>{component_code_name_1}"]:::componentCls
+        CP2["{Component2Name}<br/>{component_code_name_2}"]:::componentCls
+        CP3["{Component3Name}<br/>{component_code_name_3}"]:::componentCls
     end
 
-    %% ========== 共享服务层 ==========
-    subgraph service_layer["共享服务层"]
+    %% ========== Shared service layer ==========
+    subgraph service_layer["Shared Service Layer"]
         direction LR
-        SV1["{Workflow 编排器}"]:::serviceCls
-        SV2["{AI Agent 服务}"]:::serviceCls
+        SV1["{Workflow orchestrator}"]:::serviceCls
+        SV2["{AI agent service}"]:::serviceCls
     end
 
-    %% ========== 数据层 ==========
-    subgraph data_layer["数据层"]
+    %% ========== Data layer ==========
+    subgraph data_layer["Data Layer"]
         direction LR
-        DB1[("{PostgreSQL}<br/>{每组件独立数据库}")]:::dataCls
-        DB2[("{文件存储}<br/>{视频 · 音频 · 图片}")]:::dataCls
-        DB3[("{Redis 缓存}")]:::dataCls
+        DB1[("{PostgreSQL}<br/>{one database per component}")]:::dataCls
+        DB2[("{File storage}<br/>{video · audio · images}")]:::dataCls
+        DB3[("{Redis cache}")]:::dataCls
     end
 
-    %% ========== 外部系统 ==========
-    subgraph ext_layer["外部系统"]
+    %% ========== External systems ==========
+    subgraph ext_layer["External Systems"]
         direction LR
-        EX1["☁️ {云认证服务}"]:::externalCls
-        EX2["🌍 {外部数据源}"]:::externalCls
-        EX3["📡 {对外发布平台}"]:::externalCls
+        EX1["☁️ {Cloud auth provider}"]:::externalCls
+        EX2["🌍 {External data sources}"]:::externalCls
+        EX3["📡 {Outbound publishing platforms}"]:::externalCls
     end
 
-    %% ========== 图例 ==========
-    subgraph legend["图例"]
+    %% ========== Legend ==========
+    subgraph legend["Legend"]
         direction LR
-        LG1["客户端层"]:::clientCls
-        LG2["网关层"]:::gatewayCls
-        LG3["Portal 层"]:::portalCls
-        LG4["产品组件层"]:::componentCls
-        LG5["共享服务层"]:::serviceCls
-        LG6[("数据层")]:::dataCls
-        LG7["外部系统"]:::externalCls
+        LG1["Client layer"]:::clientCls
+        LG2["Gateway layer"]:::gatewayCls
+        LG3["Portal layer"]:::portalCls
+        LG4["Product component layer"]:::componentCls
+        LG5["Shared service layer"]:::serviceCls
+        LG6[("Data layer")]:::dataCls
+        LG7["External systems"]:::externalCls
     end
 
-    %% ========== 层间调用关系 ==========
+    %% ========== Calls between layers ==========
     CL1 --> GW1
     CL2 --> GW1
     GW1 --> PT1
@@ -120,11 +122,11 @@ graph TB
     CP2 --> DB1
     CP3 --> DB2
     SV1 --> DB3
-    GW2 -.->|"{认证委托}"| EX1
-    CP2 -.->|"{抓取}"| EX2
-    CP3 -.->|"{发布}"| EX3
+    GW2 -.->|"{delegated auth}"| EX1
+    CP2 -.->|"{fetch}"| EX2
+    CP3 -.->|"{publish}"| EX3
 
-    %% ========== 容器底色（必须比节点更浅，且显式声明黑色文字）==========
+    %% ========== Container fills (lighter than the nodes; black text declared explicitly) ==========
     style client_layer  fill:#F5FAFE,stroke:#1565C0,color:#000
     style gateway_layer fill:#FFFAF3,stroke:#EF6C00,color:#000
     style portal_layer  fill:#F2FBFC,stroke:#00838F,color:#000

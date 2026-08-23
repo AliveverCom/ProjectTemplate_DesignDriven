@@ -1,42 +1,48 @@
-%% ===== 模板说明（使用时整块删除）=====
-%% 图表用途：数据库表结构图（ER 图）。以 namespace 按「数据库 / 逻辑分组」划分，
-%%           展示表、列类型、主外键与表间关系。
-%% 存放目录：docs/components/{component_code_name}/
-%% 文件命名：{component_code_name}_db_schema.mmd；PNG 与 .mmd 同名同目录。
-%% 渲染命令：mmdc -i {component_code_name}_db_schema.mmd \
-%%                -o {component_code_name}_db_schema.png -b white -s 3
-%% 引用位置：{component}_tech_design.md §4.0 Database Schema Diagram
-%% 样式规范：见 templates/mermaid/mmd_style_guide.md
-%%           ① 白色画布 ② 表框按类型归类着浅色 ③ 全部文字为黑色
+%% ===== TEMPLATE NOTES (delete this whole block when using) =====
+%% Purpose:    Database schema (ER) diagram. Uses namespaces to partition by database / logical
+%%             group, showing tables, column types, keys and relationships between tables.
+%% Location:   docs/components/{component_code_name}/
+%% File name:  {component_code_name}_db_schema.mmd; the PNG shares its name and directory.
+%% Render:     mmdc -i {component_code_name}_db_schema.mmd \
+%%                  -o {component_code_name}_db_schema.png -b white -s 3
+%% Referenced: {component}_tech_design.md §4.0 Database Schema Diagram
+%% Style spec: see templates/mermaid/mmd_style_guide.md
+%%             (1) white canvas  (2) table boxes coloured by type with light fills  (3) all text black
 %% -
-%% 列类型前缀约定（写在成员名之前，便于一眼看出约束）：
-%%   +INT_PK      主键（自增整型）        +INT_FK      外键
-%%   +TEXT_PK     主键（文本型）          +TEXT_UK     唯一约束文本列
-%%   +TEXT        普通文本                +INT         整型
-%%   +BOOLEAN     布尔                    +JSONB       结构化字段
-%%   +TIMESTAMPTZ 带时区时间戳            +NUMERIC     定点数
-%%   +BYTEA       二进制
-%% 可空列在**类型**后加 `?`（与类图保持一致），如 `+TIMESTAMPTZ? deleted_at`
+%% Column type prefixes (written before the member name so constraints are visible at a glance):
+%%   +INT_PK      primary key (auto-increment integer)   +INT_FK      foreign key
+%%   +TEXT_PK     primary key (text)                     +TEXT_UK     unique text column
+%%   +TEXT        plain text                             +INT         integer
+%%   +BOOLEAN     boolean                                +JSONB       structured field
+%%   +TIMESTAMPTZ timestamp with time zone               +NUMERIC     fixed-point number
+%%   +BYTEA       binary
+%% Nullable columns take a `?` after the TYPE (consistent with the class diagram),
+%% e.g. `+TIMESTAMPTZ? deleted_at`
 %% -
-%% 使用提示：
-%%   - 表名、namespace 名请改成真实名称，**不要**在其中使用花括号占位符，
-%%     否则 mermaid 解析失败。
-%%   - 动态分表用 `<<template: ...>>` 注解表示；注解内同样不能有花括号，
-%%     故以 `code_name_mrecord` 形式书写，实际含义为 `{code_name}_mrecord`。
-%%   - 每张表都必须出现在文件末尾的 style 归类语句中。
+%% Usage:
+%%   - Rename tables and namespaces to your real names. They must NOT contain curly-brace
+%%     placeholders, or mermaid fails to parse.
+%%   - Dynamic sharded tables are expressed with a `<<template: ...>>` annotation. Annotations
+%%     cannot contain curly braces either, so write `code_name_mrecord`, meaning
+%%     `{code_name}_mrecord`.
+%%   - Every table must appear in the style statements at the end of the file.
 %% -
-%% ⚠ 重要（已实测，mermaid v11.16）：classDiagram **不支持** classDef / cssClass / :::
-%%   这三种写法不会报错，但会被静默忽略，结果所有表框都是同一个主题色。
-%%   classDiagram 唯一生效的着色方式是每张表一条 `style 表名 fill:...,stroke:...,color:#000000`，
-%%   该写法对 namespace 内部的表同样生效（已验证）。
-%% ======================================
+%% IMPORTANT (verified against mermaid v11.16): classDiagram does NOT support classDef / cssClass /
+%%   the ::: operator. None of them raise an error, but all three are silently ignored, leaving
+%%   every table box in the same theme colour.
+%%   The only colouring that works in a classDiagram is one statement per table:
+%%   `style TableName fill:...,stroke:...,color:#000000`. This also works for tables declared
+%%   inside a namespace (verified).
+%% ===============================================================
 %% -
-%% ===== 配色含义（classDiagram 不支持 subgraph 图例，故以注释说明）=====
-%%   浅蓝 #E3F2FD tableCls    —— 本模块常规业务表
-%%   浅橙 #FFF3E0 templateCls —— 动态分表模板（按 code_name 派生出多张同构表）
-%%   浅黄 #FFF9C4 lookupCls   —— 字典表 / 配置表 / 枚举落库表
-%%   浅灰 #F5F5F5 refTableCls —— 跨库引用表（权威定义在其他模块的数据库）
-%% ======================================
+%% ===== COLOUR SEMANTICS (a classDiagram has no subgraph, so the legend lives in comments) =====
+%%   light blue   #E3F2FD tableCls    -- this module's ordinary business tables
+%%   light orange #FFF3E0 templateCls -- dynamic shard template (many identical tables derived
+%%                                       from code_name)
+%%   light yellow #FFF9C4 lookupCls   -- lookup / configuration / persisted-enum tables
+%%   light grey   #F5F5F5 refTableCls -- cross-database reference tables (authoritative in another
+%%                                       module's database)
+%% ===============================================================
 %%{init: {
   "theme": "base",
   "themeVariables": {
@@ -59,7 +65,7 @@
 classDiagram
     direction TB
 
-    %% ========== 数据库 1：主业务库 ==========
+    %% ========== Database 1: main business database ==========
     namespace main_db {
         class main_object {
             <<Table>>
@@ -99,8 +105,9 @@ classDiagram
         }
     }
 
-    %% ========== 数据库 2：动态分表库 ==========
-    %% 每个 code_name 派生一组同构表：code_name_mrecord / code_name_plan / code_name_done
+    %% ========== Database 2: dynamic shard database ==========
+    %% Each code_name derives one set of identical tables:
+    %% code_name_mrecord / code_name_plan / code_name_done
     namespace shard_db {
         class code_name_mrecord {
             <<template: code_name_mrecord>>
@@ -139,7 +146,7 @@ classDiagram
         }
     }
 
-    %% ========== 跨库引用表（权威定义在其他模块）==========
+    %% ========== Cross-database reference table (authoritative in another module) ==========
     namespace other_module_db {
         class ref_table {
             <<Table - ref: other_module>>
@@ -149,23 +156,23 @@ classDiagram
         }
     }
 
-    %% ========== 表间关系 ==========
-    main_object "1" --> "0..*" main_object_detail : object_id 外键
-    main_object "0..*" --> "1" object_type_lookup : object_type 取值约束
-    main_object "1" ..> "1" code_name_mrecord : 按 code_name 派生分表
-    main_object "1" ..> "1" code_name_plan : 按 code_name 派生分表
-    code_name_plan "1" --> "0..1" code_name_done : 任务执行完毕后归档
-    main_object "0..*" ..> "1" ref_table : 跨库逻辑关联（无 FK 约束）
+    %% ========== Relationships ==========
+    main_object "1" --> "0..*" main_object_detail : object_id foreign key
+    main_object "0..*" --> "1" object_type_lookup : object_type value constraint
+    main_object "1" ..> "1" code_name_mrecord : shard derived from code_name
+    main_object "1" ..> "1" code_name_plan : shard derived from code_name
+    code_name_plan "1" --> "0..1" code_name_done : archived once the task finishes
+    main_object "0..*" ..> "1" ref_table : cross-database logical link (no FK constraint)
 
-    %% ========== 分类着色（每张表一条 style，按分类分组，不得遗漏任何表）==========
-    %% ----- tableCls 常规业务表：浅蓝 -----
+    %% ========== Category colouring (one style per table, grouped; no table may be missed) ==========
+    %% ----- tableCls ordinary business tables: light blue -----
     style main_object        fill:#E3F2FD,stroke:#1565C0,color:#000000
     style main_object_detail fill:#E3F2FD,stroke:#1565C0,color:#000000
-    %% ----- templateCls 动态分表模板：浅橙 -----
+    %% ----- templateCls dynamic shard templates: light orange -----
     style code_name_mrecord  fill:#FFF3E0,stroke:#EF6C00,color:#000000
     style code_name_plan     fill:#FFF3E0,stroke:#EF6C00,color:#000000
     style code_name_done     fill:#FFF3E0,stroke:#EF6C00,color:#000000
-    %% ----- lookupCls 字典 / 配置表：浅黄 -----
+    %% ----- lookupCls lookup / configuration tables: light yellow -----
     style object_type_lookup fill:#FFF9C4,stroke:#F9A825,color:#000000
-    %% ----- refTableCls 跨库引用表：浅灰 -----
+    %% ----- refTableCls cross-database reference tables: light grey -----
     style ref_table          fill:#F5F5F5,stroke:#616161,color:#000000
