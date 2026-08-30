@@ -2,7 +2,7 @@
 
 **A complete documentation template library for design-driven development**
 
-**Templates Version**: see [VERSION](./VERSION) · **License**: [MIT-0](./LICENSE)
+**Templates Version**: see [git tags](https://github.com/AliveverCom/ProjectTemplate_DesignDriven/tags) · **License**: [MIT-0](./LICENSE)
 
 ---
 
@@ -103,7 +103,6 @@ layers of product documentation**. The boundary must be held strictly:
 ```
 templates/
 ├── readme.md                       # this file
-├── VERSION                         # version of the template library itself
 │
 ├── platform/                       # (1) platform-level templates -> docs/ root
 │   ├── _business_overview.md           # platform business and product overview
@@ -171,7 +170,7 @@ See [ai_dev/readme.md](./ai_dev/readme.md) for details.
 - **Platform-level templates** also carry the `_`, but you simply **drop it** when they land
   (no prefix is added).
   - `_business_overview.md` → `business_overview.md`
-- **Files without a `_`** (`readme.md`, `mmd_style_guide.md`, `VERSION`) document the template
+- **Files without a `_`** (`readme.md`, `mmd_style_guide.md`) document the template
   library itself and are not copied into your project.
 
 ### 5.2 Target File Naming Rules
