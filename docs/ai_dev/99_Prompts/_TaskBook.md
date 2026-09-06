@@ -1,6 +1,6 @@
 # Subagent Task-Book Standard and Templates
 
-**Document Version**: 1.0.0
+**Document Version**: 1.1.0
 
 <!--
 TEMPLATE NOTES (delete this block when using)
@@ -22,7 +22,8 @@ TEMPLATE NOTES (delete this block when using)
 | Role and task | Role name (`FirstName-JobTitle-Model`), task id (D/T/R/r), expected duration (≈10 min; terminated at 20 min) | One task book = one independently committable deliverable |
 | **Read list** | Each entry as "file → section", **pointing at a volume** (e.g. `{component_code_name}_tech_design_runtime.md §3.4.1`, `tech_testing_verification_kpi.md K32b`), with the expected reading range | Never "read `{component_code_name}_tech_design.md`"; the main document is read only for its §1.0 index and the §2 classes actually needed |
 | **Do-not-read / do-not-touch list** | Do not read: third-party engine or library sources (engine facts are cited by `EF-nn` id from `{component_code_name}_tech_design_engine_facts.md`), other volumes, `docs/ai_dev/` process documents (except the ruling table of a review report). Do not touch: any file outside the file-partition table | Review and document tasks **never open engine or repository sources to check a document**; implementation tasks read sources only for their "may modify" files and direct headers |
-| Tool-call budget | Suggested caps (review ≤ 30, drafting/revision ≤ 25, implementation ≤ 60); report before exceeding | Every context re-read is a cost |
+| **Shared knowledge pack** | The knowledge this task really needs is **pasted into the task book**: (1) line-level read ranges ("the K25 extraction pattern at `kpi_kernel.py` lines a-b", not "read section x"); (2) an existing sample to copy (file + lines); (3) the three to five design sentences the task relies on (with EF ids); (4) task-specific verification commands and expected values. The role files already carry a **resident knowledge pack** (build/test commands, toolchain, coding-standard digest, file map, known pitfalls); the task book adds only what is task-specific | Goal: no cold-start exploration. A measured scaffolding task spent 70 tool calls, half of them finding its way around; with the packs the cap is 35 |
+| Tool-call budget | Caps: review ≤ 30, drafting/revision ≤ 25, **implementation ≤ 35**, acceptance run per tier list; report before exceeding; **the report states the actual tool-call count** (the Chief uses it to tune the packs) | Every context re-read is a cost |
 | Deliverable and verification | Artefact path, verification commands (full paths), commit message template (with the attribution trailer lines) | One commit per task; `git add` only your own files |
 | Report format | Word cap + mandatory items (hash, counts, unclear points handed to the Chief, never change the design yourself) | The report is the Chief's verification input, not a narrative |
 | Discipline line | Every id carries a one-line meaning; versions written in full (`{component_code_name}/vA.B.C`); product name in full; binary paths written in full (`{binary_full_path}`) | As in `CLAUDE.md` |
@@ -75,7 +76,9 @@ Report vA.B.C_devplan_review_r1.md; report back ≤ 250 words.
 ```
 You are <Ben-X / Tina-X>-…-Sonnet, taking <D item / T sub-task> from DevPlan §3 (≈10 min, commit after each T).
 May modify / create: <the two columns of DevPlan §3.2 for this D item, verbatim>; do not touch: <third column, verbatim>; build files / shared headers are frozen (if applicable).
-Read list: <volume §x.y, one per line>; the existing implementation of the may-modify files and their direct headers. Do not read other volumes or engine sources (engine facts: EF ids from {component_code_name}_tech_design_engine_facts.md; implement against the adapter-layer contract in the interfaces volume).
+Read list: <volume §x.y, one per line, with line ranges where possible>; the existing implementation of the may-modify files and their direct headers. Do not read other volumes or engine sources (engine facts: EF ids from {component_code_name}_tech_design_engine_facts.md; implement against the adapter-layer contract in the interfaces volume).
+Shared knowledge pack: <the three to five design sentences this task relies on, with EF ids>; <sample to copy: file + lines>; <task-specific verification commands and expected values>. Build/test commands, toolchain, coding-standard digest, file map and known pitfalls are in your role file - not repeated here.
+Tool-call budget 35; report the actual count.
 Verification: <build command + unit test / golden / script commands, full paths>.
 Commit: <message template + attribution trailer>. Report back ≤ 150 words: hash, counts, deviations from the design (never change the design yourself).
 ```
@@ -102,7 +105,8 @@ Artefacts: KPI result files, per-tier execution records; report per-tier counts 
 2. The do-not-read list explicitly names engine sources / other volumes / docs/ai_dev.
 3. In-flight instances ≤ the current concurrency limit; C++ tasks in the same wave touch disjoint file sets.
 4. From R2 on, reviews resume the existing instance via SendMessage; every engine fact has an EF id, missing ones get a one-off verification task first.
-5. Report word cap and mandatory items are written; the commit trailer lines are given.
+5. Report word cap and mandatory items are written (incl. the tool-call count); the commit trailer lines are given.
+6. The task book has a "Shared knowledge pack" section (line-level read ranges, sample location, design sentences, task-specific verification); the role files' resident knowledge packs are kept current by the Chief (every change committed).
 
 ---
 
@@ -110,4 +114,5 @@ Artefacts: KPI result files, per-tier execution records; report per-tier counts 
 
 | Version | Date | Author | Change |
 |---|---|---|---|
+| 1.1.0 | 2026-09-06 | {Author} | Added the "Shared knowledge pack" section (line-level read ranges, sample to copy, design sentences, task-specific verification); implementation tool-call cap 60 -> 35; reports state the tool-call count; role files carry resident knowledge packs |
 | 1.0.0 | 2026-09-06 | {Author} | Created: task-book skeleton (read / do-not-read lists, tool-call budget, report format), seven templates (review R1 / R2+ instance re-use, drafter revision, D0, implementation, code review r1/r2, acceptance run), Chief-side checklist |

@@ -42,7 +42,7 @@ Then follow [§7 Workflow](#7-workflow) to copy templates into `docs/` and
 | `component/` | 6 | Component-level document templates → land in `docs/components/{component}/` |
 | `mermaid/` | 7 | Drawing conventions + 6 `.mmd` diagram templates (white canvas, category-coloured light fills, all-black text) |
 | `ai_dev/` | 19 | AI development-process document templates → land in `ai_dev_history/`; includes `99_Prompts/_TaskBook.md`, the subagent task-book standard |
-| `CLAUDE.md` + `.claude/agents/` | 1 + 5 | Project-root AI team rules (roles, concurrency, quota discipline, document authority chain) and the five subagent role definitions → land in the project root |
+| `CLAUDE.md` + `.claude/agents/` | 1 + 5 | Project-root AI team rules (roles, concurrency, quota discipline, document authority chain) and the five subagent role definitions, each with a **resident knowledge pack** skeleton (build/test commands, toolchain, coding-standard digest, file map, known pitfalls) so subagents do not cold-start → land in the project root |
 
 ---
 
@@ -313,5 +313,6 @@ Documentation structure based on [ProjectTemplate_DesignDriven](https://github.c
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 1.4.0 | 2026-09-06 | Resident knowledge packs in the five `.claude/agents/` role files (build/test commands, toolchain, coding-standard digest, file map, known pitfalls, review conventions); `_TaskBook.md` 1.1.0 adds the "Shared knowledge pack" section, implementation tool-call cap 35 and tool-call count in reports |
 | 1.3.0 | 2026-09-06 | AI team rules and quota discipline: `CLAUDE.md` template, `.claude/agents/` five role definitions, `ai_dev/99_Prompts/_TaskBook.md`, `component/_tech_design_engine_facts.md`, design-volume rules (`_project_directory_plan.md` 1.1 / 3.1 rule 7, `_tech_design.md` 1.0), `general_doc_template.md` header `Version:` line rule, mermaid render fix (`-w 2600 -c mmdc_config.json`) |
 | 1.0.0 | 2026-08-23 | First release: platform / component / mermaid / ai_dev template categories, reverse-engineered from the real design documents of a multi-component platform |
