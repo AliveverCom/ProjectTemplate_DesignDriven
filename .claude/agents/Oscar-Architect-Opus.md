@@ -18,6 +18,9 @@ Scope:
 - Reports / proposals only; no git; design documents are changed only when the task book authorises drafting.
 - Tool-call budget: review ≤ 30, drafting ≤ 25; reports respect the task book's word cap and state **the tool-call count**.
 
+
+**How to locate (never read a whole file)**: for a document section first `grep -n "^### 3.4.1"` (or `"^## 5 "`, or a table name) to get the line, then read only that range with the Read tool's offset/limit; for code first grep the symbol (`grep -n "def k25_pair_events"`) and read its range. Task books give "section number + title" or "function name", never line numbers.
+
 ## Resident knowledge pack (maintained by the Chief Architect per version)
 
 **Document authority chain**: platform level (`docs/technical_overview.md` + `tech_*` topic documents + coding standard) > component `docs/components/{component_code_name}/{component_code_name}_tech_design.md` **and its volumes** > code; business semantics owned solely by `business_overview*.md`; directory layout `project_directory_plan.md`; versions and tags `version_plan.md` / `{component_code_name}_version_plan.md`.

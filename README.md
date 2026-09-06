@@ -313,6 +313,7 @@ Documentation structure based on [ProjectTemplate_DesignDriven](https://github.c
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 1.4.1 | 2026-09-06 | Read-range anchors in task books are section number + title / symbol name, never line numbers; role files gain a "How to locate" rule (grep the heading, read only that range) |
 | 1.4.0 | 2026-09-06 | Resident knowledge packs in the five `.claude/agents/` role files (build/test commands, toolchain, coding-standard digest, file map, known pitfalls, review conventions); `_TaskBook.md` 1.1.0 adds the "Shared knowledge pack" section, implementation tool-call cap 35 and tool-call count in reports |
 | 1.3.0 | 2026-09-06 | AI team rules and quota discipline: `CLAUDE.md` template, `.claude/agents/` five role definitions, `ai_dev/99_Prompts/_TaskBook.md`, `component/_tech_design_engine_facts.md`, design-volume rules (`_project_directory_plan.md` 1.1 / 3.1 rule 7, `_tech_design.md` 1.0), `general_doc_template.md` header `Version:` line rule, mermaid render fix (`-w 2600 -c mmdc_config.json`) |
 | 1.0.0 | 2026-08-23 | First release: platform / component / mermaid / ai_dev template categories, reverse-engineered from the real design documents of a multi-component platform |
