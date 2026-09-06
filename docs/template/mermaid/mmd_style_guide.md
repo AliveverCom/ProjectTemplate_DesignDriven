@@ -259,10 +259,14 @@ Use the Mermaid CLI (`@mermaid-js/mermaid-cli`):
 # one-time install
 npm install -g @mermaid-js/mermaid-cli
 
-# single file: -b white forces a white canvas, -s 3 renders at 3x for printing
+# single file: -b white forces a white canvas, -s 3 renders at 3x for printing,
+# -w 2600 widens the viewport (the 800px default squeezes large diagrams),
+# -c templates/mermaid/mmdc_config.json disables htmlLabels - REQUIRED: with
+# mermaid v11 html labels the measured text width is narrower than the rendered
+# width and every long line loses its last 1-2 characters (verified by testing)
 mmdc -i my_component_class_diagram.mmd \
      -o my_component_class_diagram.png \
-     -b white -s 3
+     -b white -s 3 -w 2600 -c mmdc_config.json
 
 # render every mmd in the current directory
 for f in *.mmd; do mmdc -i "$f" -o "${f%.mmd}.png" -b white -s 3; done
@@ -311,4 +315,5 @@ Before committing a `.mmd` and its `.png`, check every line:
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 1.1.0 | 2026-09-06 | Section 5 render command gains `-w 2600` and `-c mmdc_config.json` (new file in this directory, `htmlLabels:false`) - fixes the systematic loss of the last 1-2 characters of long labels under mermaid v11 |
 | 1.0.0 | {YYYY-MM-DD} | First release: white canvas + black text, 9-colour light palette, category mapping table, 6 diagram templates |

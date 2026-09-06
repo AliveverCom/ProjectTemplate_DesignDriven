@@ -1,11 +1,16 @@
 # {Document Title}
+Version: v{A}.{B}.{C}
+Created by: {Author}
+Created at: {YYYY-MM-DD}
 
 <!--
 TEMPLATE NOTES (delete this comment block when using)
 - Purpose: the **generic skeleton for every Markdown design document in this project**, distilled from `docs/platform/business_overview.md` as the baseline.
 - Usage: copy this file to the target location → drop the leading underscore from the file name → delete this comment block → replace the `{curly brace}` placeholders section by section.
 - Hard structure (not adjustable):
-  1. The level-1 heading is the document title, immediately followed by the **document information table** (version / author / creation date).
+  1. The level-1 heading is the document title, immediately followed by the **header lines** `Version: v{A}.{B}.{C}` / `Created by` / `Created at` -
+     the document version lives **only** on that `Version:` line (substantive change => B+1 and C reset to 0; format-only change => C+1; A changes only on the
+     engineer's explicit instruction). Then comes the **document information table** (without a version row).
   2. Next comes the `# Index` table of contents; anchors must match the actual headings.
   3. **The first section is always `# 0 Document Notes`.**
   4. Intermediate sections start at `# 1` and may be added or removed as needed; the numbering must be continuous.
@@ -21,7 +26,6 @@ TEMPLATE NOTES (delete this comment block when using)
 | Item | Content |
 |---|---|
 | **Document Title** | {Document Title} |
-| **Document Version** | {x.y} |
 | **Author** | {Author} |
 | **Created** | {YYYY-MM-DD} |
 | **Last Updated** | {YYYY-MM-DD} |

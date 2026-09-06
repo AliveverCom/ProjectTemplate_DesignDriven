@@ -41,7 +41,8 @@ Then follow [§7 Workflow](#7-workflow) to copy templates into `docs/` and
 | `platform/` | 7 | Platform-level document templates → land in the `docs/` root |
 | `component/` | 6 | Component-level document templates → land in `docs/components/{component}/` |
 | `mermaid/` | 7 | Drawing conventions + 6 `.mmd` diagram templates (white canvas, category-coloured light fills, all-black text) |
-| `ai_dev/` | 18 | AI development-process document templates → land in `ai_dev_history/` |
+| `ai_dev/` | 19 | AI development-process document templates → land in `ai_dev_history/`; includes `99_Prompts/_TaskBook.md`, the subagent task-book standard |
+| `CLAUDE.md` + `.claude/agents/` | 1 + 5 | Project-root AI team rules (roles, concurrency, quota discipline, document authority chain) and the five subagent role definitions → land in the project root |
 
 ---
 
@@ -56,7 +57,8 @@ Then follow [§7 Workflow](#7-workflow) to copy templates into `docs/` and
 - [6 General Writing Conventions](#6-general-writing-conventions)
 - [7 Workflow](#7-workflow)
 - [8 Where Each Template Came From](#8-where-each-template-came-from)
-- [9 License](#9-license)
+- [9 AI Team Rules, Task Books and Design Volumes](#9-ai-team-rules-task-books-and-design-volumes)
+- [10 License](#10-license)
 
 ---
 
@@ -276,7 +278,21 @@ expects, this table tells you which real document to think of.
 
 ---
 
-## 9 License
+## 9 AI Team Rules, Task Books and Design Volumes
+
+Added in 1.3.0 after measuring a real project's spend: about 75% went to Opus subagents re-reading a
+560 KB design document and third-party engine sources on every review round. Three template groups
+address this:
+
+| Template | Lands in | What it fixes |
+|---|---|---|
+| `CLAUDE.md` + `.claude/agents/*.md` | project root | Team roles and models, concurrency set by the engineer, 10/20-minute task granularity, **quota discipline** (reviews re-use the R1 instance and read only the diff from R2 on; engine facts verified once and cited by `EF-nn`; convergence rule; Sonnet closure check for code review r2; task books point at volumes), document authority chain |
+| `ai_dev/99_Prompts/_TaskBook.md` | `docs/ai_dev/99_Prompts/` | The mandatory task-book skeleton (volume-level read list, do-not-read list, tool-call budget, report format) and seven templates (review R1 / R2+, drafter revision, dev-plan review, implementation, code review r1/r2, acceptance run) |
+| `component/_tech_design_engine_facts.md` + `_tech_design.md` 1.0 + `_project_directory_plan.md` 1.1 / 3.1 rule 7 | component docs | **Design volumes**: split a large design into a main document plus `{component}_tech_design_{volume}.md` files with globally unique chapter numbers, and register third-party engine facts once so nobody re-reads the engine source |
+
+---
+
+## 10 License
 
 Released under **[MIT No Attribution (MIT-0)](./LICENSE)**.
 
@@ -297,4 +313,5 @@ Documentation structure based on [ProjectTemplate_DesignDriven](https://github.c
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 1.3.0 | 2026-09-06 | AI team rules and quota discipline: `CLAUDE.md` template, `.claude/agents/` five role definitions, `ai_dev/99_Prompts/_TaskBook.md`, `component/_tech_design_engine_facts.md`, design-volume rules (`_project_directory_plan.md` 1.1 / 3.1 rule 7, `_tech_design.md` 1.0), `general_doc_template.md` header `Version:` line rule, mermaid render fix (`-w 2600 -c mmdc_config.json`) |
 | 1.0.0 | 2026-08-23 | First release: platform / component / mermaid / ai_dev template categories, reverse-engineered from the real design documents of a multi-component platform |

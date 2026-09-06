@@ -71,6 +71,8 @@ Grouped by the stage directories of `ai_dev_history/`:
 > `docs/components/{component}/ai_dev_history/` (component level) or
 > `docs/ai_dev_history/` (platform level).
 
+> **Subagent task books**: every task dispatched to a subagent follows the skeleton and templates in [_TaskBook.md](_TaskBook.md) (volume-level read list, do-not-read list incl. engine sources, tool-call budget, report format, review-instance re-use from R2 on).
+
 ---
 
 ## 1 Generate the UI/UX Requirements Document from the Business Description
@@ -657,4 +659,5 @@ mmdc -i {file}.mmd -o {file}.png -b white -s 3
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 1.1.0 | 2026-09-06 | Added the pointer to `_TaskBook.md` (subagent task-book standard and templates) |
 | {x.y.z} | {YYYY-MM-DD} | {Change description} |

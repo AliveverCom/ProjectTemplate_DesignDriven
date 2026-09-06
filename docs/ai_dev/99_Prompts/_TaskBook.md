@@ -1,0 +1,113 @@
+# Subagent Task-Book Standard and Templates
+
+**Document Version**: 1.0.0
+
+<!--
+TEMPLATE NOTES (delete this block when using)
+- Purpose: every task the Chief Architect dispatches to a subagent must follow the skeleton in §1;
+  §2 holds one template per task type. The goal is to cap each instance's *context size × tool calls*
+  (the dominant Opus cost) without lowering adversarial-review or implementation quality.
+- Usage: copy to `docs/ai_dev/99_Prompts/_TaskBook.md` (keep the underscore — it is a standing
+  standard, not a per-version document), replace `{curly brace}` placeholders, delete this block.
+- Origin: distilled from a real project after measuring that 75% of spend went to Opus subagents
+  re-reading a 560 KB design document and third-party engine sources on every review round.
+-->
+
+---
+
+## 1 Task-Book Skeleton (every task book contains all rows)
+
+| Section | Mandatory content | Notes |
+|---|---|---|
+| Role and task | Role name (`FirstName-JobTitle-Model`), task id (D/T/R/r), expected duration (≈10 min; terminated at 20 min) | One task book = one independently committable deliverable |
+| **Read list** | Each entry as "file → section", **pointing at a volume** (e.g. `{component_code_name}_tech_design_runtime.md §3.4.1`, `tech_testing_verification_kpi.md K32b`), with the expected reading range | Never "read `{component_code_name}_tech_design.md`"; the main document is read only for its §1.0 index and the §2 classes actually needed |
+| **Do-not-read / do-not-touch list** | Do not read: third-party engine or library sources (engine facts are cited by `EF-nn` id from `{component_code_name}_tech_design_engine_facts.md`), other volumes, `docs/ai_dev/` process documents (except the ruling table of a review report). Do not touch: any file outside the file-partition table | Review and document tasks **never open engine or repository sources to check a document**; implementation tasks read sources only for their "may modify" files and direct headers |
+| Tool-call budget | Suggested caps (review ≤ 30, drafting/revision ≤ 25, implementation ≤ 60); report before exceeding | Every context re-read is a cost |
+| Deliverable and verification | Artefact path, verification commands (full paths), commit message template (with the attribution trailer lines) | One commit per task; `git add` only your own files |
+| Report format | Word cap + mandatory items (hash, counts, unclear points handed to the Chief, never change the design yourself) | The report is the Chief's verification input, not a narrative |
+| Discipline line | Every id carries a one-line meaning; versions written in full (`{component_code_name}/vA.B.C`); product name in full; binary paths written in full (`{binary_full_path}`) | As in `CLAUDE.md` |
+
+**Concurrency**: the latest engineer instruction in `prompt_history.md` wins; count in-flight instances before dispatching.
+
+---
+
+## 2 Templates
+
+### 2.1 Design adversarial review R1 (Opus, fresh instance)
+
+```
+You are Oscar-Architect-Opus, an independent reviewer who did not take part in drafting; read-only, no file changes, no git. Task: adversarial review R1 of the {component_code_name}/vA.B.C "<topic>" design. ≈15 min, one pass.
+Read list: <volume §x.y, one per line>; upstream authority <business_overview §n / tech_ topic §n>.
+Do not read: engine/library sources and repository sources (engine facts: cite EF ids from {component_code_name}_tech_design_engine_facts.md; facts missing from the register are listed as "pending verification" for the Chief — never verify them yourself); other volumes; docs/ai_dev/.
+Requirements: §0 independent recomputation (closed forms / timetables / item counts); engine facts cited by EF id, checked against the design clauses; B/M/m grading; each finding = location / problem / evidence / impact / proposed options / empty "Chief ruling" row.
+Report: docs/components/{component_code_name}/ai_dev/01_DocReviewRefine/vA.B.C_design_review_r1.md (Version v0.1.0, empty ruling table at the end).
+Report back ≤ 250 words: B/M/m counts, one line per finding.
+```
+
+### 2.2 Design adversarial review R2+ (Opus, **re-use the R1 instance**, diff only)
+
+```
+(SendMessage to the R1 instance) Continuation: {component_code_name}/vA.B.C design review R<n>. The drafter has applied the R<n−1> Chief rulings (commit <hash>).
+Read only: the changed regions of `git diff <prev>..<hash> -- <volume paths>` and their knock-on effects (list the sections); the ruling table at the end of the R<n−1> report (closure check).
+Do not re-read the full text; do not read engine sources (cite EF ids).
+Output: vA.B.C_design_review_r<n>.md with a closure table; when there is no B and M ≤ 3, state "may be closed after Chief verification". Report back ≤ 200 words.
+```
+
+### 2.3 Drafter applies rulings (Opus, re-use the drafting instance)
+
+```
+Continuation: apply the R<n> Chief rulings one by one. Read only: the ruling table at the end of the R<n> report (sole authority); the affected sections of the volumes being revised. Do not read other volumes or sources.
+Versions: <file → target version> (header line only); one new row at the top of each change log (listing the finding ids and their landing sections); no process wording in the body, no links into docs/ai_dev/.
+Every numeric change is recomputed by you with the derivation written down (a Python script is fine). No git.
+Report back ≤ 250 words + table: finding id → landing → one-line change; anything that cannot be applied literally goes to the Chief.
+```
+
+### 2.4 Dev-plan independent review D0 (Opus, fresh instance)
+
+```
+Read only: the full DevPlan; the target row of {component_code_name}_version_plan.md; the design-volume sections cited by the D items (listed one by one); the src/ tree and build files (only to check the file partition — do not read implementations).
+Focus: completeness (every "implemented in vA.B.C" design clause ↔ a D item), executability of the file partition (new / may-modify / do-not-touch, build-file and shared-header conflict surfaces), acyclic waves, prerequisites before the acceptance run, acceptance criteria.
+Report vA.B.C_devplan_review_r1.md; report back ≤ 250 words.
+```
+
+### 2.5 Implementation task (Sonnet: backend / test development)
+
+```
+You are <Ben-X / Tina-X>-…-Sonnet, taking <D item / T sub-task> from DevPlan §3 (≈10 min, commit after each T).
+May modify / create: <the two columns of DevPlan §3.2 for this D item, verbatim>; do not touch: <third column, verbatim>; build files / shared headers are frozen (if applicable).
+Read list: <volume §x.y, one per line>; the existing implementation of the may-modify files and their direct headers. Do not read other volumes or engine sources (engine facts: EF ids from {component_code_name}_tech_design_engine_facts.md; implement against the adapter-layer contract in the interfaces volume).
+Verification: <build command + unit test / golden / script commands, full paths>.
+Commit: <message template + attribution trailer>. Report back ≤ 150 words: hash, counts, deviations from the design (never change the design yourself).
+```
+
+### 2.6 Code review r1 (Opus) and r2 closure check (Sonnet when r1 has no Blocker)
+
+```
+r1: read only the files touched by `git diff <base>..<head>` + the matching volume sections (listed) + the coding standard; never read unrelated sources in full. Output a CR list (B/M/m).
+r2 (Sonnet when r1 has no B): verify each CR item fixed against the fix commits' diff, build and tests pass; read only the files involved in the fixes; output a closure table. If r1 had a B, r2 stays Opus and reviews only the fix diff.
+```
+
+### 2.7 Acceptance run (Sonnet: test execution)
+
+```
+The build is done by the Chief before dispatch and its SHA-256 recorded; nobody rebuilds during the acceptance run. Read only: DevPlan §4/§5 and the build/run commands in the build volume; the expected values in the KPI volume (only the keys to be checked).
+Artefacts: KPI result files, per-tier execution records; report per-tier counts and the exact value of any expected FAIL (must match bit-for-bit).
+```
+
+---
+
+## 3 Chief-side checklist (before dispatching)
+
+1. Every read-list entry is **volume-level** with a section; no whole-file pointers.
+2. The do-not-read list explicitly names engine sources / other volumes / docs/ai_dev.
+3. In-flight instances ≤ the current concurrency limit; C++ tasks in the same wave touch disjoint file sets.
+4. From R2 on, reviews resume the existing instance via SendMessage; every engine fact has an EF id, missing ones get a one-off verification task first.
+5. Report word cap and mandatory items are written; the commit trailer lines are given.
+
+---
+
+## Change Log
+
+| Version | Date | Author | Change |
+|---|---|---|---|
+| 1.0.0 | 2026-09-06 | {Author} | Created: task-book skeleton (read / do-not-read lists, tool-call budget, report format), seven templates (review R1 / R2+ instance re-use, drafter revision, D0, implementation, code review r1/r2, acceptance run), Chief-side checklist |

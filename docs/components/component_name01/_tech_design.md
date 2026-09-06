@@ -44,6 +44,21 @@ This file is a **Component-Level Technical Design** template.
 
 ## 1 Table of Contents
 
+### 1.0 Document Structure Index (main document + volumes)
+
+<!-- Keep this table only when the design has been split into volumes (project_directory_plan 3.1 rule 7). Chapter numbers are globally unique across the main document and its volumes; a moved chapter leaves a one-line stub in the main document pointing at its volume. -->
+
+| File | Chapters | Content | Who reads it |
+|---|---|---|---|
+| `{component_code_name}_tech_design.md` (this file) | 1, 2, ... + stubs of moved chapters | Core entities / value types / enums, index | Every task starts here (1.0 + the chapter-2 classes it needs) |
+| `{component_code_name}_tech_design_{volume}.md` | {n} | {what the volume holds} | {which tasks need it} |
+| `{component_code_name}_tech_design_engine_facts.md` | engine facts register | Third-party engine behavioural facts `EF-nn` (source location, chosen settings, dependent clauses, pinning tests) | Any task touching engine semantics - **cite EF ids, never read the engine source** |
+| `{component_code_name}_tech_design_changelog_archive.md` | change-log rows older than v{A}.{B}.0 | Archived history | Tracing only |
+
+**Reference convention**: references always read "`{component_code_name}_tech_design section x.y`" and are resolved through this table; a volume carries its own version number and change log, and revising a volume does not bump the main document.
+
+### 1.1 Chapter Index
+
 - [1 Table of Contents](#1-table-of-contents)
 - [2 Class Definitions](#2-class-definitions)
   - [2.1 Class Diagram](#21-class-diagram)
