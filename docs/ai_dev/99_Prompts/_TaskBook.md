@@ -1,6 +1,6 @@
 # Subagent Task-Book Standard and Templates
 
-**Document Version**: 1.2.0
+**Document Version**: 1.3.0
 
 <!--
 TEMPLATE NOTES (delete this block when using)
@@ -107,6 +107,8 @@ Artefacts: KPI result files, per-tier execution records; report per-tier counts 
 4. From R2 on, reviews resume the existing instance via SendMessage; every engine fact has an EF id, missing ones get a one-off verification task first.
 5. Report word cap and mandatory items are written (incl. the tool-call count); the commit trailer lines are given.
 6. The task book has a "Shared knowledge pack" section (section-level read ranges - section number + title, or function name, never line numbers - sample location, design sentences, task-specific verification); the role files' resident knowledge packs are kept current by the Chief (every change committed).
+7. No task that modifies repository files is dispatched while an acceptance/evidence run is in progress; drafting that must proceed in parallel is stashed or moved to a separate worktree, and any formatting-fix pass is closed before the frozen build used as evidence.
+8. Smoke/first-run task books point at the production KPI/orchestration functions (`<kpi_script>`), never an ad-hoc parallel script; KPI wiring gets an independent review scoped to its actual changes.
 
 ---
 
@@ -114,6 +116,7 @@ Artefacts: KPI result files, per-tier execution records; report per-tier counts 
 
 | Version | Date | Author | Change |
 |---|---|---|---|
+| 1.3.0 | 2026-09-11 | {Author} | Chief-side checklist gains two items: no file-modifying dispatch during an acceptance/evidence run; smoke/first-run task books use the production KPI functions, not ad-hoc scripts |
 | 1.2.0 | 2026-09-06 | {Author} | Read-range anchors are section number + title (documents) or function / symbol name (code), never line numbers; role files gain a "How to locate" rule (grep the heading, then read only that range) |
 | 1.1.0 | 2026-09-06 | {Author} | Added the "Shared knowledge pack" section (line-level read ranges, sample to copy, design sentences, task-specific verification); implementation tool-call cap 60 -> 35; reports state the tool-call count; role files carry resident knowledge packs |
 | 1.0.0 | 2026-09-06 | {Author} | Created: task-book skeleton (read / do-not-read lists, tool-call budget, report format), seven templates (review R1 / R2+ instance re-use, drafter revision, D0, implementation, code review r1/r2, acceptance run), Chief-side checklist |
