@@ -1,6 +1,6 @@
 # Subagent Task-Book Standard and Templates
 
-**Document Version**: 1.3.0
+**Document Version**: 1.4.0
 
 <!--
 TEMPLATE NOTES (delete this block when using)
@@ -78,6 +78,8 @@ You are <Ben-X / Tina-X>-…-Sonnet, taking <D item / T sub-task> from DevPlan �
 May modify / create: <the two columns of DevPlan §3.2 for this D item, verbatim>; do not touch: <third column, verbatim>; build files / shared headers are frozen (if applicable).
 Read list: <volume §x.y with section title, one per line>; the existing implementation of the may-modify files and their direct headers. Do not read other volumes or engine sources (engine facts: EF ids from {component_code_name}_tech_design_engine_facts.md; implement against the adapter-layer contract in the interfaces volume).
 Shared knowledge pack: <the three to five design sentences this task relies on, with EF ids>; <sample to copy: file + function / symbol name>; <task-specific verification commands and expected values>. Build/test commands, toolchain, coding-standard digest, file map and known pitfalls are in your role file - not repeated here.
+Build target: <the single build target this instance may build>; if this is a parallel wave, do not build a shared build tree that another instance is also building — build only your own target, or wait for the Chief's single post-wave build.
+If this task runs a smoke check or self-test: afterward, move any produced records out of `{kpi_results_dir}` to a temporary directory and restore `{kpi_history_file}` to its committed state; do not leave smoke/self-check output in the evidence directory.
 Tool-call budget 35; report the actual count.
 Verification: <build command + unit test / golden / script commands, full paths>.
 Commit: <message template + attribution trailer>. Report back ≤ 150 words: hash, counts, deviations from the design (never change the design yourself).
@@ -109,6 +111,8 @@ Artefacts: KPI result files, per-tier execution records; report per-tier counts 
 6. The task book has a "Shared knowledge pack" section (section-level read ranges - section number + title, or function name, never line numbers - sample location, design sentences, task-specific verification); the role files' resident knowledge packs are kept current by the Chief (every change committed).
 7. No task that modifies repository files is dispatched while an acceptance/evidence run is in progress; drafting that must proceed in parallel is stashed or moved to a separate worktree, and any formatting-fix pass is closed before the frozen build used as evidence.
 8. Smoke/first-run task books point at the production KPI/orchestration functions (`<kpi_script>`), never an ad-hoc parallel script; KPI wiring gets an independent review scoped to its actual changes.
+9. Each implementation instance in a parallel wave is told the single build target it may build (or that the Chief builds once after all of the wave's commits land) — no shared build tree touched by two instances concurrently.
+10. Any task that runs a smoke check or self-test states that produced records must be moved out of `{kpi_results_dir}` and that `{kpi_history_file}` must be restored to its committed state.
 
 ---
 
@@ -116,6 +120,7 @@ Artefacts: KPI result files, per-tier execution records; report per-tier counts 
 
 | Version | Date | Author | Change |
 |---|---|---|---|
+| 1.4.0 | 2026-09-12 | {Author} | Implementation template and Chief-side checklist gain build-target isolation for parallel waves (no shared build tree) and smoke/self-check artefact isolation from the KPI evidence directory (`{kpi_results_dir}` / `{kpi_history_file}`) |
 | 1.3.0 | 2026-09-11 | {Author} | Chief-side checklist gains two items: no file-modifying dispatch during an acceptance/evidence run; smoke/first-run task books use the production KPI functions, not ad-hoc scripts |
 | 1.2.0 | 2026-09-06 | {Author} | Read-range anchors are section number + title (documents) or function / symbol name (code), never line numbers; role files gain a "How to locate" rule (grep the heading, then read only that range) |
 | 1.1.0 | 2026-09-06 | {Author} | Added the "Shared knowledge pack" section (line-level read ranges, sample to copy, design sentences, task-specific verification); implementation tool-call cap 60 -> 35; reports state the tool-call count; role files carry resident knowledge packs |

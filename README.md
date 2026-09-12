@@ -313,6 +313,7 @@ Documentation structure based on [ProjectTemplate_DesignDriven](https://github.c
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 1.6.0 | 2026-09-12 | Parallel implementation instances never share a build directory, smoke/self-check runs isolate their KPI artefacts from the evidence directory, and upstream pull requests are preceded by a default-branch-structure and contribution-agreement check; `_TaskBook.md` 1.4.0 adds the matching implementation-template and Chief-checklist items |
 | 1.5.0 | 2026-09-11 | Acceptance-window discipline (no file-modifying dispatch during an evidence run), smoke runs use the production KPI functions, resumed instances count toward the concurrency cap; `_TaskBook.md` 1.3.0 adds the two matching Chief-checklist items |
 | 1.4.1 | 2026-09-06 | Read-range anchors in task books are section number + title / symbol name, never line numbers; role files gain a "How to locate" rule (grep the heading, read only that range) |
 | 1.4.0 | 2026-09-06 | Resident knowledge packs in the five `.claude/agents/` role files (build/test commands, toolchain, coding-standard digest, file map, known pitfalls, review conventions); `_TaskBook.md` 1.1.0 adds the "Shared knowledge pack" section, implementation tool-call cap 35 and tool-call count in reports |
